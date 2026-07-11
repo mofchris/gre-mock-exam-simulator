@@ -1,10 +1,10 @@
-/* GRE Study Course — Unit 5: Writing and Test-Day Readiness */
+/* GRE Study Course - Unit 5: Writing and Test-Day Readiness */
 (function () {
   const C = window.GRECOURSE = window.GRECOURSE || { units: [] };
 
   C.units.push({
     id: "u5",
-    title: "Unit 5 — Writing and Test-Day Readiness",
+    title: "Unit 5: Writing and Test-Day Readiness",
     blurb: "The Issue essay, pacing, guessing, and the final checklist. This is where preparation becomes a score.",
     modules: [
 
@@ -13,25 +13,25 @@
   id: "gm5_1", title: "The Issue Essay", minutes: 15, level: "core",
   content: `
 <p>You get one essay, 30 minutes, scored 0–6. A prompt makes a claim; you must take a position and defend
-it. Graders spend a few minutes on your essay — so structure and clarity beat cleverness every time.</p>
+it. Graders spend a few minutes on your essay, so structure and clarity beat cleverness every time.</p>
 
 <h2>What the graders actually reward</h2>
 <ul>
   <li>A <strong>clear, defensible position</strong> that responds to the <em>specific instructions</em> given with the prompt.</li>
-  <li><strong>Developed reasons with concrete examples</strong> — not a list of assertions.</li>
+  <li><strong>Developed reasons with concrete examples</strong>, not a list of assertions.</li>
   <li>Engagement with the <strong>strongest counterargument</strong>.</li>
   <li>Organization the grader can follow at a glance.</li>
   <li>Competent, varied sentences. (A few typos won't sink you. Incoherence will.)</li>
 </ul>
 <div class="warnbox"><strong>Read the task instructions, not just the statement.</strong> The prompt is
-followed by directions that vary — "discuss the extent to which you agree or disagree," "describe specific
+followed by directions that vary: "discuss the extent to which you agree or disagree," "describe specific
 circumstances in which adopting the recommendation would or would not be advantageous," "address the most
 compelling reasons that could challenge your position." An essay that ignores those instructions is capped
 low no matter how well written it is.</div>
 
 <h2>The winning move: qualify, don't crusade</h2>
 <p>The strongest essays rarely take an absolute position. They say: <em>"This is true under conditions X,
-but fails under conditions Y — and here's what determines which."</em> That demonstrates exactly the
+but fails under conditions Y, and here's what determines which."</em> That demonstrates exactly the
 nuanced reasoning being scored.</p>
 <p>An unqualified "I completely agree" essay is hard to develop and easy to attack. A qualified position
 gives you natural material for every paragraph.</p>
@@ -49,10 +49,10 @@ better organized than one discovered while typing.</p>
 <h2>The structure that works</h2>
 <ol>
   <li><strong>Introduction</strong> (3–5 sentences). Acknowledge the claim's appeal, then state your qualified thesis clearly. The grader should know your position by the end of this paragraph.</li>
-  <li><strong>Body 1</strong> — your strongest reason + a developed example.</li>
-  <li><strong>Body 2</strong> — a second reason + a different kind of example.</li>
-  <li><strong>Body 3</strong> — the <em>counterargument</em>. State the best case against you honestly, then explain why your position survives it (or where you concede ground).</li>
-  <li><strong>Conclusion</strong> (3–4 sentences). Don't merely repeat — state what follows from your argument.</li>
+  <li><strong>Body 1</strong>: your strongest reason + a developed example.</li>
+  <li><strong>Body 2</strong>: a second reason + a different kind of example.</li>
+  <li><strong>Body 3</strong>: the <em>counterargument</em>. State the best case against you honestly, then explain why your position survives it (or where you concede ground).</li>
+  <li><strong>Conclusion</strong> (3–4 sentences). Don't merely repeat: state what follows from your argument.</li>
 </ol>
 <p><strong>Length:</strong> aim for 500–600 words. Length correlates with score, not because graders count
 words, but because development takes words. A 250-word essay cannot have developed examples.</p>
@@ -60,11 +60,11 @@ words, but because development takes words. A 250-word essay cannot have develop
 <h2>Examples: where to get them</h2>
 <p>You don't need to be an expert. Draw on:</p>
 <ul>
-  <li><strong>History</strong> — the printing press, the Manhattan Project, the New Deal.</li>
-  <li><strong>Science and technology</strong> — vaccines, the internet, automation, the replication crisis.</li>
-  <li><strong>Business</strong> — companies that innovated or failed to.</li>
+  <li><strong>History</strong>: the printing press, the Manhattan Project, the New Deal.</li>
+  <li><strong>Science and technology</strong>: vaccines, the internet, automation, the replication crisis.</li>
+  <li><strong>Business</strong>: companies that innovated or failed to.</li>
   <li><strong>Literature and the arts.</strong></li>
-  <li><strong>Personal or observed experience</strong> — legitimate, if developed specifically.</li>
+  <li><strong>Personal or observed experience</strong>: legitimate, if developed specifically.</li>
 </ul>
 <div class="keybox"><strong>One developed example beats three name-drops.</strong> Don't write "consider
 Einstein, Curie, and Newton." Write one paragraph that actually <em>shows</em> how a specific case supports
@@ -72,7 +72,7 @@ your reasoning. Specificity is the difference between a 4 and a 5.</div>
 
 <h2>The mechanics of the editor</h2>
 <p>It's a plain text box. No spell-check, no grammar-check, and <strong>no access to your system
-clipboard</strong> — only the internal Cut/Copy/Paste buttons. Don't fight it; just write.</p>
+clipboard</strong>, only the internal Cut/Copy/Paste buttons. Don't fight it; just write.</p>
 
 <h2>The scoring scale, briefly</h2>
 <table>
@@ -130,7 +130,7 @@ paragraph</em> is typically the difference between a 4 and a 5.</p>
         "The font size",
         "The number of paragraphs required"],
       answer: 1,
-      expl: "Task instructions vary — some ask you to address opposing views, others to describe circumstances where a recommendation would fail. Ignoring them caps your score regardless of writing quality." },
+      expl: "Task instructions vary, some ask you to address opposing views, others to describe circumstances where a recommendation would fail. Ignoring them caps your score regardless of writing quality." },
     { text: "Which two features characterize a high-scoring Issue essay? (Select TWO.)",
       choices: [
         "Engagement with the strongest counterargument",
@@ -143,7 +143,7 @@ paragraph</em> is typically the difference between a 4 and a 5.</p>
     { text: "What tools does the GRE essay editor provide?",
       choices: [
         "Spell-check and grammar-check",
-        "Basic cut, copy, paste, undo, and redo — with no spell-check",
+        "Basic cut, copy, paste, undo, and redo, with no spell-check",
         "A full word processor",
         "Nothing but typing"],
       answer: 1,
@@ -160,7 +160,7 @@ identical knowledge can score 8 points apart purely on how they spend their minu
 
 <h2>The two-pass method (use it in every section)</h2>
 <ol>
-  <li><strong>Pass 1:</strong> move through the section answering everything you can do <em>confidently and quickly</em>. The moment a question resists — you don't see the path within ~20 seconds — <strong>guess, mark it, move on.</strong></li>
+  <li><strong>Pass 1:</strong> move through the section answering everything you can do <em>confidently and quickly</em>. The moment a question resists (you don't see the path within ~20 seconds) <strong>guess, mark it, move on.</strong></li>
   <li><strong>Pass 2:</strong> return to the marked questions with your remaining time, now with no unanswered questions hanging over you.</li>
 </ol>
 <div class="keybox"><strong>Why this works:</strong> every question is worth the same. Spending 4 minutes on
@@ -173,15 +173,15 @@ one brutal question while two easy questions sit unread at the end of the sectio
   <tr><td>Text Completion (1 blank)</td><td>~45 sec</td></tr>
   <tr><td>Text Completion (2–3 blanks)</td><td>~75–90 sec</td></tr>
   <tr><td>Sentence Equivalence</td><td>~60 sec</td></tr>
-  <tr><td>Reading Comp — reading a long passage</td><td>~3 min (once)</td></tr>
-  <tr><td>Reading Comp — each question</td><td>~60 sec</td></tr>
+  <tr><td>Reading Comp: reading a long passage</td><td>~3 min (once)</td></tr>
+  <tr><td>Reading Comp: each question</td><td>~60 sec</td></tr>
 </table>
 <table>
   <tr><th>Quant question type</th><th>Target</th></tr>
   <tr><td>Quantitative Comparison</td><td>~60 sec (many are 30 sec)</td></tr>
   <tr><td>Problem solving</td><td>~90 sec</td></tr>
-  <tr><td>Data Interpretation — reading the chart</td><td>~30 sec (once)</td></tr>
-  <tr><td>Data Interpretation — each question</td><td>~75 sec</td></tr>
+  <tr><td>Data Interpretation: reading the chart</td><td>~30 sec (once)</td></tr>
+  <tr><td>Data Interpretation: each question</td><td>~75 sec</td></tr>
 </table>
 <p>Sentence-level Verbal questions are your <em>time bank</em>: finish them fast to fund the reading
 passages. In Quant, QC is the bank that funds Data Interpretation.</p>
@@ -195,29 +195,29 @@ passages. In Quant, QC is the bank that funds Data Interpretation.</p>
   <li><strong>Quant:</strong> estimate. If the answer must be "a bit less than 50," eliminate everything far away.</li>
 </ul>
 <div class="exambox"><strong>With 60 seconds left</strong>, stop solving. Click through and ensure
-<em>every single question has an answer.</em> A blank and a wrong answer score the same — so a blank is
+<em>every single question has an answer.</em> A blank and a wrong answer score the same, so a blank is
 pure waste.</div>
 
 <h2>Remember what Section 1 is worth</h2>
-<p>Because the GRE is section-adaptive, Section 1 of each measure determines the difficulty — and therefore
-the score ceiling — of Section 2. Practical consequences:</p>
+<p>Because the GRE is section-adaptive, Section 1 of each measure determines the difficulty, and therefore
+the score ceiling, of Section 2. Practical consequences:</p>
 <ul>
   <li><strong>Do not use Section 1 as a warm-up.</strong> Arrive alert. Do a few practice questions before you leave home if that helps.</li>
   <li>Accuracy in Section 1 is worth more than speed. If you must choose, be right.</li>
-  <li>If Section 2 feels easy, <em>don't panic</em> — it may mean you were routed down. Just execute. Panic costs points; the routing is already fixed.</li>
+  <li>If Section 2 feels easy, <em>don't panic</em>. It may mean you were routed down. Just execute. Panic costs points; the routing is already fixed.</li>
 </ul>
 
 <h2>Managing your head</h2>
 <ul>
-  <li><strong>The GRE is designed so you will see questions you can't do.</strong> That's not a sign you're failing — it's the test working as intended. Perfect scores are not the goal.</li>
+  <li><strong>The GRE is designed so you will see questions you can't do.</strong> That's not a sign you're failing. It's the test working as intended. Perfect scores are not the goal.</li>
   <li><strong>Never carry a question with you.</strong> Once you've answered and moved on, it's gone. Ruminating on question 4 while reading question 5 costs you both.</li>
   <li><strong>Breathe before each new section.</strong> Ten seconds of reset beats ten seconds of extra work.</li>
 </ul>
 
 <h2>The final two weeks</h2>
 <ul>
-  <li>Take <strong>full-length, timed mocks</strong> under real conditions — no pausing, no phone. Stamina is a skill.</li>
-  <li><strong>Review every miss</strong> and categorize it: <em>content gap</em>, <em>careless error</em>, or <em>timing</em>. Those three failures have three completely different fixes. Most people's biggest bucket is "careless" — and they respond by studying more content, which fixes nothing.</li>
+  <li>Take <strong>full-length, timed mocks</strong> under real conditions, no pausing, no phone. Stamina is a skill.</li>
+  <li><strong>Review every miss</strong> and categorize it: <em>content gap</em>, <em>careless error</em>, or <em>timing</em>. Those three failures have three completely different fixes. Most people's biggest bucket is "careless", and they respond by studying more content, which fixes nothing.</li>
   <li>Drill your weakest question <em>type</em>, not your weakest <em>subject</em>.</li>
   <li>The day before: light review only. Sleep matters more than one more practice set.</li>
 </ul>
@@ -225,7 +225,7 @@ the score ceiling — of Section 2. Practical consequences:</p>
 <h2>What you must remember</h2>
 <ul>
   <li>Two passes. Never get stuck. Guess, mark, move on.</li>
-  <li>Section 1 sets your ceiling — arrive warm and prioritize accuracy.</li>
+  <li>Section 1 sets your ceiling. Arrive warm and prioritize accuracy.</li>
   <li>No blanks, ever. Eliminate to beat 20%.</li>
   <li>Categorize your misses: content, careless, or timing. Fix the right thing.</li>
 </ul>`,
@@ -253,11 +253,11 @@ the score ceiling — of Section 2. Practical consequences:</p>
         "Leave them blank",
         "Review your marked questions"],
       answer: 1,
-      expl: "There is no guessing penalty, so a blank scores identically to a wrong answer — making blanks pure waste. Fill in everything." },
+      expl: "There is no guessing penalty, so a blank scores identically to a wrong answer, making blanks pure waste. Fill in everything." },
     { text: "In Quantitative Comparison, when both quantities are specific numbers, which answer can you eliminate before doing anything?",
       choices: ["(A)", "(B)", "(C)", "(D)"],
       answer: 3,
-      expl: "Two known numbers always have a determinable relationship, so 'cannot be determined' is impossible — improving a blind guess from 25% to 33%." },
+      expl: "Two known numbers always have a determinable relationship, so 'cannot be determined' is impossible, improving a blind guess from 25% to 33%." },
     { text: "After reviewing a practice test, you find most of your errors were on questions you actually knew how to do. What should you change?",
       choices: [
         "Study more content",
@@ -265,7 +265,7 @@ the score ceiling — of Section 2. Practical consequences:</p>
         "Take more practice tests without reviewing",
         "Focus only on the hardest questions"],
       answer: 1,
-      expl: "Content gaps, careless errors, and timing failures require completely different fixes. Studying more content does nothing for a carelessness problem — which is most people's largest bucket." },
+      expl: "Content gaps, careless errors, and timing failures require completely different fixes. Studying more content does nothing for a carelessness problem, which is most people's largest bucket." },
     { text: "Which two are effective pacing strategies? (Select TWO.)",
       choices: [
         "Answer Text Completions quickly to bank time for Reading Comprehension",
@@ -278,7 +278,7 @@ the score ceiling — of Section 2. Practical consequences:</p>
     { text: "Section 2 of Quant feels noticeably easier than Section 1. What should you do?",
       choices: [
         "Panic, since it means you did badly",
-        "Simply execute carefully — the routing is already fixed and panic only costs points",
+        "Simply execute carefully. The routing is already fixed and panic only costs points",
         "Deliberately answer some questions wrong",
         "Rush through it since it doesn't matter"],
       answer: 1,
@@ -288,7 +288,7 @@ the score ceiling — of Section 2. Practical consequences:</p>
 
 /* ================= MODULE 18 ================= */
 {
-  id: "gm5_3", title: "Final Review — Everything That Matters", minutes: 13, level: "advanced",
+  id: "gm5_3", title: "Final Review. Everything That Matters", minutes: 13, level: "advanced",
   content: `
 <p>This module is your last-week reference. Reread it the morning of the test.</p>
 
@@ -298,7 +298,7 @@ the score ceiling — of Section 2. Practical consequences:</p>
   <li><strong>Signal words control the sentence:</strong> although/but/yet/despite = contrast (flip direction). Colon/semicolon/moreover = continuation (same direction).</li>
   <li><strong>Sentence Equivalence needs a PAIR.</strong> If only one word fits, you misread the sentence. Beware the synonym pair that doesn't fit, and the perfect word with no partner.</li>
   <li><strong>Text Completion: all blanks or nothing.</strong> Verify by reading the sentence back.</li>
-  <li><strong>Reading Comp: read for structure</strong> — the author's point, and what each paragraph <em>does</em>.</li>
+  <li><strong>Reading Comp: read for structure</strong>: the author's point, and what each paragraph <em>does</em>.</li>
   <li><strong>Trap answers:</strong> too extreme (always/never/proves), true-but-not-asked, half-right, out of scope, reversal.</li>
   <li><strong>Match certainty:</strong> if the passage "suggests," the answer cannot "prove."</li>
   <li><strong>Critical Reasoning:</strong> find the conclusion, find the evidence, attack the <em>gap</em>. Never attack the evidence.</li>
@@ -310,7 +310,7 @@ the score ceiling — of Section 2. Practical consequences:</p>
   <tr><td>Percent change</td><td>(new − old) / old. "Percent of" ≠ "percent greater than."</td></tr>
   <tr><td>Successive percents</td><td>Multiply. +20% then −20% = 0.96.</td></tr>
   <tr><td>Averages</td><td>sum = average × count</td></tr>
-  <tr><td>Work</td><td>Add <em>rates</em>. Never average speeds — use total distance ÷ total time.</td></tr>
+  <tr><td>Work</td><td>Add <em>rates</em>. Never average speeds. Use total distance ÷ total time.</td></tr>
   <tr><td>Ratios</td><td>Sum the parts, find one part.</td></tr>
   <tr><td>Factors</td><td>Prime factorize; add 1 to each exponent and multiply.</td></tr>
   <tr><td>x² = k</td><td><strong>Two roots</strong>, positive and negative.</td></tr>
@@ -368,7 +368,7 @@ the score ceiling — of Section 2. Practical consequences:</p>
 <p>You've worked through test structure, vocabulary logic, sentence completion, reading, argument analysis,
 arithmetic, number properties, algebra, word problems, geometry, statistics, data interpretation,
 quantitative comparison, the essay, and test management.</p>
-<p>Now take the mock exam. Whatever it surfaces, you'll know exactly which module to reread — and there's a
+<p>Now take the mock exam. Whatever it surfaces, you'll know exactly which module to reread, and there's a
 tutor mode and a missed-questions deck waiting for the gaps.</p>`,
   quiz: [
     { text: "If x² = 64, what are the possible values of x?",
@@ -378,7 +378,7 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
     { text: "A GRE figure shows what appears to be a right angle, but it is not marked. What may you assume?",
       choices: [
         "That it is a right angle",
-        "Nothing — figures are not drawn to scale unless stated",
+        "Nothing: figures are not drawn to scale unless stated",
         "That the figure is symmetric",
         "That the angle is 45°"],
       answer: 1,
@@ -386,7 +386,7 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
     { text: "In Quantitative Comparison, you find Quantity A can be greater than B, and in another case they are equal. What is the answer?",
       choices: ["A is greater", "B is greater", "They are equal", "Cannot be determined"],
       answer: 3,
-      expl: "If more than one relationship is possible, the relationship is not fixed — the answer is (D). This is exactly why you must test for equality." },
+      expl: "If more than one relationship is possible, the relationship is not fixed. The answer is (D). This is exactly why you must test for equality." },
     { text: "Which is the correct formula for the nth term of an arithmetic sequence?",
       choices: ["a₁ + nd", "a₁ + (n − 1)d", "a₁ × rⁿ", "n(n + 1)/2"],
       answer: 1,
@@ -394,7 +394,7 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
     { text: "A question asks for the value of xy. You correctly find x = 4 and y = 3. What is the answer?",
       choices: ["4", "3", "12", "7"],
       answer: 2,
-      expl: "xy = 12. Both 4 and 3 will appear among the choices — solving correctly and then answering the wrong question is the most common way strong students lose points." },
+      expl: "xy = 12. Both 4 and 3 will appear among the choices: solving correctly and then answering the wrong question is the most common way strong students lose points." },
     { text: "Which two are true about Sentence Equivalence? (Select TWO.)",
       choices: [
         "The answer is always a pair of words producing equivalent sentences",
@@ -403,7 +403,7 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
         "You may select three answers if they all fit",
         "Only one answer is correct"],
       answer: [0, 2],
-      expl: "Exactly two answers, both fitting the sentence and producing equivalent meaning — with no partial credit. The decoy synonym pair exists to catch people hunting for synonyms rather than reading the sentence." },
+      expl: "Exactly two answers, both fitting the sentence and producing equivalent meaning, with no partial credit. The decoy synonym pair exists to catch people hunting for synonyms rather than reading the sentence." },
     { text: "P(at least one head) in three coin flips is best computed how?",
       choices: [
         "Add the probabilities of one, two, and three heads",
@@ -420,12 +420,12 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
         "Reading the passage too carefully",
         "Using the calculator too little"],
       answer: [0, 2],
-      expl: "The GRE's math content is elementary; the losses come from carelessness — answering for x when xy was asked, and dropping the negative root." }
+      expl: "The GRE's math content is elementary; the losses come from carelessness, answering for x when xy was asked, and dropping the negative root." }
   ]
 }
     ],
 
-/* ================= CHECKPOINT 5 — FINAL READINESS ================= */
+/* ================= CHECKPOINT 5 - FINAL READINESS ================= */
     checkpoint: {
       id: "gcp5", title: "Final Readiness Exam", n: 25,
       questions: [
@@ -476,7 +476,7 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
             "Argue that heart disease is common",
             "Note that some nappers get heart disease"],
           answer: 1,
-          expl: "A confounding variable explains the correlation without napping doing anything. Attacking the evidence itself is off-limits — premises are granted." },
+          expl: "A confounding variable explains the correlation without napping doing anything. Attacking the evidence itself is off-limits: premises are granted." },
         { text: "A square has area 50. What is its diagonal?",
           choices: ["10", "5√2", "25", "50"],
           answer: 0,
@@ -484,7 +484,7 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
         { text: "'Ubiquitous' most nearly means:",
           choices: ["Rare", "Present everywhere", "Ancient", "Ambiguous"],
           answer: 1,
-          expl: "Ubiquitous means found everywhere at once — its pair for Sentence Equivalence is omnipresent." },
+          expl: "Ubiquitous means found everywhere at once. Its pair for Sentence Equivalence is omnipresent." },
         { text: "Which two are true about the GRE's structure? (Select TWO.)",
           choices: [
             "Section 1 of each measure determines the difficulty of Section 2",
@@ -501,7 +501,7 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
         { text: "The angles of a triangle are 45°, 60°, and 75°. Which side is longest?",
           choices: ["Opposite 45°", "Opposite 60°", "Opposite 75°", "All equal"],
           answer: 2,
-          expl: "The largest angle faces the longest side — no computation required." },
+          expl: "The largest angle faces the longest side, no computation required." },
         { text: "45 is what percent of 180?",
           choices: ["4%", "25%", "40%", "400%"],
           answer: 1,
@@ -538,7 +538,7 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
         { text: "\"For all her reputation as a firebrand, the senator governed quite ______.\" The blank means:",
           choices: ["Radically", "Cautiously", "Loudly", "Briefly"],
           answer: 1,
-          expl: "'For all her reputation as X' signals the reality is the opposite of X — her reputation was fiery, so her governance was cautious." },
+          expl: "'For all her reputation as X' signals the reality is the opposite of X. Her reputation was fiery, so her governance was cautious." },
         { text: "With 45 seconds left and four questions unanswered, what should you do?",
           choices: [
             "Solve one carefully and leave three blank",
@@ -555,7 +555,7 @@ tutor mode and a missed-questions deck waiting for the gaps.</p>`,
             "Reading the passage",
             "Using the calculator"],
           answer: [0, 2],
-          expl: "The GRE tests elementary content; the points are lost to carelessness — answering the wrong question and dropping the negative root." },
+          expl: "The GRE tests elementary content; the points are lost to carelessness, answering the wrong question and dropping the negative root." },
         { text: "In a normal distribution, roughly what percent of values lie within 2 standard deviations of the mean?",
           choices: ["68%", "95%", "99.7%", "50%"],
           answer: 1,

@@ -1,11 +1,11 @@
-/* GRE Study Course — Unit 3: Quantitative Foundations */
+/* GRE Study Course - Unit 3: Quantitative Foundations */
 (function () {
   const C = window.GRECOURSE = window.GRECOURSE || { units: [] };
 
   C.units.push({
     id: "u3",
-    title: "Unit 3 — Quantitative Foundations",
-    blurb: "Arithmetic, number properties, algebra, and word problems. The content is high-school level — the difficulty is in the traps and the clock.",
+    title: "Unit 3: Quantitative Foundations",
+    blurb: "Arithmetic, number properties, algebra, and word problems. The content is high-school level. The difficulty is in the traps and the clock.",
     modules: [
 
 /* ================= MODULE 8 ================= */
@@ -15,7 +15,7 @@
 <p>The GRE's math content stops at roughly high-school level. No calculus, no trigonometry. What makes it
 hard is that the questions are engineered so the obvious move is wrong.</p>
 
-<h2>Fractions, decimals, percents — one idea in three costumes</h2>
+<h2>Fractions, decimals, percents, one idea in three costumes</h2>
 <p>Convert freely. Memorize these so you never compute them:</p>
 <table>
   <tr><th>Fraction</th><th>Decimal</th><th>Percent</th></tr>
@@ -37,7 +37,7 @@ hard is that the questions are engineered so the obvious move is wrong.</p>
   <tr><td>what</td><td>a variable</td></tr>
 </table>
 <p>"<em>What percent of 50 is 12?</em>" → (x/100) × 50 = 12 → x = 24.</p>
-<div class="warnbox"><strong>Percent OF vs percent GREATER THAN — the #1 quant trap.</strong>
+<div class="warnbox"><strong>Percent OF vs percent GREATER THAN: the #1 quant trap.</strong>
 <p>If a value goes from 50 to 90:</p>
 <ul>
   <li>90 <strong>is</strong> 180% <strong>of</strong> 50. (90/50 = 1.8)</li>
@@ -47,25 +47,25 @@ hard is that the questions are engineered so the obvious move is wrong.</p>
 
 <h3>Percent change</h3>
 <p><strong>Percent change = (new − old) / old × 100.</strong> The denominator is always the <em>original</em>.</p>
-<p>Doubling = +100% increase. Tripling = +200%. Quadrupling = +300%. (Not 200%, 300%, 400% — a favorite trap.)</p>
+<p>Doubling = +100% increase. Tripling = +200%. Quadrupling = +300%. (Not 200%, 300%, 400%: a favorite trap.)</p>
 
-<h3>Successive percent changes multiply — they don't add</h3>
+<h3>Successive percent changes multiply: they don't add</h3>
 <div class="worked"><h4>A stock rises 20%, then falls 20%. Where is it?</h4>
-<p><em>Not</em> back where it started. 1.20 × 0.80 = <strong>0.96</strong> — it's down 4%.</p>
+<p><em>Not</em> back where it started. 1.20 × 0.80 = <strong>0.96</strong>: it's down 4%.</p>
 <p>General rule: up x% then down x% always lands <em>below</em> the start, because the decrease is applied
 to a bigger number. The factor is (1+x)(1−x) = 1 − x².</p>
 <p><strong>But:</strong> +25% then −20% returns exactly to the start, because 1.25 × 0.80 = 1.00.
 (5/4 × 4/5 = 1.) The GRE loves this one.</p></div>
 
 <h2>Ratios</h2>
-<p>A ratio of 3:5 doesn't tell you the quantities — only the proportion. The actual values are 3k and 5k
+<p>A ratio of 3:5 doesn't tell you the quantities, only the proportion. The actual values are 3k and 5k
 for some multiplier k.</p>
 <div class="worked"><h4>The ratio of boys to girls is 3:5 and there are 48 students. How many girls?</h4>
 <p>Total parts = 3 + 5 = <strong>8</strong>. Each part = 48 ÷ 8 = <strong>6</strong> students.<br>
 Girls = 5 × 6 = <strong>30</strong>.</p>
 <p><strong>The method:</strong> always sum the parts first, then find the value of one part.</p></div>
 <div class="exambox"><strong>Exam angle:</strong> since a ratio fixes only the proportion, any question
-asking for an actual quantity from a ratio alone is unanswerable — which makes "cannot be determined" a
+asking for an actual quantity from a ratio alone is unanswerable, which makes "cannot be determined" a
 live answer in Quantitative Comparison.</div>
 
 <h2>Averages are sums in disguise</h2>
@@ -102,7 +102,7 @@ either alone. If your answer isn't, you added times instead of rates.</p>
     { text: "45 is 30 percent of what number?",
       choices: ["13.5", "60", "135", "150"],
       answer: 3,
-      expl: "45 = 0.30n, so n = 45 ÷ 0.3 = 150. (13.5 is 30% OF 45 — the reversed operation, and a deliberate trap.)" },
+      expl: "45 = 0.30n, so n = 45 ÷ 0.3 = 150. (13.5 is 30% OF 45: the reversed operation, and a deliberate trap.)" },
     { text: "The ratio of boys to girls in a class is 3 to 5, and there are 48 students. How many girls are there?",
       choices: ["18", "24", "30", "32"],
       answer: 2,
@@ -110,7 +110,7 @@ either alone. If your answer isn't, you added times instead of rates.</p>
     { text: "Machine A completes a job in 6 hours and machine B in 12 hours. Working together, how long do they take?",
       choices: ["3 hours", "4 hours", "9 hours", "18 hours"],
       answer: 1,
-      expl: "Add rates: 1/6 + 1/12 = 1/4 job per hour, so 4 hours. Sanity check: together must be faster than the faster machine alone (6 hours) — and 4 is." },
+      expl: "Add rates: 1/6 + 1/12 = 1/4 job per hour, so 4 hours. Sanity check: together must be faster than the faster machine alone (6 hours), and 4 is." },
     { text: "The average of 5 numbers is 20. Four of them are 18, 22, 17, and 25. What is the fifth?",
       choices: ["16", "18", "20", "22"],
       answer: 1,
@@ -144,7 +144,7 @@ either alone. If your answer isn't, you added times instead of rates.</p>
   id: "gm3_2", title: "Number Properties", minutes: 14, level: "core",
   content: `
 <p>Number properties questions look abstract and intimidating. They're actually the most mechanical
-questions on the test — if you know the rules.</p>
+questions on the test, if you know the rules.</p>
 
 <h2>Integers, factors, multiples</h2>
 <ul>
@@ -152,7 +152,7 @@ questions on the test — if you know the rules.</p>
   <li>A <strong>multiple</strong> is that number times an integer. (Multiples of 12: 12, 24, 36…)</li>
   <li><strong>Prime</strong>: exactly two factors (1 and itself). 2, 3, 5, 7, 11, 13, 17, 19, 23…</li>
 </ul>
-<div class="warnbox"><strong>1 is NOT prime</strong> (it has only one factor). <strong>2 IS prime</strong> —
+<div class="warnbox"><strong>1 is NOT prime</strong> (it has only one factor). <strong>2 IS prime</strong>: 
 and it's the only even prime. Both appear as traps.</div>
 
 <h3>Prime factorization: the master key</h3>
@@ -188,7 +188,7 @@ number of questions:</p>
 <div class="keybox"><strong>Sign rules that decide Quantitative Comparisons:</strong>
 <ul>
   <li>A negative raised to an <strong>even</strong> power → positive. To an <strong>odd</strong> power → negative.</li>
-  <li>x² = 25 means x = 5 <strong>or</strong> x = −5. Even powers destroy sign information — this is the most common QC trap in existence.</li>
+  <li>x² = 25 means x = 5 <strong>or</strong> x = −5. Even powers destroy sign information. This is the most common QC trap in existence.</li>
 </ul></div>
 
 <h2>The fraction zone: 0 < x < 1</h2>
@@ -204,7 +204,7 @@ number of questions:</p>
 <p>Powers cycle in their units digits. This makes "find the units digit of 7⁶³" trivial:</p>
 <div class="worked"><h4>Units digit of 7⁶³</h4>
 <p>7¹ = 7, 7² = 4<strong>9</strong>, 7³ = 34<strong>3</strong>, 7⁴ = 240<strong>1</strong>, 7⁵ = …<strong>7</strong>.
-The cycle is <strong>7, 9, 3, 1</strong> — length 4.</p>
+The cycle is <strong>7, 9, 3, 1</strong>: length 4.</p>
 <p>63 ÷ 4 = 15 remainder <strong>3</strong> → take the 3rd item in the cycle → <strong>3</strong>.</p></div>
 <p>The same logic handles remainder questions: find the cycle of remainders, then reduce the exponent
 modulo the cycle length.</p>
@@ -219,7 +219,7 @@ modulo the cycle length.</p>
   <tr><td>x<sup>−a</sup> = 1/xᵃ</td><td>2⁻³ = 1/8</td></tr>
 </table>
 <div class="warnbox"><strong>√(a + b) ≠ √a + √b.</strong> √(64 + 36) = √100 = 10, but √64 + √36 = 8 + 6 = 14.
-Never distribute a root across addition. Same for exponents: (a + b)² ≠ a² + b² — it's a² + 2ab + b².</div>
+Never distribute a root across addition. Same for exponents: (a + b)² ≠ a² + b²; it's a² + 2ab + b².</div>
 <p>To compare exponentials, <strong>rewrite them in a common base</strong>: 9¹⁹ = (3²)¹⁹ = 3³⁸, which is
 clearly less than 3⁴⁰.</p>
 
@@ -247,7 +247,7 @@ clearly less than 3⁴⁰.</p>
     { text: "Which of the following is prime?",
       choices: ["1", "2", "9", "21"],
       answer: 1,
-      expl: "2 is prime — and it is the only even prime. 1 is NOT prime (it has just one factor), 9 = 3², and 21 = 3 × 7." },
+      expl: "2 is prime, and it is the only even prime. 1 is NOT prime (it has just one factor), 9 = 3², and 21 = 3 × 7." },
     { text: "What is the units digit of 7⁶³?",
       choices: ["1", "3", "7", "9"],
       answer: 1,
@@ -255,11 +255,11 @@ clearly less than 3⁴⁰.</p>
     { text: "Which expression is equal to √64 + √36?",
       choices: ["√100", "14", "10", "√(64+36)"],
       answer: 1,
-      expl: "√64 + √36 = 8 + 6 = 14. Note that √(64+36) = √100 = 10 — roots never distribute across addition." },
+      expl: "√64 + √36 = 8 + 6 = 14. Note that √(64+36) = √100 = 10: roots never distribute across addition." },
     { text: "For any integer n, which expression must be even?",
       choices: ["n²", "n(n + 1)", "n² + 1", "3n + 1"],
       answer: 1,
-      expl: "n and n+1 are consecutive integers, so exactly one of them is even — making their product always even. The others flip parity depending on n." },
+      expl: "n and n+1 are consecutive integers, so exactly one of them is even, making their product always even. The others flip parity depending on n." },
     { text: "Which two are true about exponents? (Select TWO.)",
       choices: [
         "2³ · 2⁴ = 2⁷",
@@ -276,26 +276,26 @@ clearly less than 3⁴⁰.</p>
 {
   id: "gm3_3", title: "Algebra", minutes: 15, level: "core",
   content: `
-<p>GRE algebra is mechanical — but the test rewards people who avoid algebra when a shortcut exists.</p>
+<p>GRE algebra is mechanical, but the test rewards people who avoid algebra when a shortcut exists.</p>
 
 <h2>Linear equations and systems</h2>
 <p>To solve two equations in two unknowns: <strong>substitution</strong> or <strong>elimination</strong>.
 Elimination is usually faster when coefficients line up.</p>
 <div class="worked"><h4>2x + y = 11 and x − y = 1. Find xy.</h4>
-<p>The y coefficients are +1 and −1 — just <strong>add the equations</strong>: 3x = 12 → x = 4.
+<p>The y coefficients are +1 and −1, just <strong>add the equations</strong>: 3x = 12 → x = 4.
 Then y = x − 1 = 3. So xy = <strong>12</strong>.</p>
 <p><em>Notice the question asked for xy, not x.</em> Answer choices will include 4 and 3.</p></div>
 <div class="warnbox"><strong>Always re-read what's asked.</strong> The GRE routinely asks for xy, or x + y,
-or 2x — and puts the value of x among the choices. Solving correctly and answering the wrong question is
+or 2x, and puts the value of x among the choices. Solving correctly and answering the wrong question is
 the most common way strong students lose points.</div>
 
-<h2>Inequalities — one rule that matters</h2>
+<h2>Inequalities, one rule that matters</h2>
 <p>Treat them like equations, with one exception: <strong>multiplying or dividing by a negative flips the
 inequality sign.</strong></p>
 <p>3 − 2x < 7 → −2x < 4 → <strong>x > −2</strong> (sign flipped).</p>
 
 <h2>Quadratics</h2>
-<p>Factor, don't use the quadratic formula — the GRE's quadratics always factor cleanly.</p>
+<p>Factor, don't use the quadratic formula: the GRE's quadratics always factor cleanly.</p>
 <ul>
   <li>x² − 5x + 6 = 0 → (x − 2)(x − 3) = 0 → x = 2 or 3.</li>
   <li>Note: <strong>(x − 2)(x − 3) < 0</strong> exactly when x is strictly <em>between</em> the roots: 2 < x < 3.</li>
@@ -305,17 +305,17 @@ inequality sign.</strong></p>
 <table>
   <tr><td>(a + b)² = a² + <strong>2ab</strong> + b²</td></tr>
   <tr><td>(a − b)² = a² − <strong>2ab</strong> + b²</td></tr>
-  <tr><td><strong>a² − b² = (a + b)(a − b)</strong> — the difference of squares</td></tr>
+  <tr><td><strong>a² − b² = (a + b)(a − b)</strong>: the difference of squares</td></tr>
 </table>
 <div class="worked"><h4>If x + 1/x = 4, find x² + 1/x².</h4>
 <p>Square the given: (x + 1/x)² = x² + 2·x·(1/x) + 1/x² = x² + <strong>2</strong> + 1/x² = 16.</p>
-<p>So x² + 1/x² = <strong>14</strong>. The cross-term is always 2 — this exact question appears constantly.</p></div>
+<p>So x² + 1/x² = <strong>14</strong>. The cross-term is always 2. This exact question appears constantly.</p></div>
 
 <h2>Two techniques that beat algebra</h2>
 
 <h3>1. Plug in numbers (for variables in the answer choices)</h3>
 <p>If a question is entirely in variables and the answers are too, <strong>pick easy numbers</strong>, compute
-the target, and test the choices. Use numbers that are easy but not degenerate — avoid 0 and 1, which can
+the target, and test the choices. Use numbers that are easy but not degenerate: avoid 0 and 1, which can
 make several choices tie.</p>
 
 <h3>2. Backsolve (from the answer choices)</h3>
@@ -324,13 +324,13 @@ the middle value: if it's too big, you've eliminated it and everything above it 
 
 <h2>Functions and symbols</h2>
 <p>f(x) = x² − 3x is just a rule. f(2) = 4 − 6 = −2. Nested: f(f(2)) = f(−2) = 4 + 6 = <strong>10</strong>.
-Work <em>inside out</em>, and mind the signs — (−2)² = +4, and −3(−2) = +6.</p>
+Work <em>inside out</em>, and mind the signs, (−2)² = +4, and −3(−2) = +6.</p>
 <p>The GRE also invents symbols: "define a ⊕ b = a² − b." These are never hard; just follow the definition
 literally.</p>
 
 <h2>Sequences</h2>
 <ul>
-  <li><strong>Arithmetic</strong> (add d each time): aₙ = a₁ + <strong>(n − 1)</strong>d. The "n − 1" is the trap — from term 1 to term 10 there are only <em>nine</em> steps.</li>
+  <li><strong>Arithmetic</strong> (add d each time): aₙ = a₁ + <strong>(n − 1)</strong>d. The "n − 1" is the trap, from term 1 to term 10 there are only <em>nine</em> steps.</li>
   <li><strong>Geometric</strong> (multiply by r): aₙ = a₁ · r<sup>n−1</sup>.</li>
   <li><strong>Sum 1 to n</strong> = n(n + 1)/2. (Sum 1–50 = 50 × 51/2 = 1,275.)</li>
 </ul>
@@ -347,7 +347,7 @@ literally.</p>
     { text: "If 2x + y = 11 and x − y = 1, what is the value of xy?",
       choices: ["3", "4", "12", "7"],
       answer: 2,
-      expl: "Adding the equations eliminates y: 3x = 12, so x = 4 and y = 3. The question asks for xy = 12 — note that 4 and 3 both appear as traps." },
+      expl: "Adding the equations eliminates y: 3x = 12, so x = 4 and y = 3. The question asks for xy = 12. Note that 4 and 3 both appear as traps." },
     { text: "Solve: 3 − 2x < 7",
       choices: ["x < −2", "x > −2", "x < 2", "x > 2"],
       answer: 1,
@@ -363,7 +363,7 @@ literally.</p>
     { text: "In an arithmetic sequence with first term 5 and common difference 4, what is the 10th term?",
       choices: ["40", "41", "45", "49"],
       answer: 1,
-      expl: "aₙ = a₁ + (n−1)d = 5 + 9(4) = 41. There are only nine steps from term 1 to term 10 — using 10d gives 45, the built-in trap." },
+      expl: "aₙ = a₁ + (n−1)d = 5 + 9(4) = 41. There are only nine steps from term 1 to term 10: using 10d gives 45, the built-in trap." },
     { text: "If f(x) = x² − 3x, what is f(f(2))?",
       choices: ["−2", "0", "4", "10"],
       answer: 3,
@@ -392,7 +392,7 @@ literally.</p>
 {
   id: "gm3_4", title: "Word Problems", minutes: 12, level: "core",
   content: `
-<p>Word problems aren't a math topic — they're a translation skill. The math is easy once the sentence
+<p>Word problems aren't a math topic: they're a translation skill. The math is easy once the sentence
 becomes an equation.</p>
 
 <h2>Translate literally</h2>
@@ -408,12 +408,12 @@ becomes an equation.</p>
 
 <h2>Interest</h2>
 <ul>
-  <li><strong>Simple interest:</strong> I = P × r × t. Linear — the interest is on the original principal only.</li>
+  <li><strong>Simple interest:</strong> I = P × r × t. Linear. The interest is on the original principal only.</li>
   <li><strong>Compound interest:</strong> A = P(1 + r)ᵗ. Each period's interest earns interest.</li>
 </ul>
 <div class="worked"><h4>$10,000 at 10% compounded annually for 2 years</h4>
 <p>A = 10000 × (1.1)² = 10000 × 1.21 = <strong>$12,100</strong>.</p>
-<p>Simple interest would have given $12,000. The extra $100 <em>is</em> the compounding — interest earned
+<p>Simple interest would have given $12,000. The extra $100 <em>is</em> the compounding: interest earned
 on year one's interest. Both figures appear in the answer choices.</p></div>
 
 <h2>Mixtures and weighted averages</h2>
@@ -422,7 +422,7 @@ on year one's interest. Both figures appear in the answer choices.</p></div>
 <p><strong>Not 85.</strong> Use totals: (30 × 80) + (20 × 90) = 2400 + 1800 = 4200, over 50 students =
 <strong>84</strong>.</p>
 <p>It's pulled toward 80 because that group is larger. Whenever groups differ in size, the simple average
-of the averages is wrong — and it's always among the answer choices.</p></div>
+of the averages is wrong, and it's always among the answer choices.</p></div>
 
 <h2>Overlapping sets</h2>
 <p><strong>Two groups:</strong> |A ∪ B| = |A| + |B| − |A ∩ B|. Subtract the overlap, which you counted twice.</p>
@@ -440,9 +440,9 @@ of the averages is wrong — and it's always among the answer choices.</p></div>
 
 <h2>The discipline that prevents most word-problem errors</h2>
 <ol>
-  <li><strong>Define your variable explicitly.</strong> Write "let x = the number of adult tickets" — not just "x."</li>
+  <li><strong>Define your variable explicitly.</strong> Write "let x = the number of adult tickets", not just "x."</li>
   <li><strong>Write the equation before computing anything.</strong></li>
-  <li><strong>Check the units.</strong> Hours vs minutes, dollars vs cents — the GRE switches them mid-problem on purpose.</li>
+  <li><strong>Check the units.</strong> Hours vs minutes, dollars vs cents: the GRE switches them mid-problem on purpose.</li>
   <li><strong>Answer the question that was asked.</strong> Underline it.</li>
 </ol>
 
@@ -458,7 +458,7 @@ of the averages is wrong — and it's always among the answer choices.</p></div>
     { text: "$10,000 is invested at 10% annual interest compounded annually. What is its value after 2 years?",
       choices: ["$12,000", "$12,100", "$11,000", "$12,210"],
       answer: 1,
-      expl: "A = 10000(1.1)² = 10000 × 1.21 = $12,100. Simple interest would give $12,000 — the extra $100 is interest earned on interest." },
+      expl: "A = 10000(1.1)² = 10000 × 1.21 = $12,100. Simple interest would give $12,000. The extra $100 is interest earned on interest." },
     { text: "A class of 30 students averages 80. Another class of 20 averages 90. What is the combined average?",
       choices: ["85", "84", "86", "83"],
       answer: 1,
@@ -482,7 +482,7 @@ of the averages is wrong — and it's always among the answer choices.</p></div>
     { text: "A boat travels 36 miles downstream with a 3 mph current and returns 36 miles upstream. Its speed in still water is 15 mph. What is the total travel time?",
       choices: ["4.8 hours", "5 hours", "4 hours", "6 hours"],
       answer: 1,
-      expl: "Downstream 18 mph: 36/18 = 2 hours. Upstream 12 mph: 36/12 = 3 hours. Total 5 hours. Using 15 mph both ways gives 4.8 — the trap." },
+      expl: "Downstream 18 mph: 36/18 = 2 hours. Upstream 12 mph: 36/12 = 3 hours. Total 5 hours. Using 15 mph both ways gives 4.8: the trap." },
     { text: "Which two are sound word-problem habits? (Select TWO.)",
       choices: [
         "Define your variable explicitly before writing equations",
@@ -503,7 +503,7 @@ of the averages is wrong — and it's always among the answer choices.</p></div>
         { text: "A price increases 25% and then decreases 20%. The final price is what percent of the original?",
           choices: ["95%", "100%", "105%", "90%"],
           answer: 1,
-          expl: "1.25 × 0.80 = 1.00 — exactly 100%. These two changes are exact inverses (5/4 × 4/5 = 1)." },
+          expl: "1.25 × 0.80 = 1.00, exactly 100%. These two changes are exact inverses (5/4 × 4/5 = 1)." },
         { text: "If x² = 36, what are the possible values of x?",
           choices: ["6 only", "6 and −6", "−6 only", "0 and 6"],
           answer: 1,
@@ -535,7 +535,7 @@ of the averages is wrong — and it's always among the answer choices.</p></div>
         { text: "Machines A and B take 4 and 12 hours respectively to complete a job alone. Working together, how long?",
           choices: ["3 hours", "8 hours", "2 hours", "6 hours"],
           answer: 0,
-          expl: "Add rates: 1/4 + 1/12 = 4/12 = 1/3 job per hour → 3 hours. Together must beat the faster machine's 4 hours — and it does." },
+          expl: "Add rates: 1/4 + 1/12 = 4/12 = 1/3 job per hour → 3 hours. Together must beat the faster machine's 4 hours, and it does." },
         { text: "The ratio of red to blue marbles is 2:7 and there are 63 marbles. How many are blue?",
           choices: ["14", "42", "49", "56"],
           answer: 2,
@@ -552,7 +552,7 @@ of the averages is wrong — and it's always among the answer choices.</p></div>
             "Percent change divides by the new value",
             "Successive percent changes are added"],
           answer: [0, 2],
-          expl: "Percent change is (new − old)/old, and doubling means the change equals the original — a 100% increase. Successive changes multiply, not add." },
+          expl: "Percent change is (new − old)/old, and doubling means the change equals the original, a 100% increase. Successive changes multiply, not add." },
         { text: "In an arithmetic sequence with a₁ = 3 and d = 5, what is the 8th term?",
           choices: ["38", "40", "43", "35"],
           answer: 0,
@@ -568,11 +568,11 @@ of the averages is wrong — and it's always among the answer choices.</p></div>
         { text: "What is √(36 + 64)?",
           choices: ["14", "10", "100", "6 + 8"],
           answer: 1,
-          expl: "√(36 + 64) = √100 = 10. Note that √36 + √64 = 14 — roots never distribute over addition." },
+          expl: "√(36 + 64) = √100 = 10. Note that √36 + √64 = 14: roots never distribute over addition." },
         { text: "If 4x − 7 = 21, what is the value of 2x?",
           choices: ["7", "14", "28", "3.5"],
           answer: 1,
-          expl: "4x = 28, so x = 7 and 2x = 14. The question asks for 2x, not x — and 7 sits among the choices as a trap." },
+          expl: "4x = 28, so x = 7 and 2x = 14. The question asks for 2x, not x, and 7 sits among the choices as a trap." },
         { text: "How many integers from 1 to 60 are divisible by 4 or 6?",
           choices: ["20", "25", "15", "30"],
           answer: 0,
@@ -585,7 +585,7 @@ of the averages is wrong — and it's always among the answer choices.</p></div>
             "Taking the square root makes them smaller",
             "They behave exactly like integers"],
           answer: [0, 2],
-          expl: "Proper fractions shrink when squared and grow when rooted — the reverse of integer intuition, which is exactly why they must be tested in Quantitative Comparison." },
+          expl: "Proper fractions shrink when squared and grow when rooted, the reverse of integer intuition, which is exactly why they must be tested in Quantitative Comparison." },
         { text: "A car covers 120 miles at 60 mph and returns at 40 mph. What is the average speed for the round trip?",
           choices: ["50 mph", "48 mph", "45 mph", "52 mph"],
           answer: 1,

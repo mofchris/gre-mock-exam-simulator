@@ -1,6 +1,6 @@
 # How to Add Questions to the Bank
 
-Add your own questions — from a single item to hundreds — and have them drawn into mock
+Add your own questions (from a single item to hundreds) and have them drawn into mock
 exams and tutor sessions. End result: your questions live in the rotation.
 
 Field-by-field schemas for every type are in the
@@ -8,12 +8,12 @@ Field-by-field schemas for every type are in the
 
 ## Prerequisites
 
-- A text editor and Node.js (only for the syntax check — optional but recommended).
+- A text editor and Node.js (only for the syntax check: optional but recommended).
 - A local copy of the repo ([run it locally](howto-run-and-deploy.md) first).
 
 ## Steps
 
-1. **Create a new data file** — don't edit the shipped ones; separate files make your
+1. **Create a new data file**. Don't edit the shipped ones; separate files make your
    additions easy to track. For example `data/my-questions.js`:
 
    ```js
@@ -38,14 +38,14 @@ Field-by-field schemas for every type are in the
    ```
 
 2. **Make every `id` globally unique.** Prefix with something personal (`my_`, your
-   initials). A duplicate id silently overwrites the other question in the lookup index —
+   initials). A duplicate id silently overwrites the other question in the lookup index: 
    there is no error.
 
 3. **Give every question the required fields**: `id`, `type`, `diff`
    (`"easy"` / `"medium"` / `"hard"`), `expl` (the explanation shown in reviews), `tip`
    (one-line strategy note), and for quant a `topic`
    (`"arithmetic"` / `"algebra"` / `"geometry"` / `"data"`). Difficulty matters: Section 1
-   draws from the **medium** pool, adaptive second sections draw from easy/medium/hard —
+   draws from the **medium** pool, adaptive second sections draw from easy/medium/hard: 
    a mistagged question surfaces in the wrong section.
 
 4. **Register the file** in `index.html`, after the shipped data files and before the
@@ -75,16 +75,16 @@ Field-by-field schemas for every type are in the
 
 ## Troubleshooting
 
-- **Bank counts didn't change** — the script tag is missing/mistyped, or the file has a
+- **Bank counts didn't change**. The script tag is missing/mistyped, or the file has a
   syntax error (run `node --check`; check the browser console for the failing line).
-- **Question never appears in mocks** — mocks draw by type + difficulty slot with
+- **Question never appears in mocks**: mocks draw by type + difficulty slot with
   anti-repeat weighting, so any single question appears probabilistically. Verify it
   exists at all via Tutor Mode filters, which search the whole bank.
-- **Correct answer marked wrong** — check the answer encoding for your type: index vs.
+- **Correct answer marked wrong**. Check the answer encoding for your type: index vs.
   array of indices vs. number vs. `[numerator, denominator]`. The
   [reference](reference-question-bank.md) lists the exact shape per type; multi-answer
   types require the complete set, order-independent.
-- **A passage/DI set shows but its questions look truncated** — exam blueprints slice
+- **A passage/DI set shows but its questions look truncated**: exam blueprints slice
   passage question lists to the slot size (2–4 questions). Author passages with exactly
   2, 3, or 4 questions.
 

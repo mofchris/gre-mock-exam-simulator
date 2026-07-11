@@ -1,6 +1,6 @@
 # Explanation: Adaptive Routing, Scoring, and Design Decisions
 
-Why the simulator works the way it does — the reasoning a curious user or contributor
+Why the simulator works the way it does: the reasoning a curious user or contributor
 needs before trusting the scores or changing the code.
 
 ## The problem
@@ -9,7 +9,7 @@ A GRE practice tool that ignores section-adaptivity produces misleading scores. 
 real (post-2023) GRE, your performance on the first Verbal/Quant section decides whether
 the second section is easier or harder, and the final 130–170 score depends on **both**
 your raw count and the path you took. A flat mock that scores 20/27 as "about 160"
-regardless of path can be off by 8+ points — enough to misinform application decisions.
+regardless of path can be off by 8+ points: enough to misinform application decisions.
 
 ## The approach: route, then convert by path
 
@@ -31,7 +31,7 @@ easy path:    scaled = 130 + round(raw × 22/27)   → range  130–152
 
 This mirrors the real algorithm's essential behavior: the harder second section unlocks
 the top of the scale; the easier one caps it. A test-taker who bombs Section 1 cannot
-score 165 by acing an easy Section 2 — here or on the real thing.
+score 165 by acing an easy Section 2: here or on the real thing.
 
 The paths overlap on purpose. A raw 20 scores ≈ 164 on the hard path and ≈ 156 on the
 medium path; identical raw totals earning different scores *is the point* of adaptive
@@ -55,7 +55,7 @@ testing.
 Each mock draws 54 questions from per-type slots. Even with modest pools the number of
 distinct exams is astronomical (pools of 60 per slot drawing 12–15 exceed 10⁴⁰
 combinations), so no one ever sees the same *exam* twice. Individual *questions* recur
-sooner — that's governed by bank size, which is why the bank is designed to grow
+sooner. That's governed by bank size, which is why the bank is designed to grow
 (see [How to add questions](howto-add-questions.md)). A recency list (last ~170 used
 question ids) deprioritizes recently seen questions so consecutive mocks stay fresh.
 
@@ -69,13 +69,13 @@ discipline (helpers defined in `app.js`, loaded last, only ever *called* at runt
 
 **Question data as JS files, not JSON.** `<script src>` works over `file://`;
 `fetch("bank.json")` does not (CORS blocks it). Data-as-code also allows comments and
-trailing HTML in strings. The cost: a syntax error drops the whole file silently — which
+trailing HTML in strings. The cost: a syntax error drops the whole file silently, which
 is why the docs insist on `node --check`.
 
 **All state in localStorage, nothing on a server.** Scores, essays, and mistakes are
 private study data; keeping them client-side means zero privacy surface, zero hosting
 cost, and offline operation. The cost: history is per-browser-per-origin and vanishes if
-site data is cleared — a fair trade for a study tool.
+site data is cleared: a fair trade for a study tool.
 
 **Realism over convenience, deliberately.** The essay editor blocks the system clipboard
 and offers no spell-check; Exit Section is irreversible; the timer hides but forces
@@ -89,11 +89,11 @@ pictures, and every chart automatically matches ETS style.
 
 ## Alternatives considered
 
-- **A scoring model fit per-question (IRT-lite)** — rejected: needs response data from
+- **A scoring model fit per-question (IRT-lite)**: rejected: needs response data from
   many users to calibrate, which conflicts with the no-server privacy design.
-- **Bundling questions into JSON with a build step** — rejected: kills the
+- **Bundling questions into JSON with a build step**: rejected: kills the
   double-click-to-run property for a marginal authoring gain.
-- **True per-question adaptivity** — rejected: the shorter GRE doesn't do it either;
+- **True per-question adaptivity**: rejected: the shorter GRE doesn't do it either;
   matching the real structure is the goal.
 
 ## Related

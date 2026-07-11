@@ -1,4 +1,4 @@
-/* Quant bank — HARD. */
+/* Quant bank - HARD. */
 (function () {
   const B = window.GREBANK = window.GREBANK || {};
   B.quant = B.quant || [];
@@ -47,13 +47,13 @@
       qa: "x + y", qb: "5",
       answer: 3,
       expl: "(x,y) = (3,4): x+y = 7 > 5. (x,y) = (5,0): x+y = 5, equal. (x,y) = (−3,−4): x+y = −7 < 5. Cannot be determined.",
-      tip: "A circle of possibilities means extreme cases in every direction — test several points." },
+      tip: "A circle of possibilities means extreme cases in every direction, test several points." },
     { id: "qh_qc8", type: "qc", topic: "algebra", diff: d,
       info: "a < b < 0",
       qa: "ab", qb: "b²",
       answer: 0,
       expl: "A − B = ab − b² = b(a − b). Since b < 0 and a − b < 0 (a is smaller), the product of two negatives is positive: A − B > 0 always. Example: a=−3, b=−2 → ab=6 > 4=b².",
-      tip: "Subtract the quantities and factor — the sign of the difference decides the answer." },
+      tip: "Subtract the quantities and factor, the sign of the difference decides the answer." },
     { id: "qh_qc9", type: "qc", topic: "arithmetic", diff: d,
       qa: "The remainder when 2¹⁰⁰ is divided by 7", qb: "2",
       answer: 2,
@@ -64,12 +64,12 @@
       qa: "The volume of the cylinder", qb: "60",
       answer: 0,
       expl: "V = πr²h = π(4)(5) = 20π ≈ 62.8 > 60.",
-      tip: "20π vs 60 is really π vs 3 — and π > 3." },
+      tip: "20π vs 60 is really π vs 3, and π > 3." },
     { id: "qh_qc11", type: "qc", topic: "algebra", diff: d,
       info: "|x| + |y| = 10, where x and y are real numbers",
       qa: "x² + y²", qb: "50",
       answer: 3,
-      expl: "If |x| = |y| = 5: x² + y² = 50, equal. If x = 10, y = 0: x² + y² = 100 > 50. Equality is possible and so is 'greater' — (D).",
+      expl: "If |x| = |y| = 5: x² + y² = 50, equal. If x = 10, y = 0: x² + y² = 100 > 50. Equality is possible and so is 'greater': (D).",
       tip: "Constraint boundaries (all in one variable vs. evenly split) generate the extreme cases." },
     { id: "qh_qc12", type: "qc", topic: "data", diff: d,
       info: "Set S consists of 30 integers whose average (arithmetic mean) is 40.",
@@ -91,7 +91,7 @@
       text: "Two fair six-sided dice are rolled. What is the probability that the sum of the two results is 8?",
       choices: ["1/6", "5/36", "1/8", "7/36", "1/9"],
       answer: 1,
-      expl: "Favorable ordered pairs: (2,6),(3,5),(4,4),(5,3),(6,2) — five of 36. P = 5/36.",
+      expl: "Favorable ordered pairs: (2,6),(3,5),(4,4),(5,3),(6,2), five of 36. P = 5/36.",
       tip: "Count ordered outcomes; (3,5) and (5,3) are different rolls but (4,4) counts once." },
     { id: "qh_mc3", type: "mcq", topic: "arithmetic", diff: d,
       text: "What is the units digit of 7⁶³?",
@@ -103,20 +103,20 @@
       text: "A boat travels at 15 miles per hour in still water. It goes 36 miles downstream with a 3-mph current and returns 36 miles upstream. What is the total travel time?",
       choices: ["4 hours", "4.8 hours", "5 hours", "5.2 hours", "6 hours"],
       answer: 2,
-      expl: "Downstream speed 18 mph: 36/18 = 2 h. Upstream speed 12 mph: 36/12 = 3 h. Total 5 hours. (36·2/15 = 4.8 — ignoring the current — is the trap.)",
+      expl: "Downstream speed 18 mph: 36/18 = 2 h. Upstream speed 12 mph: 36/12 = 3 h. Total 5 hours. (36·2/15 = 4.8 (ignoring the current) is the trap.)",
       tip: "Current adds one way and subtracts the other; you cannot average the speeds." },
     { id: "qh_mc5", type: "mcq", topic: "algebra", diff: d,
       text: "If x + 1/x = 4, what is the value of x² + 1/x²?",
       choices: ["8", "12", "14", "16", "18"],
       answer: 2,
       expl: "Square the given: (x + 1/x)² = x² + 2 + 1/x² = 16, so x² + 1/x² = 14.",
-      tip: "Squaring x + 1/x always produces the +2 cross term — subtract it." },
+      tip: "Squaring x + 1/x always produces the +2 cross term, subtract it." },
     { id: "qh_mc6", type: "mcq", topic: "geometry", diff: d,
       text: "A square has a diagonal of length 10. What is the area of the square?",
       choices: ["25", "40", "50", "100", "100√2"],
       answer: 2,
       expl: "For a square, area = d²/2 = 100/2 = 50. (Side = 10/√2, area = 100/2.)",
-      tip: "Memorize area = diagonal²/2 for squares — no need to find the side." },
+      tip: "Memorize area = diagonal²/2 for squares, no need to find the side." },
     { id: "qh_mc7", type: "mcq", topic: "algebra", diff: d,
       text: "If f(x) = x² − 3x, what is the value of f(f(2))?",
       choices: ["−2", "0", "4", "10", "18"],
@@ -127,7 +127,7 @@
       text: "A town's population increased by 25 percent from 2010 to 2015 and decreased by 20 percent from 2015 to 2020. The 2020 population is what percent of the 2010 population?",
       choices: ["95%", "100%", "102%", "105%", "110%"],
       answer: 1,
-      expl: "1.25 × 0.80 = 1.00 — exactly 100%. The changes undo each other because 0.8 = 1/1.25.",
+      expl: "1.25 × 0.80 = 1.00, exactly 100%. The changes undo each other because 0.8 = 1/1.25.",
       tip: "+25% and −20% are exact inverses (5/4 × 4/5 = 1)." },
     { id: "qh_mc9", type: "mcq", topic: "arithmetic", diff: d,
       text: "How many integers from 1 to 100 inclusive are divisible by 3 or by 5?",
@@ -140,7 +140,7 @@
       choices: ["26", "28", "30", "32", "34"],
       answer: 3,
       expl: "Total before: 5 × 24 = 120. Total after: 4 × 22 = 88. The departing friend is 120 − 88 = 32.",
-      tip: "Track totals, not averages — the difference of totals is the answer." },
+      tip: "Track totals, not averages. The difference of totals is the answer." },
     { id: "qh_mc11", type: "mcq", topic: "geometry", diff: d,
       text: "A circle of radius 3 is inscribed in a square. What is the area of the region inside the square but outside the circle?",
       choices: ["9 − 9π", "36 − 6π", "36 − 9π", "36 − 3π", "9π − 36"],
@@ -152,7 +152,7 @@
       choices: ["x < −2", "x > −2", "x < 2", "x > 2", "x > 5"],
       answer: 1,
       expl: "3 − 2x < 7 → −2x < 4 → x > −2 (dividing by −2 flips the inequality).",
-      tip: "Every division by a negative flips the sign — the #1 inequality error." }
+      tip: "Every division by a negative flips the sign, the #1 inequality error." }
   );
 
   /* ---------- Multiple-answer ---------- */
@@ -162,7 +162,7 @@
       choices: ["2", "2.5", "2.9", "3", "3.5"],
       answer: [1, 2],
       expl: "Factor: (x − 2)(x − 3) < 0 exactly when 2 < x < 3. So 2.5 and 2.9 qualify; the endpoints 2 and 3 give zero (not < 0); 3.5 is outside.",
-      tip: "Quadratic < 0 between its roots, strictly — endpoints fail." },
+      tip: "Quadratic < 0 between its roots, strictly, endpoints fail." },
     { id: "qh_ma2", type: "mcma", topic: "arithmetic", diff: d,
       text: "If n is an odd integer, which of the following must be even?<br>Indicate <b>all</b> such expressions.",
       choices: ["n² ", "(n + 1)(n − 1)", "n³ + 1", "n/2"],
@@ -187,7 +187,7 @@
     { id: "qh_ne2", type: "num", topic: "arithmetic", diff: d,
       text: "$10,000 is invested at 10 percent annual interest, compounded annually. What is the value of the investment, in dollars, after exactly 2 years?",
       answer: 12100,
-      expl: "10000 × 1.1² = 10000 × 1.21 = 12,100. (Simple interest would give 12,000 — compounding adds the extra 100.)",
+      expl: "10000 × 1.1² = 10000 × 1.21 = 12,100. (Simple interest would give 12,000: compounding adds the extra 100.)",
       tip: "Compound = multiply by (1 + r) each year; don't add flat interest." },
     { id: "qh_ne3", type: "num", topic: "data", diff: d, frac: true, ansFrac: [3, 10],
       text: "A bag contains 3 red and 2 blue marbles. Two marbles are drawn at random without replacement. What is the probability that both are red?<br><i>Give your answer as a fraction.</i>",
@@ -198,7 +198,7 @@
       text: "What is the sum of all integers from 1 to 50, inclusive?",
       answer: 1275,
       expl: "Sum = n(n + 1)/2 = 50 × 51/2 = 1,275.",
-      tip: "Pair ends: (1+50), (2+49), … — 25 pairs of 51." }
+      tip: "Pair ends: (1+50), (2+49), …, 25 pairs of 51." }
   );
 
   /* ---------- Data Interpretation sets ---------- */
@@ -223,7 +223,7 @@
         text: "From 2010 to 2020, generation from renewables increased by what percent?",
         choices: ["150%", "200%", "300%", "400%", "500%"],
         answer: 2,
-        expl: "(200 − 50)/50 = 150/50 = 3 = 300%. (400% would be the ratio 200/50 expressed as a percent — the 'of' vs 'increase' trap.)",
+        expl: "(200 − 50)/50 = 150/50 = 3 = 300%. (400% would be the ratio 200/50 expressed as a percent: the 'of' vs 'increase' trap.)",
         tip: "Percent increase = change ÷ original. Quadrupling is a 300% increase." },
       { id: "qh_di1b", type: "mcq", topic: "data", diff: d,
         text: "In 2020, renewables accounted for approximately what percent of total generation?",
@@ -236,7 +236,7 @@
         choices: ["Coal", "Natural gas", "Nuclear", "Renewables", "Two sources tie"],
         answer: 3,
         expl: "Changes: coal −100, gas +60, nuclear −10, renewables +150. Renewables' 150 TWh is the largest in absolute value.",
-        tip: "'Absolute change' ignores direction — compare magnitudes." }
+        tip: "'Absolute change' ignores direction, compare magnitudes." }
     ]
   });
 
@@ -253,7 +253,7 @@
         text: "In which quarter was profit as a percent of revenue the greatest?",
         choices: ["Q1", "Q2", "Q3", "Q4", "It cannot be determined"],
         answer: 2,
-        expl: "Margins: Q1 5/50 = 10%, Q2 9/60 = 15%, Q3 16/80 = 20%, Q4 17/90 ≈ 18.9%. Q3 is highest — the tallest profit bar (Q4) is not the best margin.",
+        expl: "Margins: Q1 5/50 = 10%, Q2 9/60 = 15%, Q3 16/80 = 20%, Q4 17/90 ≈ 18.9%. Q3 is highest: the tallest profit bar (Q4) is not the best margin.",
         tip: "Ratios, not raw heights: divide each pair before comparing." },
       { id: "qh_di2b", type: "num", topic: "data", diff: d,
         text: "What was Cormorant's total profit for the year, in millions of dollars?",

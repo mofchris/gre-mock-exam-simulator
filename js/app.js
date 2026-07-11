@@ -1,4 +1,4 @@
-/* GRE Mock Exam Simulator — app shell, router, storage */
+/* GRE Mock Exam Simulator - app shell, router, storage */
 (function () {
   "use strict";
 
@@ -24,7 +24,7 @@
     },
     save() {
       try { localStorage.setItem(this.key, JSON.stringify(this.data)); }
-      catch (e) { /* storage full or blocked — keep running in-memory */ }
+      catch (e) { /* storage full or blocked: keep running in-memory */ }
     }
   };
   GRE.store = Store;
@@ -120,7 +120,7 @@
   GRE.chrome = function (title, sub) {
     const bar = GRE.el("div", { class: "topbar" },
       GRE.el("div", { class: "brand" }, title || "GRE Mock Exam Simulator",
-        GRE.el("small", null, sub || "Practice simulator — not affiliated with ETS")),
+        GRE.el("small", null, sub || "Practice simulator, not affiliated with ETS")),
       GRE.el("div", { class: "btns" },
         GRE.el("button", { class: "tbtn", onclick: () => GRE.show(GRE.screens.home) },
           GRE.el("span", { class: "ic" }, "🏠"), "Home"))
@@ -139,7 +139,7 @@
     const { bar, stage, inner } = GRE.chrome();
     root.appendChild(bar); root.appendChild(stage);
 
-    inner.appendChild(GRE.el("h1", { class: "screen-title" }, "GRE® General Test — Mock Exam Simulator"));
+    inner.appendChild(GRE.el("h1", { class: "screen-title" }, "GRE® General Test, Mock Exam Simulator"));
     inner.appendChild(GRE.el("p", { class: "screen-sub" },
       "Full-length section-adaptive mocks in the shorter (post-2023) format, plus a tutor mode for learning. Everything runs locally; your history stays on this computer."));
 
@@ -172,15 +172,15 @@
     };
     const cpct = GRE.course ? GRE.course.percentComplete() : 0;
     const cdone = GRE.course ? GRE.course.courseComplete() : false;
-    tile("📘", "Study Course" + (cpct > 0 ? ` — ${cpct}% complete` : ""),
+    tile("📘", "Study Course" + (cpct > 0 ? `: ${cpct}% complete` : ""),
       cdone
-        ? "Course complete. Every module and checkpoint passed — you're ready for the mock exam."
+        ? "Course complete. Every module and checkpoint passed. You're ready for the mock exam."
         : "18 modules from the basics to the hardest material, each with a quiz you must pass to continue, plus a cumulative checkpoint at the end of every unit.",
       () => GRE.show(GRE.screens.course));
 
     tile(cdone ? "📝" : "🔒", "Take a Full Mock Exam",
       cdone
-        ? "Course complete — you've earned it. Issue essay + 4 adaptive Verbal/Quant sections, ~1h58m, PowerPrep-style, with 130–170 scoring."
+        ? "Course complete: you've earned it. Issue essay + 4 adaptive Verbal/Quant sections, ~1h58m, PowerPrep-style, with 130–170 scoring."
         : `Unlocks when the study course is complete (${cpct}% done). Issue essay + 4 adaptive Verbal/Quant sections, ~1h58m, with 130–170 scoring.`,
       () => GRE.exam.startIntro());
     tile("🎓", "Tutor Mode",
@@ -190,7 +190,7 @@
       "Past attempts with scaled scores, percentiles, per-topic breakdowns, timing analytics, and question-by-question review.",
       () => GRE.show(GRE.screens.history));
     tile("❌", "Missed Questions Deck",
-      "Every question you've gotten wrong — in mocks or tutor mode — collected for re-drilling until they stick.",
+      "Every question you've gotten wrong (in mocks or tutor mode) collected for re-drilling until they stick.",
       () => GRE.show(GRE.screens.missed));
     inner.appendChild(grid);
 
@@ -199,7 +199,7 @@
     const nV = (B.verbal || []).length + (B.vpassages || []).reduce((s, p) => s + p.questions.length, 0);
     inner.appendChild(GRE.el("p", { class: "footnote" },
       `Question bank: ${nV} verbal · ${nQ} quant · ${(B.essays || []).length} essay prompts. ` +
-      "Each mock is assembled at random from blueprint slots — the number of distinct exams exceeds 10⁴⁰, and recently used questions are avoided. " +
+      "Each mock is assembled at random from blueprint slots: the number of distinct exams exceeds 10⁴⁰, and recently used questions are avoided. " +
       "GRE® is a registered trademark of ETS. This simulator is an independent study tool, not affiliated with or endorsed by ETS."));
   };
 
@@ -218,7 +218,7 @@
       const i = at.length - 1 - revIdx;
       const row = GRE.el("div", { class: "attempt-row" });
       row.appendChild(GRE.el("div", null,
-        GRE.el("strong", null, `Attempt ${i + 1}`), ` — ${new Date(a.date).toLocaleString()}`));
+        GRE.el("strong", null, `Attempt ${i + 1}`), `: ${new Date(a.date).toLocaleString()}`));
       row.appendChild(GRE.el("div", null,
         `V ${a.verbal.scaled} · Q ${a.quant.scaled} · Total ${a.verbal.scaled + a.quant.scaled}`));
       row.appendChild(GRE.el("button", { class: "linkish", onclick: () => GRE.results.showSaved(i) }, "View report"));
@@ -232,7 +232,7 @@
     inner.appendChild(GRE.el("h1", { class: "screen-title" }, "Missed Questions Deck"));
     const ids = Store.data.missed.filter(id => GRE.byId[id]);
     if (!ids.length) {
-      inner.appendChild(GRE.el("p", { class: "screen-sub" }, "Nothing here yet — questions you miss in mocks or tutor mode land in this deck automatically."));
+      inner.appendChild(GRE.el("p", { class: "screen-sub" }, "Nothing here yet, questions you miss in mocks or tutor mode land in this deck automatically."));
       return;
     }
     inner.appendChild(GRE.el("p", { class: "screen-sub" },

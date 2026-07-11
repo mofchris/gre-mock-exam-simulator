@@ -1,4 +1,4 @@
-/* Verbal bank — EASY. Standalone items go in B.verbal; passages in B.vpassages. */
+/* Verbal bank - EASY. Standalone items go in B.verbal; passages in B.vpassages. */
 (function () {
   const B = window.GREBANK = window.GREBANK || {};
   B.verbal = B.verbal || [];
@@ -12,31 +12,31 @@
       text: "Because the witness's account was so {1}, the detective had little trouble reconstructing the sequence of events.",
       choices: ["detailed", "confusing", "brief", "reluctant", "dishonest"],
       answer: 0,
-      expl: "The detective had <em>little trouble</em> reconstructing events, so the account must have helped — a <strong>detailed</strong> account does that. \"Confusing,\" \"brief,\" and \"reluctant\" would make reconstruction harder; \"dishonest\" would mislead.",
+      expl: "The detective had <em>little trouble</em> reconstructing events, so the account must have helped: a <strong>detailed</strong> account does that. \"Confusing,\" \"brief,\" and \"reluctant\" would make reconstruction harder; \"dishonest\" would mislead.",
       tip: "Find the result clause ('little trouble') and choose the word that causes it." },
     { id: "ve_tc2", type: "tc", diff: d, blanks: 1,
       text: "The new employee was praised for her {1}; she completed every task on time and never left work unfinished.",
       choices: ["diligence", "creativity", "humor", "ambition", "curiosity"],
       answer: 0,
-      expl: "The evidence — finishing tasks on time and never leaving work unfinished — describes <strong>diligence</strong> (steady, careful effort). The other traits aren't supported by that specific evidence.",
+      expl: "The evidence (finishing tasks on time and never leaving work unfinished) describes <strong>diligence</strong> (steady, careful effort). The other traits aren't supported by that specific evidence.",
       tip: "The semicolon defines the blank: whatever follows it explains the missing word." },
     { id: "ve_tc3", type: "tc", diff: d, blanks: 1,
       text: "Although the film received {1} reviews from critics, audiences flocked to theaters and it became a commercial success.",
       choices: ["glowing", "lengthy", "poor", "early", "foreign"],
       answer: 2,
-      expl: "\"Although\" signals contrast between critics and audiences. Since audiences loved it, the critics must have <strong>not</strong> — so <strong>poor</strong> reviews. \"Glowing\" would remove the contrast.",
+      expl: "\"Although\" signals contrast between critics and audiences. Since audiences loved it, the critics must have <strong>not</strong>, so <strong>poor</strong> reviews. \"Glowing\" would remove the contrast.",
       tip: "'Although' demands opposition: the two halves must point in different directions." },
     { id: "ve_tc4", type: "tc", diff: d, blanks: 1,
       text: "The manual is written in such {1} language that even a first-time user can follow it without difficulty.",
       choices: ["technical", "lucid", "dense", "archaic", "ambiguous"],
       answer: 1,
-      expl: "A first-time user follows it <em>without difficulty</em>, so the language must be clear — <strong>lucid</strong>. \"Technical,\" \"dense,\" \"archaic,\" and \"ambiguous\" would all impede a beginner.",
+      expl: "A first-time user follows it <em>without difficulty</em>, so the language must be clear: <strong>lucid</strong>. \"Technical,\" \"dense,\" \"archaic,\" and \"ambiguous\" would all impede a beginner.",
       tip: "Match the blank to the outcome it produces (easy to follow → clear)." },
     { id: "ve_tc5", type: "tc", diff: d, blanks: 1,
       text: "Rather than acting on impulse, the committee chose a more {1} approach, weighing each option carefully before deciding.",
       choices: ["hasty", "reckless", "deliberate", "casual", "secretive"],
       answer: 2,
-      expl: "\"Rather than acting on impulse\" and \"weighing each option carefully\" both point to a slow, careful method — <strong>deliberate</strong>. The impulse contrast rules out \"hasty\" and \"reckless.\"",
+      expl: "\"Rather than acting on impulse\" and \"weighing each option carefully\" both point to a slow, careful method, <strong>deliberate</strong>. The impulse contrast rules out \"hasty\" and \"reckless.\"",
       tip: "'Rather than X' means the blank is the opposite of X." },
     { id: "ve_tc6", type: "tc", diff: d, blanks: 1,
       text: "The scientist's findings were initially met with {1}, but repeated experiments eventually convinced the skeptics.",
@@ -48,7 +48,7 @@
       text: "The desert landscape was strikingly {1}, with nothing but sand stretching to the horizon in every direction.",
       choices: ["lush", "barren", "crowded", "fertile", "humid"],
       answer: 1,
-      expl: "\"Nothing but sand\" describes an empty, lifeless expanse — <strong>barren</strong>. \"Lush\" and \"fertile\" contradict the image.",
+      expl: "\"Nothing but sand\" describes an empty, lifeless expanse, <strong>barren</strong>. \"Lush\" and \"fertile\" contradict the image.",
       tip: "Let the concrete detail (only sand) define the abstract blank." },
     { id: "ve_tc8", type: "tc", diff: d, blanks: 1,
       text: "Known for her {1}, the mayor donated much of her salary to local shelters and food banks.",
@@ -60,13 +60,13 @@
       text: "The instructions were so {1} that the students argued for an hour about what they actually required.",
       choices: ["precise", "vague", "brief", "helpful", "formal"],
       answer: 1,
-      expl: "If students argued about what the instructions required, the instructions must have been unclear — <strong>vague</strong>. \"Precise\" and \"helpful\" would prevent the argument.",
+      expl: "If students argued about what the instructions required, the instructions must have been unclear, <strong>vague</strong>. \"Precise\" and \"helpful\" would prevent the argument.",
       tip: "The consequence (confusion, argument) reveals the cause (unclear wording)." },
     { id: "ve_tc10", type: "tc", diff: d, blanks: 1,
       text: "The athlete's {1} training paid off when she broke the national record after months of daily practice.",
       choices: ["sporadic", "relentless", "casual", "reluctant", "brief"],
       answer: 1,
-      expl: "\"Months of daily practice\" indicates constant, intense effort — <strong>relentless</strong>. \"Sporadic,\" \"casual,\" and \"brief\" contradict daily practice.",
+      expl: "\"Months of daily practice\" indicates constant, intense effort, <strong>relentless</strong>. \"Sporadic,\" \"casual,\" and \"brief\" contradict daily practice.",
       tip: "Quantified detail (daily, for months) points to an intensity word." }
   );
 
@@ -89,7 +89,7 @@
       choices: ["deny", "confirm", "disavow", "reveal", "celebrate", "recall"],
       answer: [0, 2],
       expl: "With evidence mounting, he can no longer <strong>deny</strong> / <strong>disavow</strong> (reject) his involvement. \"Confirm\" and \"reveal\" are the opposite action.",
-      tip: "'Deny' and 'disavow' both mean to refuse to admit — a matching pair." },
+      tip: "'Deny' and 'disavow' both mean to refuse to admit, a matching pair." },
     { id: "ve_se4", type: "se", diff: d,
       text: "The once-bustling factory now stood ____, its machines silent and its windows broken.",
       choices: ["abandoned", "renovated", "deserted", "profitable", "crowded", "modern"],
@@ -129,7 +129,7 @@
         "The new streetlights were more expensive to install than expected."
       ],
       answer: 0,
-      expl: "The conclusion is causal (lights → fewer accidents). Choice A supplies an <strong>alternative cause</strong> — lower speed limits and new crossings — that could explain the drop, undermining the claim that the lights were responsible.",
+      expl: "The conclusion is causal (lights → fewer accidents). Choice A supplies an <strong>alternative cause</strong> (lower speed limits and new crossings) that could explain the drop, undermining the claim that the lights were responsible.",
       tip: "To weaken a causal claim, look for an alternative explanation for the same result." },
     { id: "ve_cr2", type: "cr", diff: d,
       passage: "A company found that employees who ate lunch at their desks were, on average, more productive than those who left for lunch. The company plans to encourage all employees to eat at their desks in order to raise overall productivity.",
@@ -142,7 +142,7 @@
         "The company cafeteria serves unhealthy food."
       ],
       answer: 0,
-      expl: "The plan treats a <strong>correlation</strong> as if eating at the desk <em>causes</em> productivity. It assumes the behavior is at least partly responsible — otherwise encouraging it wouldn't raise productivity.",
+      expl: "The plan treats a <strong>correlation</strong> as if eating at the desk <em>causes</em> productivity. It assumes the behavior is at least partly responsible, otherwise encouraging it wouldn't raise productivity.",
       tip: "A plan built on a correlation assumes the correlation is causal." },
     { id: "ve_cr3", type: "cr", diff: d,
       passage: "Every winter, sales of hot chocolate at the campus café rise sharply. The café manager notes that colder weather always coincides with these higher sales and concludes that cold weather drives students to buy more hot chocolate.",
@@ -155,7 +155,7 @@
         "The café introduced a new hot chocolate flavor last year."
       ],
       answer: 0,
-      expl: "Strengthening a causal claim: if sales fall specifically when it's <em>warm</em> during winter, temperature — not just the season — tracks sales, supporting the cold-weather cause.",
+      expl: "Strengthening a causal claim: if sales fall specifically when it's <em>warm</em> during winter, temperature (not just the season) tracks sales, supporting the cold-weather cause.",
       tip: "Strengthen a cause by showing the effect tracks the cause even when other factors are held constant." }
   );
 
@@ -207,7 +207,7 @@
   P.push({
     id: "ve_p2", diff: d, title: "The lighthouse keeper",
     text: `<p>For centuries, lighthouses were tended by keepers who lived on-site, trimming wicks, polishing lenses, and sounding fog signals through the night. The work was solitary and demanding, but it carried a clear sense of purpose: a single lapse could cost a ship and its crew. By the late twentieth century, however, automation had made the human keeper largely obsolete. Electric lamps, timers, and remote monitoring could perform the essential tasks without a resident.</p>
-    <p>The last keepers were often reluctant to leave. Some had spent decades on their islands and rocks, and they spoke of the lights almost as living companions. Their departure marked the end of a profession, but not of the lighthouses themselves, many of which continue to shine — now watched over by sensors and distant technicians rather than by a lantern-carrying figure on the stairs.</p>`,
+    <p>The last keepers were often reluctant to leave. Some had spent decades on their islands and rocks, and they spoke of the lights almost as living companions. Their departure marked the end of a profession, but not of the lighthouses themselves, many of which continue to shine: now watched over by sensors and distant technicians rather than by a lantern-carrying figure on the stairs.</p>`,
     questions: [
       { id: "ve_p2q1", type: "mcq", diff: d,
         text: "The passage suggests that the work of a traditional lighthouse keeper was",
@@ -231,7 +231,7 @@
           "rising costs of lamp oil"
         ],
         answer: 0,
-        expl: "Paragraph 1 attributes obsolescence to \"automation\" — electric lamps, timers, remote monitoring. The other reasons are not stated.",
+        expl: "Paragraph 1 attributes obsolescence to \"automation\", electric lamps, timers, remote monitoring. The other reasons are not stated.",
         tip: "Cause questions want the reason the passage actually gives, not a plausible-sounding one." }
     ]
   });

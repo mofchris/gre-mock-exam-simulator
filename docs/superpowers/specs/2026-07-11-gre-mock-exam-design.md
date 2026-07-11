@@ -1,4 +1,4 @@
-# GRE Mock Exam Simulator — Design Spec
+# GRE Mock Exam Simulator: Design Spec
 
 Date: 2026-07-11
 Status: Approved by user (exam format, adaptivity, essay handling, tutor mode, large pool)
@@ -6,14 +6,14 @@ Status: Approved by user (exam format, adaptivity, essay handling, tutor mode, l
 ## Goal
 
 A fully offline, local web app that simulates the current (post-Sept-2023) shorter GRE as
-realistically as possible — UI modeled on ETS PowerPrep — plus a Tutor mode for learning,
+realistically as possible (UI modeled on ETS PowerPrep) plus a Tutor mode for learning,
 backed by a question bank large enough that repeated mocks essentially never repeat.
 
 ## Exam structure (one full mock)
 
 | # | Section | Questions | Time |
 |---|---------|-----------|------|
-| 1 | Analytical Writing — "Analyze an Issue" | 1 essay | 30 min |
+| 1 | Analytical Writing: "Analyze an Issue" | 1 essay | 30 min |
 | 2 | Verbal Reasoning, Section 1 | 12 | 18 min |
 | 3 | Quantitative Reasoning, Section 1 | 12 | 21 min |
 | 4 | Verbal Reasoning, Section 2 | 15 | 23 min |
@@ -76,7 +76,7 @@ backed by a question bank large enough that repeated mocks essentially never rep
 ## Tech
 
 - Pure HTML/CSS/JS, zero dependencies, no build step, fully offline.
-- Data as plain JS files (script tags — works over file:// too), registering into a
+- Data as plain JS files (script tags: works over file:// too), registering into a
   global bank object.
 - `start.bat` starts a tiny local server and opens the browser; double-clicking
   `index.html` also works.

@@ -1,7 +1,7 @@
 # GRE Mock Exam Simulator
 
 A free, fully offline simulator of the **shorter (post-September-2023) GRE® General Test**,
-modeled on the ETS PowerPrep interface. No accounts, no tracking, no build step — pure
+modeled on the ETS PowerPrep interface. No accounts, no tracking, no build step: pure
 HTML/CSS/JS. Your data never leaves your browser.
 
 **Take it here:** open `index.html`, or use the hosted version on GitHub Pages.
@@ -9,11 +9,11 @@ HTML/CSS/JS. Your data never leaves your browser.
 ## What it does
 
 - **Full-length mock exam** (~1h 58m), exactly like test day:
-  - Analytical Writing "Analyze an Issue" — 30 min, plain editor (Cut/Copy/Paste/Undo/Redo only, no spell-check)
-  - Verbal Section 1 — 12 questions / 18 min
-  - Quant Section 1 — 12 questions / 21 min
-  - Verbal Section 2 — 15 questions / 23 min
-  - Quant Section 2 — 15 questions / 26 min
+  - Analytical Writing "Analyze an Issue": 30 min, plain editor (Cut/Copy/Paste/Undo/Redo only, no spell-check)
+  - Verbal Section 1: 12 questions / 18 min
+  - Quant Section 1: 12 questions / 21 min
+  - Verbal Section 2: 15 questions / 23 min
+  - Quant Section 2: 15 questions / 26 min
 - **Section-adaptive**, like the real algorithm: your Section 1 performance routes Section 2
   to an easier/medium/harder pool, and the 130–170 scaled score accounts for the path.
 - **PowerPrep-style interface**: Exit Section / Review / Mark / Help / Back / Next toolbar,
@@ -37,10 +37,10 @@ Full docs live in [`docs/`](docs/README.md):
 
 | Doc | For |
 |---|---|
-| [Take your first mock exam](docs/tutorial-first-mock-exam.md) | New users — start to score report, step by step |
+| [Take your first mock exam](docs/tutorial-first-mock-exam.md) | New users. Start to score report, step by step |
 | [Interpret your score report](docs/howto-interpret-scores.md) | Understanding scaled scores, percentiles, and the adaptive path |
 | [Run locally & deploy your own copy](docs/howto-run-and-deploy.md) | Self-hosting on GitHub Pages in ~2 minutes |
-| [Add questions to the bank](docs/howto-add-questions.md) | Contributors — grow the question pool |
+| [Add questions to the bank](docs/howto-add-questions.md) | Contributors: grow the question pool |
 | [Question bank data format](docs/reference-question-bank.md) | Exact schemas for every question type |
 | [Architecture & modules](docs/reference-architecture.md) | How the engine, assembly, and storage work |
 | [Adaptive routing, scoring & design decisions](docs/explanation-adaptive-scoring.md) | Why it works the way it does |
@@ -65,7 +65,7 @@ best score is kept.
 
 ## Running locally
 
-- Easiest: double-click `index.html` — everything works from the file system.
+- Easiest: double-click `index.html`. Everything works from the file system.
 - Or serve it: `start.bat` (Windows, uses Python) or `python -m http.server 8420`,
   then open http://localhost:8420.
 

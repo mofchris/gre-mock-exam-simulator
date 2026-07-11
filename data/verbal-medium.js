@@ -1,4 +1,4 @@
-/* Verbal bank — MEDIUM. */
+/* Verbal bank - MEDIUM. */
 (function () {
   const B = window.GREBANK = window.GREBANK || {};
   B.verbal = B.verbal || [];
@@ -12,13 +12,13 @@
       text: "Far from being the {1} figure his memoirs suggest, the general was, by most contemporary accounts, cautious to the point of timidity.",
       choices: ["intrepid", "duplicitous", "reticent", "affable", "meticulous"],
       answer: 0,
-      expl: "\"Far from being\" sets up a contrast with \"cautious to the point of timidity.\" The opposite of timid is bold — <strong>intrepid</strong>. The others don't oppose timidity.",
+      expl: "\"Far from being\" sets up a contrast with \"cautious to the point of timidity.\" The opposite of timid is bold: <strong>intrepid</strong>. The others don't oppose timidity.",
       tip: "'Far from being X' means the blank is the opposite of what actually follows." },
     { id: "vm_tc2", type: "tc", diff: d, blanks: 1,
       text: "The essayist is celebrated less for the novelty of her ideas than for the {1} with which she expresses them, turning familiar observations into memorable prose.",
       choices: ["obscurity", "felicity", "brevity", "hesitancy", "acrimony"],
       answer: 1,
-      expl: "Her ideas aren't novel, yet she is celebrated — so she must express them well, turning the familiar into memorable prose. <strong>Felicity</strong> means apt, pleasing expression. \"Obscurity\" and \"acrimony\" are negative; \"brevity\" and \"hesitancy\" aren't supported.",
+      expl: "Her ideas aren't novel, yet she is celebrated, so she must express them well, turning the familiar into memorable prose. <strong>Felicity</strong> means apt, pleasing expression. \"Obscurity\" and \"acrimony\" are negative; \"brevity\" and \"hesitancy\" aren't supported.",
       tip: "'Turning familiar observations into memorable prose' defines the praised quality." },
     { id: "vm_tc3", type: "tc", diff: d, blanks: 1,
       text: "Critics complained that the policy, however well intentioned, was ultimately {1}, addressing the symptoms of poverty while leaving its causes untouched.",
@@ -30,25 +30,25 @@
       text: "Although often dismissed as a mere {1}, the diplomat's studied vagueness was in fact a calculated strategy, allowing each party to claim victory.",
       choices: ["triumph", "evasion", "concession", "blunder", "formality"],
       answer: 1,
-      expl: "\"Studied vagueness\" that lets each side claim victory looks, superficially, like dodging — an <strong>evasion</strong> — though it's really strategic. \"Blunder\" and \"concession\" don't match 'vagueness'; the 'although' contrasts a dismissive label with a shrewd reality.",
+      expl: "\"Studied vagueness\" that lets each side claim victory looks, superficially, like dodging (an <strong>evasion</strong>) though it's really strategic. \"Blunder\" and \"concession\" don't match 'vagueness'; the 'although' contrasts a dismissive label with a shrewd reality.",
       tip: "The blank is the unflattering label; pick the word that fits 'studied vagueness.'" },
     { id: "vm_tc5", type: "tc", diff: d, blanks: 1,
       text: "The biography is admirably {1}: the author neither conceals her subject's failures nor allows them to eclipse his genuine achievements.",
       choices: ["laudatory", "evenhanded", "exhaustive", "tentative", "polemical"],
       answer: 1,
-      expl: "Neither concealing failures nor letting them eclipse achievements is balance — <strong>evenhanded</strong>. \"Laudatory\" and \"polemical\" are one-sided.",
+      expl: "Neither concealing failures nor letting them eclipse achievements is balance, <strong>evenhanded</strong>. \"Laudatory\" and \"polemical\" are one-sided.",
       tip: "'Neither…nor…' balancing two extremes signals a word meaning fair/balanced." },
     { id: "vm_tc6", type: "tc", diff: d, blanks: 1,
       text: "Once {1} by mainstream economists, her theories are now taught in graduate seminars and cited approvingly in the very journals that had rejected them.",
       choices: ["endorsed", "scrutinized", "spurned", "amended", "anticipated"],
       answer: 2,
-      expl: "The contrast (\"now taught… cited approvingly… journals that had rejected them\") shows the theories were once refused — <strong>spurned</strong>. \"Endorsed\" reverses the meaning.",
+      expl: "The contrast (\"now taught… cited approvingly… journals that had rejected them\") shows the theories were once refused, <strong>spurned</strong>. \"Endorsed\" reverses the meaning.",
       tip: "The later reversal ('journals that had rejected them') tells you the early attitude was hostile." },
     { id: "vm_tc7", type: "tc", diff: d, blanks: 1,
       text: "The senator's speech was a model of {1}: in twenty minutes she managed to say a great deal while committing herself to almost nothing.",
       choices: ["candor", "circumspection", "erudition", "indignation", "spontaneity"],
       answer: 1,
-      expl: "Saying much while committing to nothing is cautious guardedness — <strong>circumspection</strong>. \"Candor\" (frankness) is the opposite.",
+      expl: "Saying much while committing to nothing is cautious guardedness, <strong>circumspection</strong>. \"Candor\" (frankness) is the opposite.",
       tip: "'Say a great deal while committing to nothing' defines careful, guarded speech." },
     { id: "vm_tc8", type: "tc", diff: d, blanks: 1,
       text: "Paradoxically, the more the museum tried to make its exhibits {1} to casual visitors, the more it alienated the specialists on whose expertise its reputation rested.",
@@ -60,13 +60,13 @@
       text: "His prose style is anything but {1}; every sentence bristles with subordinate clauses, parenthetical asides, and abrupt changes of direction.",
       choices: ["ornate", "spare", "erudite", "vivid", "formal"],
       answer: 1,
-      expl: "\"Anything but\" negates the blank. Sentences full of clauses and asides are elaborate, so the blank is the opposite — <strong>spare</strong> (plain, uncluttered).",
+      expl: "\"Anything but\" negates the blank. Sentences full of clauses and asides are elaborate, so the blank is the opposite: <strong>spare</strong> (plain, uncluttered).",
       tip: "'Anything but X' + evidence of the opposite ⇒ the blank names the opposite of the evidence." },
     { id: "vm_tc10", type: "tc", diff: d, blanks: 1,
       text: "The committee's report was notable for its {1}; rather than assigning blame, it soberly catalogued the failures of every party, including itself.",
       choices: ["partiality", "impartiality", "brevity", "vindictiveness", "optimism"],
       answer: 1,
-      expl: "Cataloguing every party's failures, including its own, without assigning blame is fairness — <strong>impartiality</strong>. \"Partiality\" and \"vindictiveness\" are the opposite.",
+      expl: "Cataloguing every party's failures, including its own, without assigning blame is fairness, <strong>impartiality</strong>. \"Partiality\" and \"vindictiveness\" are the opposite.",
       tip: "'Including itself' signals fairness that spares no one." }
   );
 
@@ -89,7 +89,7 @@
       ],
       answer: [1, 0],
       expl: "\"Inference rather than ___ proof\" contrasts with the evidence's nature. Blank (i): <strong>circumstantial</strong> evidence supports inference; blank (ii): the opposite of inference is <strong>direct</strong> proof.",
-      tip: "Find the pair of blanks tied by 'rather than' — they contrast." },
+      tip: "Find the pair of blanks tied by 'rather than', they contrast." },
     { id: "vm_tc2b3", type: "tc", diff: d, blanks: 2,
       text: "The novelist's early work was praised for its {1} realism, but her later novels grew increasingly {2}, populated by talking animals and cities that float in the sky.",
       choices: [
@@ -107,7 +107,7 @@
       ],
       answer: [0, 0],
       expl: "\"Apparently careless drip… placed with deliberate care\" sets up appearance vs. reality. Blank (i): apparent spontaneous <strong>abandon</strong>; blank (ii): actually <strong>meticulous</strong> planning.",
-      tip: "'What appears to be X is in fact Y' — the blanks fill X (appearance) and Y (reality)." }
+      tip: "'What appears to be X is in fact Y', the blanks fill X (appearance) and Y (reality)." }
   );
 
   /* ---------- Sentence Equivalence ---------- */
@@ -128,7 +128,7 @@
       text: "For all his reputation as an innovator, the composer was in practice quite ____, rarely straying from the forms he had mastered as a student.",
       choices: ["daring", "conservative", "traditional", "prolific", "reclusive", "experimental"],
       answer: [1, 2],
-      expl: "\"For all his reputation as an innovator\" contrasts with \"rarely straying from… forms\" — so he was actually <strong>conservative</strong> / <strong>traditional</strong>. \"Daring\" and \"experimental\" match the reputation, not the reality.",
+      expl: "\"For all his reputation as an innovator\" contrasts with \"rarely straying from… forms\", so he was actually <strong>conservative</strong> / <strong>traditional</strong>. \"Daring\" and \"experimental\" match the reputation, not the reality.",
       tip: "'For all his reputation as X' cues that the reality is the opposite of X." },
     { id: "vm_se4", type: "se", diff: d,
       text: "The treaty was hailed as a triumph, yet its terms were so ____ that within a year each side interpreted them to its own advantage.",
@@ -175,7 +175,7 @@
         "A few participants who napped daily still developed heart disease."
       ],
       answer: 0,
-      expl: "If stressful jobs both prevent napping and cause heart disease, then a third factor (stress) explains the correlation — napping needn't protect the heart. This is a classic <strong>confounding variable</strong>.",
+      expl: "If stressful jobs both prevent napping and cause heart disease, then a third factor (stress) explains the correlation, napping needn't protect the heart. This is a classic <strong>confounding variable</strong>.",
       tip: "Weaken a causal claim by finding a third factor that causes both correlated things." },
     { id: "vm_cr2", type: "cr", diff: d,
       passage: "To reduce traffic congestion, the city plans to raise tolls on the downtown bridge during rush hour. Officials predict that the higher tolls will push many commuters to travel at off-peak times, easing congestion during the busiest hours.",
@@ -214,7 +214,7 @@
         "Some readers subscribe to both the print and online editions."
       ],
       answer: 0,
-      expl: "If online subscribers differ systematically (younger, more likely to renew anything), the higher renewal reflects <strong>who</strong> they are, not the format — a self-selection problem. That undercuts 'the format inspires loyalty.'",
+      expl: "If online subscribers differ systematically (younger, more likely to renew anything), the higher renewal reflects <strong>who</strong> they are, not the format: a self-selection problem. That undercuts 'the format inspires loyalty.'",
       tip: "When two groups differ in outcome, ask whether they differ in composition, not just in the treatment." }
   );
 
@@ -223,7 +223,7 @@
     id: "vm_p1", diff: d, title: "Photography and painting",
     text: `<p>When photography emerged in the mid-nineteenth century, many painters greeted it with alarm, fearing that a machine capable of recording the visible world in perfect detail would render their craft obsolete. For a time the fear seemed justified: portrait painters, in particular, lost commissions to photographers who could produce a likeness in minutes at a fraction of the cost.</p>
     <p>Yet the longer-term effect of photography on painting was liberating rather than destructive. Freed from the obligation to document, painters turned to what a camera could not capture: the play of light as sensation, the distortions of memory and emotion, the pure relationships of color and form. The Impressionists, and later the abstract movements of the twentieth century, arguably owe their existence in part to the very technology that once seemed to threaten them. Photography did not kill painting; it changed the questions painting asked.</p>
-    <p>This pattern — a new technology displacing an older practice from one function while pushing it toward another — recurs throughout cultural history. It suggests that the survival of an art form often depends less on defending its traditional role than on discovering what it alone can still do.</p>`,
+    <p>This pattern: a new technology displacing an older practice from one function while pushing it toward another, recurs throughout cultural history. It suggests that the survival of an art form often depends less on defending its traditional role than on discovering what it alone can still do.</p>`,
     questions: [
       { id: "vm_p1q1", type: "mcq", diff: d,
         text: "The primary purpose of the passage is to",
@@ -245,7 +245,7 @@
           "Ever more exact reproduction of visible detail"
         ],
         answer: [0, 1],
-        expl: "Paragraph 2 lists \"the play of light as sensation\" and \"the pure relationships of color and form.\" The third choice — exact reproduction — is precisely what painters <em>abandoned</em> to the camera.",
+        expl: "Paragraph 2 lists \"the play of light as sensation\" and \"the pure relationships of color and form.\" The third choice (exact reproduction) is precisely what painters <em>abandoned</em> to the camera.",
         tip: "For select-all, test each choice; the third reverses the passage's point." },
       { id: "vm_p1q3", type: "mcq", diff: d,
         text: "The final paragraph functions primarily to",
@@ -269,7 +269,7 @@
           "cease to evolve and preserve its old methods"
         ],
         answer: 0,
-        expl: "The closing sentence states survival \"depends less on defending its traditional role than on discovering what it alone can still do\" — i.e., finding what the new technology cannot do.",
+        expl: "The closing sentence states survival \"depends less on defending its traditional role than on discovering what it alone can still do\". I.e., finding what the new technology cannot do.",
         tip: "Inference answers must follow from the passage's stated conclusion, not go beyond it." }
     ]
   });
@@ -289,7 +289,7 @@
           "advocating a specific conservation policy"
         ],
         answer: 0,
-        expl: "The passage grants that reefs are fragile but then \"complicates the picture\" with evidence of acquired tolerance — qualifying, not overturning, the fragile label.",
+        expl: "The passage grants that reefs are fragile but then \"complicates the picture\" with evidence of acquired tolerance, qualifying, not overturning, the fragile label.",
         tip: "'In one sense apt… yet recent fieldwork complicates' signals a qualification, not a reversal." },
       { id: "vm_p2q2", type: "mcq", diff: d,
         text: "According to the passage, which of the following is NOT in dispute among researchers?",
@@ -302,7 +302,7 @@
         ],
         answer: 0,
         expl: "The last sentence says \"What is not in dispute is that resilience varies enormously from reef to reef.\" The algae and gene-expression explanations are explicitly \"debated,\" and D and E contradict the passage.",
-        tip: "Watch for 'not in dispute' / 'debated' — they mark exactly what's settled vs. contested." },
+        tip: "Watch for 'not in dispute' / 'debated'. They mark exactly what's settled vs. contested." },
       { id: "vm_p2q3", type: "mcq", diff: d,
         text: "The author mentions heat-tolerant strains of algae replacing vulnerable ones in order to",
         choices: [
@@ -313,7 +313,7 @@
           "dismiss the idea of acquired tolerance"
         ],
         answer: 0,
-        expl: "The algae-shift idea is offered as one of the competing explanations (\"Some researchers attribute…\"). It doesn't disprove the gene-expression view — the passage keeps both open.",
+        expl: "The algae-shift idea is offered as one of the competing explanations (\"Some researchers attribute…\"). It doesn't disprove the gene-expression view. The passage keeps both open.",
         tip: "'Some researchers… Others…' means each is presented as a candidate explanation, not a proof." }
     ]
   });
@@ -332,7 +332,7 @@
           "reputation has no real value"
         ],
         answer: 0,
-        expl: "The passage resolves the puzzle by listing non-monetary returns — reputation, skills, useful tools — \"currencies other than money.\"",
+        expl: "The passage resolves the puzzle by listing non-monetary returns (reputation, skills, useful tools) \"currencies other than money.\"",
         tip: "The resolution of a stated puzzle is usually the passage's final sentence." },
       { id: "vm_p3q2", type: "mcq", diff: d,
         text: "The passage implies that the economists' original assumption was",
@@ -344,7 +344,7 @@
           "concerned mainly with reputation"
         ],
         answer: 0,
-        expl: "The volunteers contradict the assumption that people work \"only in exchange for pay,\" implying the assumption was too narrow — it missed non-monetary incentives.",
+        expl: "The volunteers contradict the assumption that people work \"only in exchange for pay,\" implying the assumption was too narrow. It missed non-monetary incentives.",
         tip: "If evidence contradicts an assumption, the passage implies the assumption was flawed or incomplete." }
     ]
   });

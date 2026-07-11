@@ -205,7 +205,7 @@
       svg.appendChild(sv("rect", { x: 330, y: ly - 11, width: 13, height: 13, fill: fills[i % fills.length], stroke: "#333", "stroke-width": 1 }));
       const pct = Math.round(1000 * sl.value / total) / 10;
       svg.appendChild(sv("text", { x: 350, y: ly, "font-size": 12.5, fill: "#222" },
-        `${sl.label} — ${sl.value}${spec.unit ? " " + spec.unit : ""} (${pct}%)`));
+        `${sl.label}: ${sl.value}${spec.unit ? " " + spec.unit : ""} (${pct}%)`));
       ly += 24;
     });
     if (spec.totalNote) svg.appendChild(sv("text", { x: 330, y: ly + 4, "font-size": 12, fill: "#555" }, spec.totalNote));
@@ -259,7 +259,7 @@
 
   /* ================= question body rendering =================
      item: {q, passage?, di?}   ansGet/ansSet close over answer storage
-     opts: {review, disabled, hideDirections} — review shows correct/incorrect */
+     opts: {review, disabled, hideDirections}, review shows correct/incorrect */
 
   GRE.renderQBody = function (container, item, getAns, setAns, opts) {
     opts = opts || {};
@@ -625,7 +625,7 @@
   function ensureSectionBuilt(i) {
     const sec = X.sections[i];
     if (sec.items || sec.kind === "awa") return;
-    if (i === 3) { // Verbal 2 — route on Verbal 1 raw
+    if (i === 3) { // Verbal 2: route on Verbal 1 raw
       X.vPath = GRE.routeFor(X.sections[1].raw || 0);
       sec.items = buildVerbal(X.vPath, true, usedIds());
     }
@@ -650,14 +650,14 @@
       return;
     }
     // The mock is the finish line of the course. Gate it, but let a determined
-    // user through — a cold diagnostic first is a legitimate choice.
+    // user through - a cold diagnostic first is a legitimate choice.
     if (!skipGate && GRE.course && !GRE.course.courseComplete()) {
       const pct = GRE.course.percentComplete();
       GRE.modal("The mock exam is the finish line",
         `<p>The study course is <strong>${pct}% complete</strong>. It's built to take you from the
          basics to the hardest material, and the mock is designed as the test you sit
          <em>after</em> finishing it.</p>
-         <p>You can still take the mock now as a cold diagnostic — just expect a lower score if you
+         <p>You can still take the mock now as a cold diagnostic, just expect a lower score if you
          haven't worked through the material yet.</p>`,
         [
           { label: "Go to the course", action: () => GRE.show(GRE.screens.course) },
@@ -671,24 +671,24 @@
       inner.appendChild(GRE.el("h1", { class: "screen-title" }, "Before you begin"));
       const card = GRE.el("div", { class: "card" });
       card.innerHTML = `
-        <h3>Test overview — total time about 1 hour 58 minutes</h3>
+        <h3>Test overview: total time about 1 hour 58 minutes</h3>
         <ol>
-          <li><strong>Analytical Writing</strong> — "Analyze an Issue" — 1 task, 30 minutes</li>
-          <li><strong>Verbal Reasoning, Section 1</strong> — 12 questions, 18 minutes</li>
-          <li><strong>Quantitative Reasoning, Section 1</strong> — 12 questions, 21 minutes</li>
-          <li><strong>Verbal Reasoning, Section 2</strong> — 15 questions, 23 minutes</li>
-          <li><strong>Quantitative Reasoning, Section 2</strong> — 15 questions, 26 minutes</li>
+          <li><strong>Analytical Writing</strong> ("Analyze an Issue"): 1 task, 30 minutes</li>
+          <li><strong>Verbal Reasoning, Section 1</strong>: 12 questions, 18 minutes</li>
+          <li><strong>Quantitative Reasoning, Section 1</strong>: 12 questions, 21 minutes</li>
+          <li><strong>Verbal Reasoning, Section 2</strong>: 15 questions, 23 minutes</li>
+          <li><strong>Quantitative Reasoning, Section 2</strong>: 15 questions, 26 minutes</li>
         </ol>
         <p>The second section of each measure is <strong>adaptive</strong>: its difficulty depends on your
         performance in the first section, and the 130–170 scaled score reflects both how many questions
         you answered correctly and which second section you received.</p>
         <h3>Rules of engagement (like test day)</h3>
         <ul>
-          <li>There are <strong>no scheduled breaks</strong> on the shorter GRE. Section clocks run whether or not you're looking at the screen — but the clock pauses if you close this app mid-exam and resume later.</li>
+          <li>There are <strong>no scheduled breaks</strong> on the shorter GRE. Section clocks run whether or not you're looking at the screen, but the clock pauses if you close this app mid-exam and resume later.</li>
           <li>Within a section you can move freely: <strong>Back</strong>, <strong>Next</strong>, <strong>Mark</strong> for review, and the <strong>Review</strong> screen.</li>
           <li>Once you <strong>Exit</strong> a section you cannot return to it.</li>
           <li>An on-screen <strong>calculator</strong> is available in Quantitative sections only.</li>
-          <li>There is no penalty for guessing — never leave a question blank.</li>
+          <li>There is no penalty for guessing, never leave a question blank.</li>
         </ul>
         <p>Use scratch paper and work somewhere quiet. Treat it like the real thing.</p>`;
       inner.appendChild(card);
@@ -721,34 +721,34 @@
     const sec = X.sections[i];
     GRE.show(root => {
       const { bar, stage, inner } = GRE.chrome("GRE® General Test", sectionTitle(i));
-      // no Home button during the exam — replace bar
+      // no Home button during the exam - replace bar
       root.appendChild(examBarSimple(sectionTitle(i)));
       root.appendChild(stage);
       inner.appendChild(GRE.el("h1", { class: "screen-title" }, sectionTitle(i)));
       const card = GRE.el("div", { class: "card" });
       if (sec.kind === "awa") {
         card.innerHTML = `
-          <h3>Analyze an Issue — 30 minutes</h3>
+          <h3>Analyze an Issue: 30 minutes</h3>
           <p>You will be given a brief statement on an issue of general interest and instructions on how to
           respond. You are free to accept, reject, or qualify the claim, as long as what you write is in
           concert with the instructions.</p>
           <p>Trained readers score responses on a 0–6 scale for how well you articulate and support a
           position, organize your ideas, and control the elements of standard written English. A response
           that addresses a different topic scores 0.</p>
-          <p>The editor provides Cut, Copy, Paste, Undo, and Redo — there is <em>no spell-check or
+          <p>The editor provides Cut, Copy, Paste, Undo, and Redo. There is <em>no spell-check or
           grammar-check</em>, just like the real test.</p>`;
       } else if (sec.kind === "verbal") {
         card.innerHTML = `
-          <h3>${sec.n} questions — ${Math.round(sec.durSec / 60)} minutes</h3>
+          <h3>${sec.n} questions: ${Math.round(sec.durSec / 60)} minutes</h3>
           <p>For each question, indicate the best answer using the directions given with the question.</p>
           <ul>
             <li><strong>Text Completion:</strong> fill each blank from its column of choices; credit only for getting <em>all</em> blanks right.</li>
             <li><strong>Sentence Equivalence:</strong> pick the <em>two</em> choices that both complete the sentence and produce sentences alike in meaning; no credit for one right choice.</li>
-            <li><strong>Reading Comprehension:</strong> answer based on what the passage states or implies — not outside knowledge.</li>
+            <li><strong>Reading Comprehension:</strong> answer based on what the passage states or implies, not outside knowledge.</li>
           </ul>`;
       } else {
         card.innerHTML = `
-          <h3>${sec.n} questions — ${Math.round(sec.durSec / 60)} minutes</h3>
+          <h3>${sec.n} questions: ${Math.round(sec.durSec / 60)} minutes</h3>
           <ul>
             <li>All numbers used are real numbers. Figures are <em>not necessarily drawn to scale</em> unless stated; coordinate systems and number lines <em>are</em> to scale.</li>
             <li><strong>Quantitative Comparison:</strong> compare Quantity A and Quantity B using any centered information, then pick one of the four fixed choices.</li>
@@ -768,21 +768,21 @@
       inner.appendChild(row);
       if (i > 0) {
         inner.appendChild(GRE.el("p", { class: "footnote" },
-          "The section clock starts when you click the button. Pausing here is possible but the real test moves you along automatically — don't linger."));
+          "The section clock starts when you click the button. Pausing here is possible but the real test moves you along automatically: don't linger."));
       }
     });
   }
 
   function sectionTitle(i) {
     const sec = X.sections[i];
-    const names = { awa: "Analytical Writing — Analyze an Issue", verbal: "Verbal Reasoning", quant: "Quantitative Reasoning" };
+    const names = { awa: "Analytical Writing, Analyze an Issue", verbal: "Verbal Reasoning", quant: "Quantitative Reasoning" };
     const base = names[sec.kind] + (sec.no ? ` · Section ${sec.no === 1 ? 1 : 2}` : "");
-    return `Section ${i + 1} of 5 — ${base}`;
+    return `Section ${i + 1} of 5: ${base}`;
   }
 
   function examBarSimple(title) {
     return GRE.el("div", { class: "topbar" },
-      GRE.el("div", { class: "brand" }, "GRE® General Test — Mock",
+      GRE.el("div", { class: "brand" }, "GRE® General Test, Mock",
         GRE.el("small", null, title)));
   }
 
@@ -800,7 +800,7 @@
       /* ---- top bar ---- */
       const btns = GRE.el("div", { class: "btns" });
       const bar = GRE.el("div", { class: "topbar" },
-        GRE.el("div", { class: "brand" }, "GRE® General Test — Mock",
+        GRE.el("div", { class: "brand" }, "GRE® General Test, Mock",
           GRE.el("small", null, sectionTitle(i))),
         btns);
 
@@ -894,7 +894,7 @@
       }
 
       function paintReview() {
-        counter.textContent = "Review — " + sectionTitle(i);
+        counter.textContent = "Review: " + sectionTitle(i);
         const box = GRE.el("div");
         box.appendChild(GRE.el("h2", { class: "screen-title" }, "Review your answers"));
         box.appendChild(GRE.el("p", { class: "screen-sub" },
@@ -1013,7 +1013,7 @@
         const msg = isAwa
           ? "<p>Finish the Analytical Writing section? You cannot return to your essay afterwards.</p>"
           : `<p>Exit this section? You cannot return to it.</p>` +
-            (unanswered ? `<p><strong>${unanswered}</strong> question${unanswered === 1 ? " is" : "s are"} unanswered — unanswered questions score as incorrect.</p>` : "");
+            (unanswered ? `<p><strong>${unanswered}</strong> question${unanswered === 1 ? " is" : "s are"} unanswered, unanswered questions score as incorrect.</p>` : "");
         GRE.modal(fromNext ? "Continue?" : "Exit section?", msg, [
           { label: isAwa ? "Finish essay" : "Exit section", action: () => { stopTicker(); commitTime(); finalizeSection(i); } },
           { label: "Return", secondary: true }
@@ -1082,8 +1082,8 @@
       stage.appendChild(inner); root.appendChild(stage);
       inner.appendChild(GRE.el("h1", { class: "screen-title" }, "Section complete"));
       inner.appendChild(GRE.el("p", { class: "screen-sub" },
-        `Up next: ${sectionTitle(next).replace(/^Section \d of 5 — /, "")}. ` +
-        "On the real test the next section begins almost immediately — click through when you're ready."));
+        `Up next: ${sectionTitle(next).replace(/^Section \d of 5: /, "")}. ` +
+        "On the real test the next section begins almost immediately: click through when you're ready."));
       const row = GRE.el("div", { class: "btnrow" });
       row.appendChild(GRE.el("button", { class: "bigbtn", onclick: () => enterSection(next) }, "Continue"));
       inner.appendChild(row);
@@ -1134,7 +1134,7 @@
     attempt.sections.forEach(s => s.detail.forEach(d => {
       if (!d.ok && !D.missed.includes(d.qid)) D.missed.push(d.qid);
     }));
-    // recency list — last ~3 exams of ids
+    // recency list - last ~3 exams of ids
     const ids = [];
     X.sections.slice(1).forEach(s => (s.items || []).forEach(id => ids.push(id)));
     D.recent = (D.recent || []).concat(ids).slice(-170);

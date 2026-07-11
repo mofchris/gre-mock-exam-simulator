@@ -55,18 +55,18 @@ sentence live. Grading gives credit only when **all** blanks are correct.
 
 ## Verbal: Sentence Equivalence (`type: "se"`)
 
-- `text` — sentence with the blank written as `____`.
-- `choices` — exactly 6 strings.
-- `answer` — array of exactly 2 indices, any order.
+- `text`: sentence with the blank written as `____`.
+- `choices`, exactly 6 strings.
+- `answer`: array of exactly 2 indices, any order.
 
 The UI enforces picking exactly two (a third click is ignored). Grading is
 order-independent set equality.
 
 ## Verbal: Critical Reasoning (`type: "cr"`)
 
-- `passage` — the argument (plain text or HTML, no `<p>` needed; one is added).
-- `text` — the question stem.
-- `choices` — 5 strings. `answer` — single index.
+- `passage`: the argument (plain text or HTML, no `<p>` needed; one is added).
+- `text`: the question stem.
+- `choices`: 5 strings. `answer`: single index.
 
 ## Verbal: Reading passages (`GREBANK.vpassages`)
 
@@ -86,18 +86,18 @@ difficulty; longer lists get sliced from the front.
 
 ## Quant: Quantitative Comparison (`type: "qc"`)
 
-- `qa`, `qb` — Quantity A / Quantity B (HTML ok).
-- `info` — optional centered given-information line.
-- `answer` — index into the four fixed choices: `0` A greater, `1` B greater,
+- `qa`, `qb`: Quantity A / Quantity B (HTML ok).
+- `info`: optional centered given-information line.
+- `answer`: index into the four fixed choices: `0` A greater, `1` B greater,
   `2` equal, `3` cannot be determined. Choices are supplied by the renderer; don't
   include a `choices` field.
 
 ## Quant: Multiple Choice (`type: "mcq"`) and Multiple-Answer (`type: "mcma"`)
 
-- `text` — the problem. For `mcma`, include the "Indicate **all** such …" line.
-- `choices` — 5 strings for `mcq`; 3–6 for `mcma`.
-- `answer` — single index for `mcq`; array of indices (complete set) for `mcma`.
-  Grading `mcma` requires exact set equality — partial selections score wrong.
+- `text`: the problem. For `mcma`, include the "Indicate **all** such …" line.
+- `choices`: 5 strings for `mcq`; 3–6 for `mcma`.
+- `answer`: single index for `mcq`; array of indices (complete set) for `mcma`.
+  Grading `mcma` requires exact set equality: partial selections score wrong.
 
 ## Quant: Numeric Entry (`type: "num"`)
 
@@ -105,8 +105,8 @@ difficulty; longer lists get sliced from the front.
 |---|---|---|
 | `frac` | omit | `true` |
 | `answer` | the number (used for grading, tolerance 1e-6; commas in user input are stripped) | decimal value (informational) |
-| `ansFrac` | — | `[numerator, denominator]`; grading accepts **any equivalent fraction** via cross-multiplication |
-| `unitAfter` | optional string rendered after the box (e.g. `"miles"`) | — |
+| `ansFrac` |: | `[numerator, denominator]`; grading accepts **any equivalent fraction** via cross-multiplication |
+| `unitAfter` | optional string rendered after the box (e.g. `"miles"`) |: |
 
 ## Quant: Data Interpretation sets (`GREBANK.disets`)
 

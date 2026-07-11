@@ -28,7 +28,7 @@ docs/                 this documentation
 **Load-order rule:** `app.js` loads last but defines shared helpers (`GRE.el`,
 `GRE.store`, `GRE.screens`). Every module therefore starts with
 `const GRE = window.GRE = window.GRE || {}` and must guard any shared sub-object it
-touches at load time (e.g. `GRE.screens = GRE.screens || {}`) — module code only *calls*
+touches at load time (e.g. `GRE.screens = GRE.screens || {}`): module code only *calls*
 helpers at runtime, after everything is loaded.
 
 ## The `GRE` namespace (public surface)

@@ -1,4 +1,4 @@
-/* GRE on-screen calculator — 8-digit display, order of operations, parentheses,
+/* GRE on-screen calculator - 8-digit display, order of operations, parentheses,
    memory keys, sqrt, +/-, Transfer Display. Modeled on the real GRE calculator. */
 (function () {
   "use strict";

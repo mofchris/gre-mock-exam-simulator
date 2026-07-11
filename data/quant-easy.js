@@ -1,4 +1,4 @@
-/* Quant bank — EASY. Standalone items in B.quant; DI sets in B.disets. */
+/* Quant bank - EASY. Standalone items in B.quant; DI sets in B.disets. */
 (function () {
   const B = window.GREBANK = window.GREBANK || {};
   B.quant = B.quant || [];
@@ -13,17 +13,17 @@
       qa: "2x + 1", qb: "3x − 2",
       answer: 2,
       expl: "Quantity A: 2(3)+1 = 7. Quantity B: 3(3)−2 = 7. The quantities are equal.",
-      tip: "With a fixed value given, just compute both quantities — (D) is impossible when both are specific numbers." },
+      tip: "With a fixed value given, just compute both quantities, (D) is impossible when both are specific numbers." },
     { id: "qe_qc2", type: "qc", topic: "arithmetic", diff: d,
       qa: "25% of 80", qb: "80% of 25",
       answer: 2,
       expl: "a% of b always equals b% of a: both are (25 × 80)/100 = 20. Equal.",
-      tip: "x% of y = y% of x — a fact worth memorizing to save 15 seconds." },
+      tip: "x% of y = y% of x, a fact worth memorizing to save 15 seconds." },
     { id: "qe_qc3", type: "qc", topic: "arithmetic", diff: d,
       info: "x is a negative number",
       qa: "x²", qb: "x³",
       answer: 0,
-      expl: "A negative squared is positive; a negative cubed stays negative. Positive > negative, so Quantity A is greater — for every negative x.",
+      expl: "A negative squared is positive; a negative cubed stays negative. Positive > negative, so Quantity A is greater, for every negative x.",
       tip: "Sign analysis often settles a QC without any computation." },
     { id: "qe_qc4", type: "qc", topic: "arithmetic", diff: d,
       qa: "3/7", qb: "0.4",
@@ -38,14 +38,14 @@
     { id: "qe_qc6", type: "qc", topic: "data", diff: d,
       qa: "The average (arithmetic mean) of 3, 7, and 11", qb: "The median of 3, 7, and 11",
       answer: 2,
-      expl: "Mean: (3+7+11)/3 = 7. Median of the ordered list is the middle value, 7. Equal — evenly spaced lists always have mean = median.",
+      expl: "Mean: (3+7+11)/3 = 7. Median of the ordered list is the middle value, 7. Equal: evenly spaced lists always have mean = median.",
       tip: "In any evenly spaced set, mean = median = midpoint." },
     { id: "qe_qc7", type: "qc", topic: "algebra", diff: d,
       info: "m > 1",
       qa: "1/m", qb: "m",
       answer: 1,
       expl: "If m > 1 then 1/m < 1 < m, so Quantity B is greater for every allowed m.",
-      tip: "Check the constraint: m > 1 forces 1/m below 1 — no cases needed." },
+      tip: "Check the constraint: m > 1 forces 1/m below 1, no cases needed." },
     { id: "qe_qc8", type: "qc", topic: "arithmetic", diff: d,
       info: "x + y = 10, where x and y are positive numbers",
       qa: "xy", qb: "25",
@@ -56,7 +56,7 @@
       qa: "20% of 60", qb: "15% of 90",
       answer: 1,
       expl: "Quantity A: 0.20 × 60 = 12. Quantity B: 0.15 × 90 = 13.5. B is greater.",
-      tip: "Don't eyeball percent problems — the bigger base can beat the bigger rate." },
+      tip: "Don't eyeball percent problems. The bigger base can beat the bigger rate." },
     { id: "qe_qc10", type: "qc", topic: "algebra", diff: d,
       info: "a > 0",
       qa: "a + 5", qb: "a − 5",
@@ -67,7 +67,7 @@
       qa: "√64 + √36", qb: "√100",
       answer: 0,
       expl: "A: 8 + 6 = 14. B: 10. A is greater. Note √(a+b) ≠ √a + √b.",
-      tip: "Never combine square roots across addition — compute each root separately." },
+      tip: "Never combine square roots across addition, compute each root separately." },
     { id: "qe_qc12", type: "qc", topic: "data", diff: d,
       info: "A fair six-sided die is rolled once.",
       qa: "The probability of rolling a number greater than 4", qb: "1/3",
@@ -106,8 +106,8 @@
       text: "How many odd integers are there between 10 and 20?",
       choices: ["4", "5", "6", "9", "10"],
       answer: 1,
-      expl: "They are 11, 13, 15, 17, 19 — five of them ('between' here excludes the even endpoints anyway).",
-      tip: "For small counts, just list them — faster and safer than a formula." },
+      expl: "They are 11, 13, 15, 17, 19, five of them ('between' here excludes the even endpoints anyway).",
+      tip: "For small counts, just list them, faster and safer than a formula." },
     { id: "qe_mc6", type: "mcq", topic: "algebra", diff: d,
       text: "If y = 2x and x + y = 18, what is the value of y?",
       choices: ["6", "9", "12", "15", "18"],
@@ -124,14 +124,14 @@
       text: "What is the area of a circle with radius 6?",
       choices: ["6π", "12π", "24π", "36π", "72π"],
       answer: 3,
-      expl: "Area = πr² = π(6²) = 36π. (12π is the circumference — the classic mix-up.)",
+      expl: "Area = πr² = π(6²) = 36π. (12π is the circumference: the classic mix-up.)",
       tip: "Area uses r², circumference uses 2r. Check which formula the answer choices echo." },
     { id: "qe_mc9", type: "mcq", topic: "arithmetic", diff: d,
       text: "In a class of 30 students, 3/5 are girls. How many boys are in the class?",
       choices: ["10", "12", "15", "18", "20"],
       answer: 1,
       expl: "Girls: (3/5)(30) = 18, so boys = 30 − 18 = 12. (Answer choice 18 is the trap.)",
-      tip: "Underline what's asked — the complement, not the fraction computed." },
+      tip: "Underline what's asked, the complement, not the fraction computed." },
     { id: "qe_mc10", type: "mcq", topic: "arithmetic", diff: d,
       text: "(2³)(2⁴) =",
       choices: ["2⁷", "2¹²", "4⁷", "4¹²", "8⁷"],
@@ -149,7 +149,7 @@
       choices: ["60°", "65°", "70°", "75°", "80°"],
       answer: 2,
       expl: "Angles sum to 180°: 180 − 65 − 45 = 70°.",
-      tip: "Triangle angle sum = 180° — the most-used fact in GRE geometry." }
+      tip: "Triangle angle sum = 180°, the most-used fact in GRE geometry." }
   );
 
   /* ---------- Multiple-answer ---------- */
@@ -159,7 +159,7 @@
       choices: ["3", "5", "8", "9", "16"],
       answer: [0, 2],
       expl: "24 = 2³ × 3. Its factors include 3 and 8 (24 ÷ 8 = 3). 5, 9, and 16 do not divide 24.",
-      tip: "Test each choice by division — multiple-answer credit requires the complete set." },
+      tip: "Test each choice by division, multiple-answer credit requires the complete set." },
     { id: "qe_ma2", type: "mcma", topic: "algebra", diff: d,
       text: "If x² = 16, which of the following could be the value of x?<br>Indicate <b>all</b> such values.",
       choices: ["−4", "−2", "2", "4", "8"],
@@ -171,7 +171,7 @@
       choices: ["2", "9", "15", "17", "21"],
       answer: [0, 3],
       expl: "2 is prime (the only even prime); 17 is prime. 9 = 3², 15 = 3×5, 21 = 3×7.",
-      tip: "Check divisibility by small primes (2, 3, 5, 7) — and remember 2 is prime." }
+      tip: "Check divisibility by small primes (2, 3, 5, 7), and remember 2 is prime." }
   );
 
   /* ---------- Numeric Entry ---------- */
@@ -185,17 +185,17 @@
       text: "If 5x − 3 = 27, what is the value of x?",
       answer: 6,
       expl: "5x = 30 → x = 6.",
-      tip: "For Numeric Entry there are no choices to sanity-check against — substitute your answer back." },
+      tip: "For Numeric Entry there are no choices to sanity-check against, substitute your answer back." },
     { id: "qe_ne3", type: "num", topic: "data", diff: d,
       text: "The average (arithmetic mean) of 8, 11, and 17 is",
       answer: 12,
       expl: "(8 + 11 + 17)/3 = 36/3 = 12.",
-      tip: "36 divides evenly — if your mean isn't clean, recheck the sum." },
+      tip: "36 divides evenly, if your mean isn't clean, recheck the sum." },
     { id: "qe_ne4", type: "num", topic: "arithmetic", diff: d, frac: true, ansFrac: [1, 4],
       text: "Dana ate 3/4 of a pizza. What fraction of the pizza remains?<br><i>Give your answer as a fraction.</i>",
       answer: 0.25,
       expl: "1 − 3/4 = 1/4. Any equivalent fraction (2/8, 25/100…) is also correct.",
-      tip: "Fraction boxes accept any equivalent form — don't waste time reducing." }
+      tip: "Fraction boxes accept any equivalent form, don't waste time reducing." }
   );
 
   /* ---------- Data Interpretation sets ---------- */
@@ -218,7 +218,7 @@
         choices: ["250", "270", "280", "290", "310"],
         answer: 2,
         expl: "150 (Feb) + 130 (Mar) = 280.",
-        tip: "Read the correct column — the parallel nonfiction numbers are the trap." },
+        tip: "Read the correct column. The parallel nonfiction numbers are the trap." },
       { id: "qe_di1b", type: "mcq", topic: "data", diff: d,
         text: "In which month were total book sales (fiction plus nonfiction) the greatest?",
         choices: ["January", "February", "March", "April", "Sales were equal in two months"],
@@ -230,7 +230,7 @@
         choices: ["60%", "70%", "75%", "80%", "133%"],
         answer: 2,
         expl: "120/160 = 0.75 = 75%. (133% is the reversed ratio 160/120.)",
-        tip: "'A is what percent of B' = A/B — keep the base (B) straight." }
+        tip: "'A is what percent of B' = A/B. Keep the base (B) straight." }
     ]
   });
 

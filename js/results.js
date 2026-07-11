@@ -77,7 +77,7 @@
     root.appendChild(bar); root.appendChild(stage);
 
     inner.appendChild(el("h1", { class: "screen-title" },
-      justFinished ? "Test complete — your scores" : `Score report — attempt ${idx + 1}`));
+      justFinished ? "Test complete: your scores" : `Score report, attempt ${idx + 1}`));
     inner.appendChild(el("p", { class: "screen-sub" }, new Date(a.date).toLocaleString() +
       " · Scores are estimates from an approximate raw-to-scale concordance."));
 
@@ -99,7 +99,7 @@
     pathCard.appendChild(el("p", null,
       `Verbal: ${a.verbal.s1}/12 in Section 1 → you got the ${pathName(a.verbal.path)} second section, then ${a.verbal.s2}/15. ` +
       `Quant: ${a.quant.s1}/12 in Section 1 → ${pathName(a.quant.path)} second section, then ${a.quant.s2}/15. ` +
-      "Reaching the harder second section raises your score ceiling; the easier one caps it — same as the real test."));
+      "Reaching the harder second section raises your score ceiling; the easier one caps it: same as the real test."));
     inner.appendChild(pathCard);
 
     /* per-topic accuracy */
@@ -124,7 +124,7 @@
 
     /* AWA */
     const awa = el("div", { class: "card" });
-    awa.appendChild(el("h3", null, "Analytical Writing — self-score"));
+    awa.appendChild(el("h3", null, "Analytical Writing: self-score"));
     const prompt = window.GREBANK.essays.find(e => e.id === a.essay.promptId);
     awa.appendChild(el("p", null, el("em", null, prompt ? prompt.prompt : "")));
     awa.appendChild(el("p", null, `Your response: ${a.essay.words} words.`));
@@ -152,7 +152,7 @@
       a.essay.selfScore = parseFloat(e.target.value);
       GRE.store.save();
     } });
-    sel.appendChild(el("option", { value: "" }, "— pick —"));
+    sel.appendChild(el("option", { value: "" }, ", pick, "));
     for (let s = 6; s >= 0; s -= 0.5) {
       const o = el("option", { value: String(s) }, s.toFixed(1));
       if (a.essay.selfScore === s) o.selected = true;
@@ -166,7 +166,7 @@
     inner.appendChild(el("h2", { class: "screen-title", style: "margin-top:30px;font-size:20px" }, "Question-by-question review"));
     a.sections.forEach(s => {
       inner.appendChild(el("h3", { style: "color:#1f3864;margin:22px 0 10px" },
-        `${s.kind === "verbal" ? "Verbal" : "Quantitative"} — Section ${s.no}`));
+        `${s.kind === "verbal" ? "Verbal" : "Quantitative"}, Section ${s.no}`));
       s.detail.forEach((d, j) => inner.appendChild(reviewItem(d, j)));
     });
 
@@ -186,7 +186,7 @@
       const q = entry.q;
       let key;
       if (s.kind === "quant") {
-        key = { arithmetic: "Arithmetic", algebra: "Algebra", geometry: "Geometry", data: "Data Analysis" }[q.topic] || "Quant — other";
+        key = { arithmetic: "Arithmetic", algebra: "Algebra", geometry: "Geometry", data: "Data Analysis" }[q.topic] || "Quant: other";
       } else {
         key = entry.passage ? "Reading Comprehension"
           : q.type === "tc" ? "Text Completion"
@@ -221,7 +221,7 @@
       q.topic ? el("span", { class: "pill" }, { arithmetic: "Arithmetic", algebra: "Algebra", geometry: "Geometry", data: "Data Analysis" }[q.topic] || q.topic) : null,
       el("span", { class: "pill" }, q.diff || "medium"),
       el("span", { class: d.ok ? "ok" : "no" }, d.ok ? "✔ Correct" : "✘ Incorrect"),
-      el("span", null, `⏱ ${GRE.fmtTime(d.time)}${d.time > 150 ? " — slow" : ""}`));
+      el("span", null, `⏱ ${GRE.fmtTime(d.time)}${d.time > 150 ? ": slow" : ""}`));
     box.appendChild(head);
     GRE.renderQBody(box, entry, () => d.ans, () => {}, { review: true, disabled: true });
     const ex = el("div", { class: "expl" });

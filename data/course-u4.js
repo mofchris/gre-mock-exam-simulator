@@ -1,10 +1,10 @@
-/* GRE Study Course — Unit 4: Advanced Quant */
+/* GRE Study Course - Unit 4: Advanced Quant */
 (function () {
   const C = window.GRECOURSE = window.GRECOURSE || { units: [] };
 
   C.units.push({
     id: "u4",
-    title: "Unit 4 — Advanced Quantitative Reasoning",
+    title: "Unit 4: Advanced Quantitative Reasoning",
     blurb: "Geometry, data analysis, charts, and the question type unique to the GRE: Quantitative Comparison, where the strategy matters more than the math.",
     modules: [
 
@@ -15,17 +15,17 @@
 <p>GRE geometry is formula-light and reasoning-heavy. There's no trigonometry and no proofs. But there is
 one rule that catches everyone.</p>
 <div class="warnbox"><strong>Figures are NOT drawn to scale unless the problem says so.</strong> A triangle
-that looks equilateral may not be. An angle that looks like 90° may not be — <em>unless it's marked</em>.
+that looks equilateral may not be. An angle that looks like 90° may not be, <em>unless it's marked</em>.
 <strong>Exception:</strong> coordinate systems and number lines <em>are</em> drawn to scale.</div>
 
 <h2>Lines and angles</h2>
 <ul>
   <li>A straight line = 180°. Angles around a point = 360°.</li>
   <li>Vertical angles (opposite each other at a crossing) are <strong>equal</strong>.</li>
-  <li>When parallel lines are cut by a transversal, you only get <strong>two</strong> distinct angles — and they sum to 180°. Every angle is either equal to, or supplementary to, every other.</li>
+  <li>When parallel lines are cut by a transversal, you only get <strong>two</strong> distinct angles, and they sum to 180°. Every angle is either equal to, or supplementary to, every other.</li>
 </ul>
 
-<h2>Triangles — the highest-yield shape</h2>
+<h2>Triangles: the highest-yield shape</h2>
 <ul>
   <li><strong>Angles sum to 180°.</strong></li>
   <li><strong>Area = ½ × base × height.</strong> The height must be <em>perpendicular</em> to the base.</li>
@@ -40,7 +40,7 @@ that looks equilateral may not be. An angle that looks like 90° may not be — 
   <tr><th>Triple</th><th>Multiples</th></tr>
   <tr><td><strong>3-4-5</strong></td><td>6-8-10, 9-12-15, 30-40-50</td></tr>
   <tr><td><strong>5-12-13</strong></td><td>10-24-26</td></tr>
-  <tr><td>8-15-17</td><td>—</td></tr>
+  <tr><td>8-15-17</td><td>-</td></tr>
 </table>
 <p>Special right triangles (memorize the ratios):</p>
 <ul>
@@ -51,7 +51,7 @@ that looks equilateral may not be. An angle that looks like 90° may not be — 
 <h2>Quadrilaterals</h2>
 <ul>
   <li>Rectangle: area = lw; perimeter = 2(l + w).</li>
-  <li>Square: area = s². <strong>And: area = d²/2</strong> where d is the diagonal — memorize this shortcut, it saves 30 seconds every time.</li>
+  <li>Square: area = s². <strong>And: area = d²/2</strong> where d is the diagonal. Memorize this shortcut, it saves 30 seconds every time.</li>
   <li>Parallelogram: area = base × height. Trapezoid: area = ½(b₁ + b₂) × h.</li>
   <li>Interior angles of any n-sided polygon: <strong>(n − 2) × 180°</strong>. Pentagon = 540°.</li>
 </ul>
@@ -71,10 +71,10 @@ and the relationship is obvious; assume it and you'll get it backwards.</p>
 
 <h2>Coordinate geometry</h2>
 <ul>
-  <li><strong>Slope = (y₂ − y₁)/(x₂ − x₁)</strong> — rise over run.</li>
+  <li><strong>Slope = (y₂ − y₁)/(x₂ − x₁)</strong>: rise over run.</li>
   <li>Line: y = mx + b (m = slope, b = y-intercept).</li>
   <li><strong>Parallel</strong> lines have equal slopes. <strong>Perpendicular</strong> slopes are <em>negative reciprocals</em> (m and −1/m).</li>
-  <li><strong>Distance</strong> between points = √[(x₂−x₁)² + (y₂−y₁)²] — that's just the Pythagorean theorem.</li>
+  <li><strong>Distance</strong> between points = √[(x₂−x₁)² + (y₂−y₁)²]. That's just the Pythagorean theorem.</li>
   <li><strong>Midpoint</strong> = the average of the coordinates.</li>
 </ul>
 
@@ -87,7 +87,7 @@ and the relationship is obvious; assume it and you'll get it backwards.</p>
 
 <h2>The habits that win geometry points</h2>
 <ol>
-  <li><strong>Redraw the figure yourself</strong> — especially if it isn't to scale. Draw it to scale and the answer often becomes visible.</li>
+  <li><strong>Redraw the figure yourself</strong>, especially if it isn't to scale. Draw it to scale and the answer often becomes visible.</li>
   <li><strong>Label everything you know</strong>, then look for what that unlocks.</li>
   <li><strong>Look for the hidden right triangle.</strong> Most GRE geometry reduces to one.</li>
   <li><strong>Estimate.</strong> If a computed area comes out negative or absurdly large, you've erred.</li>
@@ -168,11 +168,11 @@ spreads. Key facts: identical values → SD = <strong>0</strong>. Adding the sam
 leaves SD <strong>unchanged</strong> (the spread doesn't move). Multiplying every value by k multiplies SD
 by |k|.</div>
 
-<h3>Mean vs median — the concept the GRE loves</h3>
+<h3>Mean vs median: the concept the GRE loves</h3>
 <p>The <strong>mean is dragged by outliers; the median is not.</strong> In a set of salaries where one
 person earns $10 million, the mean is meaningless and the median tells the truth.</p>
 <p>In an <strong>evenly spaced</strong> set, mean = median. If a question tells you the mean but asks about
-the median (or vice versa), the answer is usually "cannot be determined" — they're independent unless the
+the median (or vice versa), the answer is usually "cannot be determined": they're independent unless the
 set is symmetric.</p>
 
 <h3>Normal distribution</h3>
@@ -191,7 +191,7 @@ permutation. If no, combination.</p>
 <div class="worked"><h4>How many 2-person committees can be formed from 6 people?</h4>
 <p>Order doesn't matter (a committee of {Ann, Bob} = {Bob, Ann}), so it's a combination:
 C(6,2) = (6 × 5)/2 = <strong>15</strong>.</p>
-<p>The trap answer is 30 — that's the <em>permutation</em>, counting each pair twice.</p></div>
+<p>The trap answer is 30. That's the <em>permutation</em>, counting each pair twice.</p></div>
 <p><strong>Repeated letters:</strong> the arrangements of LEVEL = 5!/(2!·2!) = 120/4 = <strong>30</strong>
 (L twice, E twice). Divide by the factorial of each repetition.</p>
 
@@ -212,7 +212,7 @@ C(6,2) = (6 × 5)/2 = <strong>15</strong>.</p>
 and the denominator.</em></p></div>
 
 <h2>Sets</h2>
-<p>|A ∪ B| = |A| + |B| − |A ∩ B|. For "neither" problems, draw a 2×2 table — it's faster and less
+<p>|A ∪ B| = |A| + |B| − |A ∩ B|. For "neither" problems, draw a 2×2 table: it's faster and less
 error-prone than any formula.</p>
 
 <h2>What you must remember</h2>
@@ -246,7 +246,7 @@ error-prone than any formula.</p>
         "It doubles",
         "It becomes zero"],
       answer: 1,
-      expl: "Adding a constant shifts every value equally, so the spread — and therefore the standard deviation — is unchanged." },
+      expl: "Adding a constant shifts every value equally, so the spread (and therefore the standard deviation) is unchanged." },
     { text: "How many distinct arrangements exist of the letters in LEVEL?",
       choices: ["120", "60", "30", "20"],
       answer: 2,
@@ -254,7 +254,7 @@ error-prone than any formula.</p>
     { text: "In a set of salaries where one executive earns far more than everyone else, which measure better represents a typical salary?",
       choices: ["The mean", "The median", "The mode", "The range"],
       answer: 1,
-      expl: "The mean is dragged upward by outliers, while the median is resistant to them — which is why median income is the standard reported figure." },
+      expl: "The mean is dragged upward by outliers, while the median is resistant to them, which is why median income is the standard reported figure." },
     { text: "Which two situations call for a combination rather than a permutation? (Select TWO.)",
       choices: [
         "Selecting a 3-person committee from a group",
@@ -272,7 +272,7 @@ error-prone than any formula.</p>
   id: "gm4_3", title: "Data Interpretation", minutes: 11, level: "core",
   content: `
 <p>Data Interpretation gives you charts and tables followed by several questions. The math is easy. The
-errors are almost never mathematical — they're <em>reading</em> errors.</p>
+errors are almost never mathematical: they're <em>reading</em> errors.</p>
 
 <h2>Spend 20–30 seconds on the chart BEFORE question 1</h2>
 <p>Read, in this order:</p>
@@ -284,7 +284,7 @@ errors are almost never mathematical — they're <em>reading</em> errors.</p>
   <li><strong>Any footnotes.</strong> They exist to be tested.</li>
 </ol>
 <div class="warnbox"><strong>The classic DI trap:</strong> the chart is in <em>thousands</em> and the answer
-choices are in <em>units</em> — or the question asks about a <em>different year</em> than the one your eye
+choices are in <em>units</em>, or the question asks about a <em>different year</em> than the one your eye
 lands on. You'll do the arithmetic perfectly and still get it wrong.</div>
 
 <h2>The percent traps, again</h2>
@@ -292,7 +292,7 @@ lands on. You'll do the arithmetic perfectly and still get it wrong.</div>
 <ul>
   <li>"A is what <strong>percent of</strong> B" → A/B</li>
   <li>"A is what <strong>percent greater than</strong> B" → (A − B)/B</li>
-  <li>"<strong>Percent increase</strong> from B to A" → (A − B)/B — <em>always divide by the original</em></li>
+  <li>"<strong>Percent increase</strong> from B to A" → (A − B)/B, <em>always divide by the original</em></li>
 </ul>
 <p>If a value goes from 50 to 200: it is <strong>400% of</strong> the original, but a <strong>300%
 increase</strong>. Both appear as choices.</p>
@@ -306,25 +306,25 @@ increase</strong>. Both appear as choices.</p>
   <tr><td>Q3</td><td>80</td><td>16</td><td><strong>20%</strong></td></tr>
   <tr><td>Q4</td><td>90</td><td>17</td><td>18.9%</td></tr>
 </table>
-<p>The <em>tallest profit bar</em> is Q4 — and Q4 is wrong. The best <em>margin</em> is Q3. Whenever a
+<p>The <em>tallest profit bar</em> is Q4, and Q4 is wrong. The best <em>margin</em> is Q3. Whenever a
 question asks about a rate, ratio, or percentage, you must divide; you cannot eyeball bar heights.</p></div>
 
 <h2>Estimate first</h2>
 <p>DI answer choices are usually spread far apart. If the choices are 18%, 22%, 25%, 29%, 33%, you don't
-need three decimal places — you need to know it's "about a fifth." Estimating cuts your time in half and
+need three decimal places. You need to know it's "about a fifth." Estimating cuts your time in half and
 your error rate along with it.</p>
 <p><strong>Useful approximations:</strong> 1/3 ≈ 33%, 1/4 = 25%, 1/5 = 20%, 1/6 ≈ 17%, 1/8 = 12.5%.</p>
 
 <h2>Reading the chart types</h2>
 <ul>
-  <li><strong>Bar charts</strong> — compare magnitudes. Check whether bars are grouped (side by side) or stacked (cumulative). In a stacked bar, a segment's value is its <em>height</em>, not its top edge.</li>
-  <li><strong>Line graphs</strong> — show change over time. The <em>steepness</em> is the rate of change; a rising line with decreasing slope still means growth, just slower growth.</li>
-  <li><strong>Pie charts</strong> — parts of a whole. Percentages must sum to 100%. Central angle = (percent × 360°).</li>
-  <li><strong>Tables</strong> — exact values. Take them from the right row <em>and</em> the right column.</li>
+  <li><strong>Bar charts</strong>: compare magnitudes. Check whether bars are grouped (side by side) or stacked (cumulative). In a stacked bar, a segment's value is its <em>height</em>, not its top edge.</li>
+  <li><strong>Line graphs</strong>: show change over time. The <em>steepness</em> is the rate of change; a rising line with decreasing slope still means growth, just slower growth.</li>
+  <li><strong>Pie charts</strong>: parts of a whole. Percentages must sum to 100%. Central angle = (percent × 360°).</li>
+  <li><strong>Tables</strong>: exact values. Take them from the right row <em>and</em> the right column.</li>
 </ul>
 
 <h2>Calculator discipline</h2>
-<p>You have an on-screen calculator in Quant. It is <em>slow</em>. Use it for genuinely ugly arithmetic —
+<p>You have an on-screen calculator in Quant. It is <em>slow</em>. Use it for genuinely ugly arithmetic: 
 not for 20% of 60. And beware order-of-operations errors when typing long expressions; break them into
 steps.</p>
 
@@ -332,7 +332,7 @@ steps.</p>
 <ul>
   <li>Read title, units, scale, legend, and footnotes <em>before</em> question 1.</li>
   <li>"Percent of" ≠ "percent greater than." Percent change divides by the original.</li>
-  <li>Rates and margins require division — never compare bar heights directly.</li>
+  <li>Rates and margins require division, never compare bar heights directly.</li>
   <li>Estimate. The choices are far apart on purpose.</li>
 </ul>`,
   quiz: [
@@ -351,7 +351,7 @@ steps.</p>
         "Select the quarter with the highest revenue",
         "Add the profits together"],
       answer: 1,
-      expl: "Margin is a ratio, so it requires division. The largest absolute profit often does not have the best margin — this is the most common DI trap." },
+      expl: "Margin is a ratio, so it requires division. The largest absolute profit often does not have the best margin. This is the most common DI trap." },
     { text: "What should you do BEFORE answering the first question in a Data Interpretation set?",
       choices: [
         "Start calculating immediately to save time",
@@ -390,7 +390,7 @@ steps.</p>
 
 /* ================= MODULE 15 ================= */
 {
-  id: "gm4_4", title: "Quantitative Comparison — The GRE's Signature Question", minutes: 14, level: "advanced",
+  id: "gm4_4", title: "Quantitative Comparison, The GRE's Signature Question", minutes: 14, level: "advanced",
   content: `
 <p>Quantitative Comparison (QC) is roughly a third of the Quant section and exists nowhere else. You're
 given Quantity A and Quantity B and must choose:</p>
@@ -400,20 +400,20 @@ given Quantity A and Quantity B and must choose:</p>
   <tr><td><strong>(C)</strong></td><td>The two quantities are equal</td></tr>
   <tr><td><strong>(D)</strong></td><td>The relationship cannot be determined from the information given</td></tr>
 </table>
-<div class="keybox"><strong>The choices never change.</strong> You are not solving for a value — you are
+<div class="keybox"><strong>The choices never change.</strong> You are not solving for a value. You are
 determining a <em>relationship</em>. Frequently you can answer without computing anything at all.</div>
 
 <h2>The two rules that decide most QC questions</h2>
 <div class="exambox">
 <p><strong>Rule 1: If both quantities are specific numbers, (D) is IMPOSSIBLE.</strong> Two known numbers
-always have a determinable relationship. So if there are no variables anywhere, cross out (D) immediately —
+always have a determinable relationship. So if there are no variables anywhere, cross out (D) immediately: 
 you've improved your guess from 25% to 33% for free.</p>
 <p><strong>Rule 2: If two different test cases give two different relationships, the answer is (D).</strong>
 Stop instantly. You don't need a third case.</p>
 </div>
 
 <h2>The strategy: simplify, then test</h2>
-<h3>Step 1 — Simplify both sides</h3>
+<h3>Step 1: Simplify both sides</h3>
 <p>You may safely do to <em>both</em> quantities:</p>
 <ul>
   <li>Add or subtract the same thing</li>
@@ -424,25 +424,25 @@ negative, which flips the comparison), and you may not square both sides careles
 <div class="worked"><h4>Quantity A: x + 5 · Quantity B: x − 5</h4>
 <p>Subtract x from both: compare 5 with −5. <strong>(A)</strong>, for every possible x. No cases needed.</p></div>
 
-<h3>Step 2 — If variables remain, test strategic numbers</h3>
+<h3>Step 2, If variables remain, test strategic numbers</h3>
 <p>Do not test random values. Test the ones that <em>break</em> things:</p>
 <table>
   <tr><th>Test</th><th>Why</th></tr>
   <tr><td><strong>0</strong></td><td>Kills products; makes things equal</td></tr>
   <tr><td><strong>1</strong></td><td>The multiplicative identity; x² = x here</td></tr>
-  <tr><td><strong>A fraction (0.5)</strong></td><td>Squaring shrinks it — reverses your intuition</td></tr>
+  <tr><td><strong>A fraction (0.5)</strong></td><td>Squaring shrinks it: reverses your intuition</td></tr>
   <tr><td><strong>A negative (−2)</strong></td><td>Flips signs and inequalities</td></tr>
   <tr><td><strong>A large number (100)</strong></td><td>Reveals growth-rate differences</td></tr>
 </table>
-<p>Mnemonic: <strong>ZONE F</strong> — Zero, One, Negative, Extreme, Fraction.</p>
+<p>Mnemonic: <strong>ZONE F</strong>: Zero, One, Negative, Extreme, Fraction.</p>
 <div class="worked"><h4>x is a number. Quantity A: x² · Quantity B: x</h4>
 <p>x = 2 → 4 vs 2 → A is greater.<br>
 x = 0.5 → 0.25 vs 0.5 → B is greater.</p>
 <p>Two different relationships → <strong>(D)</strong>. Notice that if the problem had said "x > 1," the
-answer would be (A) — the constraint is everything.</p></div>
+answer would be (A). The constraint is everything.</p></div>
 
 <h2>Read the constraint like a hawk</h2>
-<p>QC problems live or die on the given information. "x > 1," "x is an integer," "x is positive" — each of
+<p>QC problems live or die on the given information. "x > 1," "x is an integer," "x is positive": each of
 these eliminates entire families of test cases. <strong>Always ask: what values am I actually allowed to
 try?</strong></p>
 
@@ -464,7 +464,7 @@ never needed a decimal.</p>
   <li>Two specific numbers → <strong>(D) is impossible.</strong></li>
   <li>Two different results from two test cases → <strong>(D), immediately.</strong></li>
   <li>Test <strong>ZONE F</strong>: Zero, One, Negative, Extreme, Fraction.</li>
-  <li>Always test the case that produces <em>equality</em> — that's how (A) becomes (D).</li>
+  <li>Always test the case that produces <em>equality</em>. That's how (A) becomes (D).</li>
   <li>Simplify both sides before computing. Never multiply by a variable of unknown sign.</li>
 </ul>`,
   quiz: [
@@ -479,11 +479,11 @@ never needed a decimal.</p>
     { text: "x is a number. Quantity A: x². Quantity B: x. What is the relationship?",
       choices: ["A is greater", "B is greater", "They are equal", "Cannot be determined"],
       answer: 3,
-      expl: "x = 2 makes A greater; x = 0.5 makes B greater. Two different relationships from two test cases means the answer is (D) — stop immediately." },
+      expl: "x = 2 makes A greater; x = 0.5 makes B greater. Two different relationships from two test cases means the answer is (D): stop immediately." },
     { text: "Given x > 0, Quantity A: x + 1/x, Quantity B: 2. What is the relationship?",
       choices: ["A is greater", "B is greater", "They are equal", "Cannot be determined"],
       answer: 3,
-      expl: "For x = 2, A is greater. But at x = 1, x + 1/x = 2 exactly — they are equal. Since both 'greater' and 'equal' are possible, the answer is (D)." },
+      expl: "For x = 2, A is greater. But at x = 1, x + 1/x = 2 exactly. They are equal. Since both 'greater' and 'equal' are possible, the answer is (D)." },
     { text: "Which set of test values is MOST useful in Quantitative Comparison?",
       choices: [
         "Only positive integers",
@@ -491,7 +491,7 @@ never needed a decimal.</p>
         "Only numbers greater than 10",
         "Random values"],
       answer: 1,
-      expl: "ZONE F — Zero, One, Negative, Extreme, Fraction — targets exactly the values that break intuition and expose (D) answers." },
+      expl: "ZONE F (Zero, One, Negative, Extreme, Fraction) targets exactly the values that break intuition and expose (D) answers." },
     { text: "Which operation is NOT safe to perform on both quantities in a QC question?",
       choices: [
         "Adding the same number to both",
@@ -507,7 +507,7 @@ never needed a decimal.</p>
         "Use the calculator",
         "The relationship cannot be determined"],
       answer: 1,
-      expl: "Dividing both quantities by the positive number 20 reduces the comparison to π versus 3. Since π > 3, Quantity A is greater — no decimals needed." },
+      expl: "Dividing both quantities by the positive number 20 reduces the comparison to π versus 3. Since π > 3, Quantity A is greater, no decimals needed." },
     { text: "Which two facts about QC are correct? (Select TWO.)",
       choices: [
         "If two test cases give different relationships, the answer is (D)",
@@ -540,7 +540,7 @@ never needed a decimal.</p>
         { text: "A committee of 2 is chosen from 6 people. How many committees are possible?",
           choices: ["12", "15", "30", "36"],
           answer: 1,
-          expl: "C(6,2) = (6×5)/2 = 15. The answer 30 counts ordered pairs — the permutation trap." },
+          expl: "C(6,2) = (6×5)/2 = 15. The answer 30 counts ordered pairs: the permutation trap." },
         { text: "A fair die is rolled once. What is the probability of rolling greater than 4?",
           choices: ["1/6", "1/3", "1/2", "2/3"],
           answer: 1,
@@ -594,7 +594,7 @@ never needed a decimal.</p>
         { text: "What is the median of 3, 9, 4, 15, 8?",
           choices: ["4", "8", "9", "7.8"],
           answer: 1,
-          expl: "Sort first: 3, 4, 8, 9, 15. The middle value is 8. (7.8 is the mean — a deliberate trap.)" },
+          expl: "Sort first: 3, 4, 8, 9, 15. The middle value is 8. (7.8 is the mean: a deliberate trap.)" },
         { text: "How many distinct arrangements are there of the letters in the word BOOK?",
           choices: ["24", "12", "6", "4"],
           answer: 1,

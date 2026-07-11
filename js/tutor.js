@@ -9,28 +9,28 @@
 
   const GUIDES = {
     tc: ["Text Completion",
-      `<p><strong>Read for the logic first, vocabulary second.</strong> Cover the choices, read the sentence, and predict a simple word for each blank based on the sentence's internal clues — pivot words (<em>although, yet, despite</em>) signal contrast; colons, semicolons, and "indeed" signal continuation.</p>
-       <p>On 2- and 3-blank questions, start with whichever blank has the strongest clue, not blank (i). Wrong single choices kill the whole question — there's no partial credit — so verify the completed text reads as one coherent argument before moving on.</p>`],
+      `<p><strong>Read for the logic first, vocabulary second.</strong> Cover the choices, read the sentence, and predict a simple word for each blank based on the sentence's internal clues: pivot words (<em>although, yet, despite</em>) signal contrast; colons, semicolons, and "indeed" signal continuation.</p>
+       <p>On 2- and 3-blank questions, start with whichever blank has the strongest clue, not blank (i). Wrong single choices kill the whole question (there's no partial credit) so verify the completed text reads as one coherent argument before moving on.</p>`],
     se: ["Sentence Equivalence",
-      `<p>You need the <strong>two</strong> choices that both fit the blank <em>and</em> give the sentence the same meaning. The right pair are rarely perfect synonyms of each other — they just have to produce equivalent sentences.</p>
-       <p>Beware the trap pair: two choices that are synonyms of each other but don't fit the sentence. Predict your own word first, then find the two choices closest to the prediction. If only one choice fits perfectly, you've misread the sentence — re-check the pivot words.</p>`],
+      `<p>You need the <strong>two</strong> choices that both fit the blank <em>and</em> give the sentence the same meaning. The right pair are rarely perfect synonyms of each other. They just have to produce equivalent sentences.</p>
+       <p>Beware the trap pair: two choices that are synonyms of each other but don't fit the sentence. Predict your own word first, then find the two choices closest to the prediction. If only one choice fits perfectly, you've misread the sentence: re-check the pivot words.</p>`],
     rc: ["Reading Comprehension",
       `<p>Read the passage once for structure, not detail: what is the author's point, and what does each paragraph <em>do</em> (introduce a view, criticize it, give evidence…)? Most wrong answers are (a) true but not asked, (b) too extreme (<em>always, never, prove</em>), or (c) outside the passage.</p>
-       <p>For "select all that apply," judge each choice independently against the text — the answer can be one, two, or all three. For inference questions, the right answer must be <em>necessarily</em> true from the passage, not merely plausible.</p>`],
+       <p>For "select all that apply," judge each choice independently against the text. The answer can be one, two, or all three. For inference questions, the right answer must be <em>necessarily</em> true from the passage, not merely plausible.</p>`],
     cr: ["Critical Reasoning",
-      `<p>Break the argument into conclusion + evidence, then find the gap between them — the unstated assumption. Strengthen/weaken answers work on that gap, not on the conclusion directly.</p>
+      `<p>Break the argument into conclusion + evidence, then find the gap between them: the unstated assumption. Strengthen/weaken answers work on that gap, not on the conclusion directly.</p>
        <p>Answers that attack the evidence's truth are usually wrong; the evidence is granted. Look instead for alternative explanations, broken causal links, or samples that don't represent the population.</p>`],
     qc: ["Quantitative Comparison",
       `<p>Your job is the <em>relationship</em>, not the values. Simplify both quantities first (add/subtract/divide-by-positives on both sides is safe). Then, if variables remain, <strong>test numbers strategically</strong>: 0, 1, a fraction between 0 and 1, a negative, and a large number.</p>
-       <p>If two different test cases give different orderings, the answer is (D) — immediately. If a quantity is a specific computable number on both sides, (D) is impossible. Never compute more precisely than the comparison requires.</p>`],
+       <p>If two different test cases give different orderings, the answer is (D), immediately. If a quantity is a specific computable number on both sides, (D) is impossible. Never compute more precisely than the comparison requires.</p>`],
     ps: ["Problem Solving (MC, Multiple-answer, Numeric Entry)",
-      `<p>Before computing, ask: can I <strong>backsolve</strong> from the answer choices or <strong>plug in</strong> easy numbers for the variables? On multiple-answer questions, check every choice — credit requires the complete set, and the count of correct choices is unknown.</p>
-       <p>For Numeric Entry, re-read what form the answer takes (units? rounded how? per what?) before typing. The calculator is for arithmetic you can't do faster mentally — order-of-operations errors on it are a classic point-loser.</p>`],
+      `<p>Before computing, ask: can I <strong>backsolve</strong> from the answer choices or <strong>plug in</strong> easy numbers for the variables? On multiple-answer questions, check every choice: credit requires the complete set, and the count of correct choices is unknown.</p>
+       <p>For Numeric Entry, re-read what form the answer takes (units? rounded how? per what?) before typing. The calculator is for arithmetic you can't do faster mentally: order-of-operations errors on it are a classic point-loser.</p>`],
     di: ["Data Interpretation",
-      `<p>Spend 20–30 seconds reading the graphs before question 1: units, axis scales, footnotes, and what each series is. Most DI errors are reading errors, not math errors — e.g., using the wrong year or confusing percent with absolute counts.</p>
+      `<p>Spend 20–30 seconds reading the graphs before question 1: units, axis scales, footnotes, and what each series is. Most DI errors are reading errors, not math errors: e.g., using the wrong year or confusing percent with absolute counts.</p>
        <p>Estimate before calculating; DI answer choices are usually spread far enough apart that a rough calculation identifies the answer.</p>`],
     awa: ["Analyze an Issue essay",
-      `<p>Spend 3–4 minutes planning: pick a position you can support with two or three concrete examples (history, science, current events, personal experience). A strong response usually <em>qualifies</em> the claim — "true in X circumstances, but not in Y" — and addresses the specific task instructions.</p>
+      `<p>Spend 3–4 minutes planning: pick a position you can support with two or three concrete examples (history, science, current events, personal experience). A strong response usually <em>qualifies</em> the claim ("true in X circumstances, but not in Y") and addresses the specific task instructions.</p>
        <p>Aim for 5–6 paragraphs and 500+ words: intro with a clear thesis, one paragraph per reason with a developed example, one paragraph engaging the strongest counterargument, brief conclusion. Leave 2–3 minutes to proofread.</p>`]
   };
 
@@ -124,7 +124,7 @@
     GRE.show(root => {
       const el = GRE.el;
       const bar = el("div", { class: "topbar" },
-        el("div", { class: "brand" }, opts.deck ? "Missed Questions Drill" : "Tutor Mode — Practice",
+        el("div", { class: "brand" }, opts.deck ? "Missed Questions Drill" : "Tutor Mode, Practice",
           el("small", null, "Untimed · instant feedback")),
         el("div", { class: "btns" },
           el("button", { class: "tbtn", onclick: () => quit() },
@@ -149,7 +149,7 @@
         const done = i + (submitted ? 1 : 0);
         inner.appendChild(el("h2", { class: "screen-title" }, "Session summary"));
         inner.appendChild(el("p", { class: "screen-sub" },
-          `${correct} correct out of ${done || 0} answered${opts.deck ? " — correct answers have left the missed deck." : "."}`));
+          `${correct} correct out of ${done || 0} answered${opts.deck ? ": correct answers have left the missed deck." : "."}`));
         const row = el("div", { class: "btnrow" });
         row.appendChild(el("button", { class: "bigbtn", onclick: () => GRE.show(GRE.screens.tutor) }, "Back to Tutor Mode"));
         row.appendChild(el("button", { class: "bigbtn secondary", onclick: () => GRE.show(GRE.screens.home) }, "Home"));
@@ -188,7 +188,7 @@
         const submitBtn = el("button", { class: "bigbtn", onclick: () => {
           if (submitted) return;
           if (!GRE.isAnswered(q, ans)) {
-            GRE.modal("No answer", "<p>Choose or enter an answer first — on the real test you'd never leave a blank.</p>");
+            GRE.modal("No answer", "<p>Choose or enter an answer first, on the real test you'd never leave a blank.</p>");
             return;
           }
           submitted = true;

@@ -11,7 +11,7 @@ live under **Score History & Review** on the home screen.
 ## Steps
 
 1. **Read the scaled scores in context.** Each measure is scored 130–170. The report's
-   percentile estimates tell you what the number means competitively — Quant percentiles
+   percentile estimates tell you what the number means competitively: Quant percentiles
    run much lower than Verbal at the same score (a 165Q ≈ 76th percentile, a 165V ≈ 96th),
    because Quant scores cluster high. Compare against the averages of programs you're
    targeting, not against 170.
@@ -31,7 +31,7 @@ live under **Score History & Review** on the home screen.
    uniformly mediocre accuracy means the problem is pacing or carelessness, not knowledge.
 
 5. **Read the pacing card with the 2:30 flags.** A few slow questions is normal. Slow
-   questions that you *still got wrong* are the expensive kind — the skill to build is
+   questions that you *still got wrong* are the expensive kind. The skill to build is
    recognizing them at the 60-second mark and guessing.
 
 6. **Self-score the essay honestly.** Expand the rubric, read the 0–6 descriptors and the
@@ -51,9 +51,9 @@ counterargument paragraph to essays."
 
 ## Troubleshooting
 
-- **"My raw score seems high for the scaled score"** — check the routing card; you likely
+- **"My raw score seems high for the scaled score"**. Check the routing card; you likely
   landed on the easier second section, which caps the conversion.
-- **Scores look identical across attempts** — check whether the misses are the same
+- **Scores look identical across attempts**. Check whether the misses are the same
   *topics*. The score trend chart on the history screen surfaces plateaus; plateaus almost
   always mean drilling hasn't targeted the weak topics yet.
 
