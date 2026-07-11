@@ -644,9 +644,25 @@
     GRE.store.save();
   }
 
-  E.startIntro = function () {
+  E.startIntro = function (skipGate) {
     if (GRE.store.data.inprogress) {
       GRE.modal("Exam in progress", "<p>You already have an unfinished mock. Resume it from the home screen, or discard it first.</p>");
+      return;
+    }
+    // The mock is the finish line of the course. Gate it, but let a determined
+    // user through — a cold diagnostic first is a legitimate choice.
+    if (!skipGate && GRE.course && !GRE.course.courseComplete()) {
+      const pct = GRE.course.percentComplete();
+      GRE.modal("The mock exam is the finish line",
+        `<p>The study course is <strong>${pct}% complete</strong>. It's built to take you from the
+         basics to the hardest material, and the mock is designed as the test you sit
+         <em>after</em> finishing it.</p>
+         <p>You can still take the mock now as a cold diagnostic — just expect a lower score if you
+         haven't worked through the material yet.</p>`,
+        [
+          { label: "Go to the course", action: () => GRE.show(GRE.screens.course) },
+          { label: "Take the mock anyway", secondary: true, action: () => E.startIntro(true) }
+        ]);
       return;
     }
     GRE.show(root => {

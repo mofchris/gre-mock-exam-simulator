@@ -170,8 +170,18 @@
         GRE.el("div", { class: "em" }, em), GRE.el("h3", null, h), GRE.el("p", null, p));
       grid.appendChild(t);
     };
-    tile("📝", "Take a Full Mock Exam",
-      "The real thing: Issue essay + 4 adaptive Verbal/Quant sections, ~1h58m, with the PowerPrep-style interface, on-screen calculator, and 130–170 scoring.",
+    const cpct = GRE.course ? GRE.course.percentComplete() : 0;
+    const cdone = GRE.course ? GRE.course.courseComplete() : false;
+    tile("📘", "Study Course" + (cpct > 0 ? ` — ${cpct}% complete` : ""),
+      cdone
+        ? "Course complete. Every module and checkpoint passed — you're ready for the mock exam."
+        : "18 modules from the basics to the hardest material, each with a quiz you must pass to continue, plus a cumulative checkpoint at the end of every unit.",
+      () => GRE.show(GRE.screens.course));
+
+    tile(cdone ? "📝" : "🔒", "Take a Full Mock Exam",
+      cdone
+        ? "Course complete — you've earned it. Issue essay + 4 adaptive Verbal/Quant sections, ~1h58m, PowerPrep-style, with 130–170 scoring."
+        : `Unlocks when the study course is complete (${cpct}% done). Issue essay + 4 adaptive Verbal/Quant sections, ~1h58m, with 130–170 scoring.`,
       () => GRE.exam.startIntro());
     tile("🎓", "Tutor Mode",
       "Learn before you test: untimed practice by question type, topic, and difficulty, with instant feedback, full explanations, and strategy guides.",

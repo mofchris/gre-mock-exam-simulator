@@ -45,6 +45,24 @@ Full docs live in [`docs/`](docs/README.md):
 | [Architecture & modules](docs/reference-architecture.md) | How the engine, assembly, and storage work |
 | [Adaptive routing, scoring & design decisions](docs/explanation-adaptive-scoring.md) | Why it works the way it does |
 
+
+## The study course
+
+The app includes an **18-module course** that takes you from the basics to the hardest material:
+
+| Unit | Covers |
+|---|---|
+| 1. Orientation & Verbal Foundations | How the adaptive test really works, GRE vocabulary logic, Text Completion, Sentence Equivalence |
+| 2. Reading & Argument | Reading for structure, hard RC and trap answers, Critical Reasoning |
+| 3. Quant Foundations | Arithmetic and percents, number properties, algebra, word problems |
+| 4. Advanced Quant | Geometry, statistics/counting/probability, Data Interpretation, **Quantitative Comparison strategy** |
+| 5. Writing & Readiness | The Issue essay, pacing and guessing, final review |
+
+Each module ends with a quiz you must pass at **75%** to unlock the next one, and each unit ends
+with a **cumulative checkpoint** that also re-tests earlier units. The full mock exam unlocks when
+the course is complete. Every quiz question has a full explanation; retakes are unlimited and your
+best score is kept.
+
 ## Running locally
 
 - Easiest: double-click `index.html` — everything works from the file system.
