@@ -31,6 +31,20 @@ HTML/CSS/JS. Your data never leaves your browser.
 - **Progress tracking**: attempt history and score trend, stored in your browser
   (localStorage) only.
 
+## Documentation
+
+Full docs live in [`docs/`](docs/README.md):
+
+| Doc | For |
+|---|---|
+| [Take your first mock exam](docs/tutorial-first-mock-exam.md) | New users — start to score report, step by step |
+| [Interpret your score report](docs/howto-interpret-scores.md) | Understanding scaled scores, percentiles, and the adaptive path |
+| [Run locally & deploy your own copy](docs/howto-run-and-deploy.md) | Self-hosting on GitHub Pages in ~2 minutes |
+| [Add questions to the bank](docs/howto-add-questions.md) | Contributors — grow the question pool |
+| [Question bank data format](docs/reference-question-bank.md) | Exact schemas for every question type |
+| [Architecture & modules](docs/reference-architecture.md) | How the engine, assembly, and storage work |
+| [Adaptive routing, scoring & design decisions](docs/explanation-adaptive-scoring.md) | Why it works the way it does |
+
 ## Running locally
 
 - Easiest: double-click `index.html` — everything works from the file system.
