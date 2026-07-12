@@ -22,9 +22,12 @@
       this.data.tutorSeen = this.data.tutorSeen || {};
       return this.data;
     },
-    save() {
+    save(data, fromSync) {
+      if (data) this.data = data;                 // sync engine writes the merged blob here
+      this.data._savedAt = Date.now();            // additive recency stamp (spec section 5)
       try { localStorage.setItem(this.key, JSON.stringify(this.data)); }
       catch (e) { /* storage full or blocked: keep running in-memory */ }
+      if (!fromSync && GRE.sync) GRE.sync.onLocalSave();
     }
   };
   GRE.store = Store;
@@ -232,18 +235,23 @@
 
   GRE.chrome = function (active) {
     const el = GRE.el;
+    const syncMount = el("div", { class: "syncwrap" });
     const head = el("div", { class: "tophead" },
       el("div", { class: "brandwrap" },
         el("span", { class: "logo" }, GRE.icon("logo", 19)),
         el("div", { class: "names" },
           el("div", { class: "pname" }, "GRE Mock Simulator"),
           el("div", { class: "psub" }, "shorter format · independent study tool"))),
-      el("nav", { class: "topnav", "aria-label": "Main" },
-        ...NAV.map(([label, go]) => el("button", {
-          class: active === label ? "on" : "",
-          "aria-current": active === label ? "page" : null,
-          onclick: go
-        }, label))));
+      el("div", { class: "topright" },
+        el("nav", { class: "topnav", "aria-label": "Main" },
+          ...NAV.map(([label, go]) => el("button", {
+            class: active === label ? "on" : "",
+            "aria-current": active === label ? "page" : null,
+            onclick: go
+          }, label))),
+        syncMount));
+
+    if (GRE.sync) GRE.sync.mountHeader(syncMount);
 
     const stage = el("div", { class: "stage" });
     const inner = el("div", { class: "stage-inner screen-in" });
@@ -719,5 +727,10 @@
   /* ---------------- boot ---------------- */
 
   GRE.buildIndex();
+  GRE.sync = StudySync.initSync(GRE, {
+    app: "gre",
+    load: () => Store.load(),
+    save: (data, fromSync) => Store.save(data, fromSync)
+  });
   GRE.show(GRE.screens.home);
 })();

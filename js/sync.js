@@ -329,6 +329,75 @@
       window.addEventListener("online", function () { if (readAuth()) syncNow(); });
     }
 
+      /* ---------------- header widget ---------------- */
+
+      var headerNode = null;   // the <div> chrome() hands us; re-rendered on notify
+
+      function fmtAgo(ts) {
+        if (!ts) return "just now";
+        var s = Math.round((Date.now() - ts) / 1000);
+        if (s < 60) return "just now";
+        var m = Math.round(s / 60);
+        if (m < 60) return m + " min ago";
+        var h = Math.round(m / 60);
+        return h + " h ago";
+      }
+
+      function renderHeader() {
+        if (!headerNode) return;
+        var el = ns.el;
+        headerNode.innerHTML = "";
+
+        if (!state.signedIn) {
+          headerNode.appendChild(el("button", {
+            class: "btn soft syncbtn",
+            onclick: function () { openAuthModal("signin"); }
+          }, "Sign in to sync"));
+          if (state.sessionExpired) {
+            headerNode.appendChild(el("span", { class: "syncnote" }, "Session expired — sign in again"));
+          }
+          return;
+        }
+
+        var label = state.status === "syncing" ? "Syncing…"
+          : state.status === "offline" ? "Offline"
+          : state.status === "error" ? "Error" : "Synced";
+        var pill = el("button", {
+          class: "syncpill",
+          title: label,
+          onclick: function () { openAccountModal(); }
+        },
+          el("span", { class: "dot " + state.status }),
+          el("span", { class: "u" }, state.username));
+        headerNode.appendChild(pill);
+      }
+
+      function openAccountModal() {
+        var el = ns.el;
+        var body = el("div", {},
+          el("p", {}, "Signed in as ", el("strong", {}, state.username), "."),
+          el("p", { class: "syncmeta" },
+            state.status === "offline" ? "Offline — will retry when reconnected."
+            : "Last synced " + fmtAgo(state.lastSyncedAt) + "."));
+        var m = ns.modal("Account", "", [
+          { label: "Sign out", danger: true, action: function () { signOut(); } },
+          { label: "Close", secondary: true }
+        ], { intent: "info" });
+        // inject the live body above the button row
+        var veil = document.body.lastElementChild;
+        var mbody = veil.querySelector(".mbody");
+        if (mbody) mbody.appendChild(body);
+        return m;
+      }
+
+      function mountHeader(node) {
+        headerNode = node;
+        renderHeader();
+      }
+
+      // keep the header in sync with engine state
+      subscribe(function () { renderHeader(); });
+
     var api = {
       onLocalSave: onLocalSave,
       syncNow: syncNow,
@@ -336,7 +405,7 @@
       setSession: setSession,
       subscribe: subscribe,
       getState: getState,
-      mountHeader: function () {},              // Task 5 replaces
+      mountHeader: mountHeader,
       openAuthModal: function () {},            // Task 6 replaces
       _ns: ns, _cfg: cfg
     };
