@@ -179,7 +179,27 @@
     return out;
   }
 
-  /* ============ SYNC ENGINE (Task 4 fills this) ============ */
+  /* ============ SYNC ENGINE (Task 4) ============ */
+
+  /* ---------------- content equality (ignores _savedAt) ---------------- */
+
+  function stripMeta(o) {
+    if (!isObj(o)) return o;
+    var c = {};
+    Object.keys(o).forEach(function (k) { if (k !== "_savedAt") c[k] = o[k]; });
+    return c;
+  }
+  function stableStr(o) {
+    // deterministic stringify so key order never causes a false "changed"
+    if (Array.isArray(o)) return "[" + o.map(stableStr).join(",") + "]";
+    if (isObj(o)) {
+      return "{" + Object.keys(o).sort().map(function (k) {
+        return JSON.stringify(k) + ":" + stableStr(o[k]);
+      }).join(",") + "}";
+    }
+    return JSON.stringify(o);
+  }
+  function sameContent(a, b) { return stableStr(stripMeta(a)) === stableStr(stripMeta(b)); }
 
   /* ============ HEADER WIDGET + ACCOUNT MODAL (Task 5 fills this) ============ */
 
@@ -188,9 +208,141 @@
   /* ---------------- initSync (grows across tasks) ---------------- */
 
   function initSync(ns, cfg) {
-    // cfg: { app: "gre"|"netplus", load: ()=>data, save: (data,fromSync)=>void }
-    // Full engine + UI wired in Tasks 4–6. Placeholder returns the api object.
-    var api = {};
+    var app = cfg.app;                 // "gre" | "netplus"
+    var subs = [];
+    var state = {
+      signedIn: !!readAuth(),
+      username: readAuth() ? readAuth().username : null,
+      status: "idle",                  // idle | syncing | offline | error
+      lastSyncedAt: 0,
+      sessionExpired: false
+    };
+    var saveTimer = null;
+    var running = false;
+    var pending = false;               // a save landed while a cycle ran
+
+    function notify() { subs.forEach(function (fn) { fn(state); }); }
+    function setStatus(s) { state.status = s; notify(); }
+
+    function subscribe(fn) {
+      subs.push(fn);
+      return function () { subs = subs.filter(function (f) { return f !== fn; }); };
+    }
+    function getState() { return state; }
+
+    function setSession(auth) {
+      writeAuth(auth);
+      state.signedIn = true;
+      state.username = auth.username;
+      state.sessionExpired = false;
+      state.status = "idle";
+      notify();
+      syncNow();
+    }
+
+    function signOut() {
+      clearAuth();
+      clearMeta(app);
+      state.signedIn = false;
+      state.username = null;
+      state.sessionExpired = false;
+      state.status = "idle";
+      notify();
+    }
+
+    function onExpired() {
+      clearAuth();
+      clearMeta(app);
+      state.signedIn = false;
+      state.username = null;
+      state.sessionExpired = true; // shown once in the account/header note
+      state.status = "idle";
+      notify();
+    }
+
+    // One PUT with bounded 409 re-merge retries. Returns a Promise<boolean pushed-ok>.
+    function pushMerged(token, mergedObj, baseUpdatedAt, attempt) {
+      var blobStr = JSON.stringify(cfg.load()); // push exactly what is now local
+      return apiPutProgress(app, token, blobStr, baseUpdatedAt).then(function (r) {
+        if (r.status === 200) {
+          writeMeta(app, { baseUpdatedAt: r.body.updatedAt });
+          state.lastSyncedAt = Date.now();
+          return true;
+        }
+        if (r.status === 401) { onExpired(); return false; }
+        if (r.status === 409 && attempt < 3) {
+          var server2 = r.body.blob ? safeParse(r.body.blob) : null;
+          var merged2 = merge(cfg.load(), server2);
+          if (!sameContent(merged2, cfg.load())) cfg.save(merged2, true);
+          return pushMerged(token, merged2, r.body.updatedAt || 0, attempt + 1);
+        }
+        if (r.status === 0) { setStatus("offline"); return false; }
+        setStatus("error"); return false;
+      });
+    }
+
+    function safeParse(s) { try { return JSON.parse(s); } catch (e) { return null; } }
+
+    function syncNow() {
+      var auth = readAuth();
+      if (!auth) return Promise.resolve();      // ANONYMOUS INVARIANT: no token => no request
+      if (running) { pending = true; return Promise.resolve(); }
+      running = true;
+      setStatus("syncing");
+
+      return apiGetProgress(app, auth.token).then(function (g) {
+        if (g.status === 401) { onExpired(); return false; }
+        if (g.status === 0) { setStatus("offline"); return false; }
+        if (g.status !== 200) { setStatus("error"); return false; }
+
+        // Corrupt server blob => keep local, treat as server-empty (spec §10).
+        var server = g.body.blob ? safeParse(g.body.blob) : null;
+        var base = Number(g.body.updatedAt) || 0;
+        var local = cfg.load();
+        var merged = merge(local, server);
+
+        if (!sameContent(merged, local)) cfg.save(merged, true);
+        if (server && sameContent(merged, server)) {
+          // nothing to push; we are already in sync with the server
+          writeMeta(app, { baseUpdatedAt: base });
+          state.lastSyncedAt = Date.now();
+          return true;
+        }
+        return pushMerged(auth.token, merged, base, 1);
+      }).then(function (ok) {
+        if (state.status === "syncing") setStatus(ok ? "idle" : "error");
+        running = false;
+        if (pending) { pending = false; syncNow(); }
+      }).catch(function () {
+        setStatus("offline");
+        running = false;
+      });
+    }
+
+    function onLocalSave() {
+      if (!readAuth()) return;                  // anonymous: never schedules a request
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(function () { saveTimer = null; syncNow(); }, 3000);
+    }
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("online", function () { if (readAuth()) syncNow(); });
+    }
+
+    var api = {
+      onLocalSave: onLocalSave,
+      syncNow: syncNow,
+      signOut: signOut,
+      setSession: setSession,
+      subscribe: subscribe,
+      getState: getState,
+      mountHeader: function () {},              // Task 5 replaces
+      openAuthModal: function () {},            // Task 6 replaces
+      _ns: ns, _cfg: cfg
+    };
+
+    // Boot trigger (spec §8): if already signed in, run one cycle. Anonymous => nothing.
+    if (readAuth()) { syncNow(); }
     return api;
   }
 
