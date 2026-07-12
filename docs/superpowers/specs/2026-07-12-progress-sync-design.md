@@ -107,7 +107,7 @@ CREATE TABLE ip_signups (
 );
 ```
 
-`users.failed_count` drives both the Turnstile threshold (4) and the hard lock (20); `users.locked_until` holds the escalating lock. Both reset on a successful login. Rows in `ip_failures` / `ip_signups` older than 24 hours are deleted opportunistically on write.
+The Turnstile threshold (4) is driven by the requesting IP's hourly failure count in `ip_failures`, not by the account; `users.failed_count` drives the hard lock (20), and `users.locked_until` holds the escalating lock. `failed_count` resets on a successful login. Rows in `ip_failures` / `ip_signups` older than 24 hours are deleted opportunistically on write.
 
 `blob` is the object the app already writes to `localStorage`, plus **one additive field**:
 
@@ -129,9 +129,9 @@ All responses are JSON. Auth is `Authorization: Bearer <token>`.
 | GET | `/progress?app=gre` | — | `{blob, updatedAt}` or `{blob:null}` |
 | PUT | `/progress?app=gre` | `{blob, baseUpdatedAt}` | `{updatedAt}` or `409` |
 
-`turnstile` is a Turnstile token. It is **always** required on `/signup` and `/reset-pin`. On `/login` it is required only once that username has 4+ consecutive failures — the server answers `403 {needsCaptcha:true}`, and the client then re-submits with a token. This keeps the happy path free of any CAPTCHA.
+`turnstile` is a Turnstile token. It is **always** required on `/signup` and `/reset-pin`. On `/login` it is required only once the **requesting IP** has 4+ failed attempts in the current hour (regardless of which username those failures were against) — the server answers `403 {needsCaptcha:true}`, and the client then re-submits with a token. This keeps the happy path free of any CAPTCHA.
 
-**Auth error codes:** `401` invalid credentials (generic — never distinguishes "no such user" from "wrong PIN"), `403 {needsCaptcha:true}` challenge required, `423` account temporarily locked (with `retryAfter`), `429` IP over its failure or signup budget (with `retryAfter`).
+**Auth error codes:** `401` invalid credentials — generic, and used both for wrong credentials and for a hard-locked account (a locked account is a **silent lock**: it returns the same 401 as a wrong PIN, never a distinct status, so the lock state cannot be probed from outside; see §9). `403 {needsCaptcha:true}` challenge required. `429` IP over its failure or signup budget (with `retryAfter`). There is no `423` — `/login` never reports lock state.
 
 ### Optimistic concurrency
 
@@ -211,7 +211,7 @@ The defense is therefore layered, and it deliberately puts a **CAPTCHA in front 
 | Layer | Threshold | Stops |
 |---|---|---|
 | **Banned-PIN list** | reject the ~200 commonest 6-digit PINs at signup/reset | Spraying **at the root**: if nobody *has* `123456`, spraying it finds nothing |
-| **Turnstile (per username)** | after **4** consecutive failures | Automated guessing. Real users pass (usually invisibly); bots stop |
+| **Turnstile (per IP)** | after **4** failed attempts in the current hour, across all usernames from that IP (same counter as the per-IP budget below) | Automated guessing. Real users pass (usually invisibly); bots stop |
 | **Hard lock (per username)** | after **20** consecutive failures → 15 min, escalating (30m, 1h, … capped 24h) | A determined attacker who is somehow solving CAPTCHAs |
 | **Per-IP failure budget** | **30** failed auth attempts/hour across *all* usernames → `429` for that IP for 1 hour | Spraying from a single host |
 | **Signup throttle** | **3** accounts per IP per hour; Turnstile **always** required on signup | Account flooding / username enumeration at scale |
@@ -264,7 +264,7 @@ The site key is public (client); the secret key lives in the Worker's environmen
 | Worker unreachable / offline | App works normally on `localStorage`. Status shows `Offline`. Retry on next load or `online` event. |
 | 409 on PUT | Re-fetch, re-merge, retry (max 3). Then give up and mark dirty. |
 | 401 (expired token) | Clear token, drop to signed-out. Local progress untouched. |
-| Locked account | Show remaining lockout time. |
+| Locked account | Login returns the same generic `401` as a wrong PIN (silent lock, §9) — the client shows the normal "invalid credentials" message, not a lockout timer. The user recovers via `/reset-pin` or by waiting out the window. |
 | Corrupt server blob | Ignore it, keep local, log. Never let a bad server response destroy local progress. |
 
 The invariant across all of these: **a network or server failure must never lose local progress.**
@@ -274,7 +274,7 @@ The invariant across all of these: **a network or server failure must never lose
 - **Merge function is pure** — `merge(local, server) → blob` — and unit-testable with no network. This is the highest-risk logic, so it gets direct tests: passed-stays-passed, best-score-wins, attempts-union-dedupe, missed-deck-recency, empty/missing/corrupt inputs.
 - **Worker auth:** signup → login → wrong PIN → reset via recovery code; PUT conflict returns 409 and the retry converges.
 - **Rate limiting** gets explicit adversarial tests, because a limiter that silently does nothing looks identical to one that works:
-  - **Vertical brute force:** 4 failures on one username → `403 needsCaptcha`; 20 → `423 locked` with escalating `retryAfter`.
+  - **Vertical brute force:** 4 failed attempts from one IP → `403 needsCaptcha` on the next attempt from that IP (any username); 20 failures on one username → the account hard-locks, but `/login` keeps returning the same generic `401` (silent lock, no `423`, no distinct `retryAfter`) even for the correct PIN.
   - **PIN spraying:** one PIN against 40 different usernames from one IP → the IP is cut off at 30 with `429`, *before* the 40th.
   - **Write-budget guard (§9.3):** once an IP is over budget, further attempts must perform **zero D1 writes**. Assert on write count, not just on the status code — this is the whole point of the read-first ordering.
   - **Banned PINs:** signup with `123456` / `000000` / `111111` is rejected.
