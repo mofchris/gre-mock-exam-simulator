@@ -478,14 +478,20 @@
           guardOn = false;
           if (typeof window !== "undefined") window.removeEventListener("keydown", escGuard, true);
         }
+        // Pending 1s reveal timers, one per pinField, cleared on modal teardown so
+        // a late timeout can't fire draw() against detached nodes after close.
+        var pinCleanups = [];
         var origClose = modalRef.close;
-        modalRef.close = function () { removeGuard(); origClose(); };
+        modalRef.close = function () {
+          removeGuard();
+          pinCleanups.forEach(function (fn) { fn(); });
+          origClose();
+        };
 
-        function field(id, labelText, opts) {
-          opts = opts || {};
-          var input = el("input", Object.assign({
+        function field(id, labelText) {
+          var input = el("input", {
             id: id, type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false"
-          }, opts.attrs || {}));
+          });
           return el("div", { class: "authfield" }, el("label", { for: id }, labelText), input);
         }
 
@@ -510,6 +516,9 @@
           var revealIndex = -1;      // digit shown as itself (last typed), else masked
           var revealTimer = null;
           var prevLen = 0;
+          pinCleanups.push(function () {
+            if (revealTimer) { clearTimeout(revealTimer); revealTimer = null; }
+          });
 
           function draw(focused) {
             var v = input.value;
@@ -517,7 +526,8 @@
             // active cell: the next empty cell, or the last cell when full
             var active = focused ? (len >= 6 ? 5 : len) : -1;
             for (var i = 0; i < 6; i++) {
-              cells[i].className = "pin-cell" + (i === active ? " active" : "");
+              var masked = (i < len) && (i !== revealIndex); // filled but not the revealed digit
+              cells[i].className = "pin-cell" + (i === active ? " active" : "") + (masked ? " masked" : "");
               if (i < len) cells[i].textContent = (i === revealIndex) ? v.charAt(i) : "•";
               else cells[i].textContent = "";
             }
