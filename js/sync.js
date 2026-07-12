@@ -452,20 +452,30 @@
         var mode = tab;                 // "signin" | "signup" | "reset"
         var tsToken = null;             // solved Turnstile token, when required/present
         var showCaptcha = false;        // signin: only after a 403
+        var submitting = false;         // in-flight guard: blocks double-submit (click + Enter)
 
         var modalRef = ns.modal("Sync your progress", "", [], {});
         var veil = document.body.lastElementChild;
         var mbody = veil.querySelector(".mbody");
 
-        // ---- Escape/veil guard used ONLY for the recovery handoff ----
-        // window-capture fires before ns.modal's document-capture Escape handler,
-        // so we can swallow Escape during the one un-dismissable state.
+        // ---- Escape guard used ONLY for the recovery handoff ----
+        // Attached only while the un-dismissable handoff state is shown, and
+        // torn down however the modal closes. Attaching at open would leak the
+        // listener on an ordinary Escape-dismiss, because ns.modal's own Escape
+        // handler calls its INTERNAL close, not our wrapped modalRef.close.
+        // window-capture fires before ns.modal's document-capture Escape
+        // handler, so Escape is swallowed during that one state (and nowhere
+        // else, since the listener is only attached then).
         var guardOn = false;
         function escGuard(e) {
           if (guardOn && e.key === "Escape") { e.stopImmediatePropagation(); e.preventDefault(); }
         }
-        if (typeof window !== "undefined") window.addEventListener("keydown", escGuard, true);
+        function addGuard() {
+          guardOn = true;
+          if (typeof window !== "undefined") window.addEventListener("keydown", escGuard, true);
+        }
         function removeGuard() {
+          guardOn = false;
           if (typeof window !== "undefined") window.removeEventListener("keydown", escGuard, true);
         }
         var origClose = modalRef.close;
@@ -476,12 +486,71 @@
           var input = el("input", Object.assign({
             id: id, type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false"
           }, opts.attrs || {}));
-          if (opts.pin) {
-            input.className = "pin";
-            input.setAttribute("inputmode", "numeric");
-            input.setAttribute("maxlength", "6");
-          }
           return el("div", { class: "authfield" }, el("label", { for: id }, labelText), input);
+        }
+
+        // Segmented six-cell PIN entry. ONE real <input> is the source of truth;
+        // the six cells are a purely visual render of its value + focus state.
+        // Reused by every PIN field (sign-in, signup, signup-confirm, reset, reset-confirm).
+        function pinField(id, labelText) {
+          var input = el("input", {
+            id: id, type: "text", class: "pin-input",
+            inputmode: "numeric", maxlength: "6",
+            autocomplete: "off", autocapitalize: "off", spellcheck: "false",
+            "aria-label": labelText
+          });
+          var cells = [];
+          var cellRow = el("div", { class: "pin-cells", "aria-hidden": "true" });
+          for (var i = 0; i < 6; i++) {
+            var c = el("div", { class: "pin-cell" });
+            cells.push(c);
+            cellRow.appendChild(c);
+          }
+
+          var revealIndex = -1;      // digit shown as itself (last typed), else masked
+          var revealTimer = null;
+          var prevLen = 0;
+
+          function draw(focused) {
+            var v = input.value;
+            var len = v.length;
+            // active cell: the next empty cell, or the last cell when full
+            var active = focused ? (len >= 6 ? 5 : len) : -1;
+            for (var i = 0; i < 6; i++) {
+              cells[i].className = "pin-cell" + (i === active ? " active" : "");
+              if (i < len) cells[i].textContent = (i === revealIndex) ? v.charAt(i) : "•";
+              else cells[i].textContent = "";
+            }
+          }
+
+          input.addEventListener("input", function () {
+            var cleaned = input.value.replace(/\D/g, "").slice(0, 6);
+            if (cleaned !== input.value) input.value = cleaned;
+            var len = cleaned.length;
+            if (revealTimer) { clearTimeout(revealTimer); revealTimer = null; }
+            if (len > prevLen) {
+              // a digit was added: briefly reveal it, then mask (bank PIN-pad behavior)
+              revealIndex = len - 1;
+              revealTimer = setTimeout(function () {
+                revealIndex = -1; draw(document.activeElement === input);
+              }, 1000);
+            } else {
+              revealIndex = -1;      // backspace / paste-shrink never re-reveals
+            }
+            prevLen = len;
+            draw(true);
+          });
+          input.addEventListener("focus", function () { draw(true); });
+          input.addEventListener("blur", function () {
+            revealIndex = -1;
+            if (revealTimer) { clearTimeout(revealTimer); revealTimer = null; }
+            draw(false);
+          });
+
+          var wrap = el("div", { class: "pin-wrap" }, cellRow, input);
+          wrap.addEventListener("click", function () { input.focus(); }); // any cell focuses input
+          draw(false);
+          return el("div", { class: "authfield pinfield" }, el("label", { for: id }, labelText), wrap);
         }
 
         function render() {
@@ -496,8 +565,8 @@
           mbody.appendChild(tabs);
 
           mbody.appendChild(field("au-user", "Username"));
-          mbody.appendChild(field("au-pin", "6-digit PIN", { pin: true }));
-          if (mode === "signup") mbody.appendChild(field("au-pin2", "Confirm PIN", { pin: true }));
+          mbody.appendChild(pinField("au-pin", "6-digit PIN"));
+          if (mode === "signup") mbody.appendChild(pinField("au-pin2", "Confirm PIN"));
 
           var err = el("p", { class: "autherr" }, "");
           var tsBox = el("div", { class: "ts-container" });
@@ -507,7 +576,7 @@
             mountTurnstile(tsBox, function (tok) { tsToken = tok; });
           }
 
-          var submit = el("button", { class: "btn wide", onclick: function () { onSubmit(err); } },
+          var submit = el("button", { class: "btn wide", onclick: function () { onSubmit(err, submit); } },
             mode === "signup" ? "Create account" : "Sign in");
 
           mbody.appendChild(err);
@@ -519,6 +588,7 @@
               class: "linkish authlink", onclick: function () { mode = "reset"; render(); }
             }, "Forgot PIN?"));
           }
+          bindEnter(function () { onSubmit(err, submit); });
           focusFirst();
         }
 
@@ -531,22 +601,39 @@
             e.target.value = e.target.value.toUpperCase();
           });
           mbody.appendChild(rc);
-          mbody.appendChild(field("au-pin", "New 6-digit PIN", { pin: true }));
-          mbody.appendChild(field("au-pin2", "Confirm PIN", { pin: true }));
+          mbody.appendChild(pinField("au-pin", "New 6-digit PIN"));
+          mbody.appendChild(pinField("au-pin2", "Confirm PIN"));
           var err = el("p", { class: "autherr" }, "");
           var tsBox = el("div", { class: "ts-container" });
           mountTurnstile(tsBox, function (tok) { tsToken = tok; }); // reset always needs Turnstile
           mbody.appendChild(err);
           mbody.appendChild(tsBox);
-          mbody.appendChild(el("button", { class: "btn wide", onclick: function () { onReset(err); } }, "Reset PIN"));
+          var reset = el("button", { class: "btn wide", onclick: function () { onReset(err, reset); } }, "Reset PIN");
+          mbody.appendChild(reset);
           mbody.appendChild(el("button", { class: "linkish authlink", onclick: function () { mode = "signin"; render(); } }, "Back to sign in"));
+          bindEnter(function () { onReset(err, reset); });
           focusFirst();
         }
 
         function val(id) { var n = document.getElementById(id); return n ? n.value.trim() : ""; }
         function focusFirst() { var f = mbody.querySelector("input"); if (f) f.focus(); }
+        // Enter submits from any field. Inputs are recreated on every render, so
+        // handlers never stack. The submitting flag makes the Enter path share the
+        // double-submit guard with the disabled button.
+        function bindEnter(submitFn) {
+          Array.prototype.forEach.call(mbody.querySelectorAll("input"), function (inp) {
+            inp.addEventListener("keydown", function (e) {
+              if (e.key === "Enter") { e.preventDefault(); submitFn(); }
+            });
+          });
+        }
 
-        function onSubmit(err) {
+        // Enter/click both route here; setBusy toggles the in-flight guard so a
+        // second submit can't fire while the worker request (400ms+) is settling.
+        function setBusy(btn, busy) { submitting = busy; if (btn) btn.disabled = busy; }
+
+        function onSubmit(err, submit) {
+          if (submitting) return;
           var u = val("au-user"), pin = val("au-pin");
           if (!UNAME_RE.test(u)) { err.textContent = "Username must be 3-20 letters, numbers, _ or -."; return; }
           if (!PIN_RE.test(pin)) { err.textContent = "PIN must be exactly 6 digits."; return; }
@@ -554,23 +641,28 @@
             if (pin !== val("au-pin2")) { err.textContent = "PINs don't match."; return; }
             if (!tsToken) { err.textContent = "Please complete the verification."; return; }
             err.textContent = "";
+            setBusy(submit, true);
             apiSignup({ username: u, pin: pin, turnstile: tsToken }).then(function (r) {
               if (r.status === 200) { showRecovery(r.body.token, r.body.username, r.body.recoveryCode); return; }
-              handleAuthFail(r, err, "signup");
+              setBusy(submit, false);
+              handleAuthFail(r, err);
             });
           } else {
             if (showCaptcha && !tsToken) { err.textContent = "Please complete the verification."; return; }
             err.textContent = "";
+            setBusy(submit, true);
             var payload = { username: u, pin: pin };
             if (tsToken) payload.turnstile = tsToken;
             apiLogin(payload).then(function (r) {
               if (r.status === 200) { modalRef.close(); setSession({ token: r.body.token, username: r.body.username }); return; }
-              handleAuthFail(r, err, "signin");
+              setBusy(submit, false);
+              handleAuthFail(r, err);
             });
           }
         }
 
-        function onReset(err) {
+        function onReset(err, submit) {
+          if (submitting) return;
           var u = val("au-user"), rc = val("au-rc"), pin = val("au-pin");
           if (!UNAME_RE.test(u)) { err.textContent = "Enter your username."; return; }
           if (!rc) { err.textContent = "Enter your recovery code."; return; }
@@ -578,13 +670,15 @@
           if (pin !== val("au-pin2")) { err.textContent = "PINs don't match."; return; }
           if (!tsToken) { err.textContent = "Please complete the verification."; return; }
           err.textContent = "";
+          setBusy(submit, true);
           apiResetPin({ username: u, recoveryCode: rc, newPin: pin, turnstile: tsToken }).then(function (r) {
             if (r.status === 200) { showRecovery(r.body.token, r.body.username, r.body.recoveryCode); return; }
-            handleAuthFail(r, err, "reset");
+            setBusy(submit, false);
+            handleAuthFail(r, err);
           });
         }
 
-        function handleAuthFail(r, err, ctx) {
+        function handleAuthFail(r, err) {
           if (r.status === 403 && r.body && r.body.needsCaptcha) {
             // signin: turn the captcha on and re-render so the user can verify + retry
             if (mode === "signin") { showCaptcha = true; render(); return; }
@@ -596,7 +690,7 @@
 
         // ---- recovery-code handoff (signup + reset success) ----
         function showRecovery(token, username, code) {
-          guardOn = true;                     // Escape/veil disabled for this state
+          addGuard();                         // Escape disabled for this un-dismissable state
           mbody.innerHTML = "";
           mbody.appendChild(el("p", {}, "Your account is ready. Save this recovery code:"));
           mbody.appendChild(el("div", { class: "recovery-code" }, code));
@@ -609,11 +703,12 @@
           } }, "Copy code");
           mbody.appendChild(copyBtn);
 
-          mbody.appendChild(el("button", { class: "btn wide", style: "margin-top:10px", onclick: function () {
-            guardOn = false;
-            modalRef.close();
+          var savedBtn = el("button", { class: "btn wide", style: "margin-top:10px", onclick: function () {
+            modalRef.close();                 // wrapped close() tears down the Escape guard
             setSession({ token: token, username: username });
-          } }, "I've saved my code"));
+          } }, "I've saved my code");
+          mbody.appendChild(savedBtn);
+          savedBtn.focus();                   // move focus into the handoff
         }
 
         render();

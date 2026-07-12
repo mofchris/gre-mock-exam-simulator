@@ -169,7 +169,24 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   width: 100%; padding: 10px 12px; border: 1px solid var(--line);
   border-radius: var(--r-input); font-size: 14px; background: var(--paper); color: var(--ink);
 }
-.authfield input.pin { font-family: var(--font-mono); letter-spacing: .2em; }
+/* segmented six-cell PIN entry: cells are visual only; one opacity:0 input
+   sits over the whole row as the source of truth + full-width hit target */
+.pinfield .pin-wrap { position: relative; display: inline-block; }
+.pin-cells { display: flex; gap: 8px; }
+.pin-cell {
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); background: var(--paper);
+  border-radius: var(--r-input);
+  font-family: var(--font-mono); font-size: 20px; line-height: 1; color: var(--ink);
+  transition: border-color var(--mo-micro) var(--ease-out), box-shadow var(--mo-micro) var(--ease-out);
+}
+.pin-cell.active { border-color: var(--accent); box-shadow: var(--focus-ring); }
+.pin-wrap input.pin-input {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  margin: 0; padding: 0; border: 0; background: transparent;
+  opacity: 0; cursor: text; font-size: 16px; /* 16px avoids iOS focus zoom */
+}
 .autherr { color: var(--bad); font-size: 12.5px; margin: 4px 0 0; min-height: 1em; }
 .authlink { margin-top: 4px; }
 .ts-container { margin: 10px 0; min-height: 0; }
