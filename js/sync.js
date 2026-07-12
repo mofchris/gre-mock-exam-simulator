@@ -203,7 +203,50 @@
 
   /* ============ HEADER WIDGET + ACCOUNT MODAL (Task 5 fills this) ============ */
 
-  /* ============ AUTH MODAL (Task 6 fills this) ============ */
+  /* ============ AUTH MODAL (Task 6) ============ */
+
+    /* ---------------- Turnstile lazy loader (spec §9.5) ---------------- */
+
+    var tsLoading = null;
+    function loadTurnstile() {
+      if (typeof window !== "undefined" && window.turnstile) return Promise.resolve();
+      if (tsLoading) return tsLoading;
+      tsLoading = new Promise(function (resolve, reject) {
+        var s = document.createElement("script");
+        s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+        s.async = true; s.defer = true;
+        s.onload = function () { resolve(); };
+        s.onerror = function () { tsLoading = null; reject(new Error("turnstile_load_failed")); };
+        document.head.appendChild(s);
+      });
+      return tsLoading;
+    }
+    // Render a widget into `container`; report the solved token (or null) via onToken.
+    function mountTurnstile(container, onToken) {
+      loadTurnstile().then(function () {
+        window.turnstile.render(container, {
+          sitekey: TURNSTILE_KEY,
+          callback: function (tok) { onToken(tok); },
+          "error-callback": function () { onToken(null); },
+          "expired-callback": function () { onToken(null); }
+        });
+      }).catch(function () { onToken(null); }); // fail closed: no token => submit refused
+    }
+
+    /* ---------------- error copy (spec §4.3) ---------------- */
+
+    function authErrorMessage(status, body) {
+      if (status === 0) return "Can't reach the sync server. Check your connection.";
+      if (status === 401) return "Wrong username or PIN.";
+      if (status === 409 && body && body.error === "username_taken") return "That username is taken.";
+      if (status === 429) {
+        var mins = Math.max(1, Math.ceil((Number(body && body.retryAfter) || 60) / 60));
+        return "Too many attempts. Try again in ~" + mins + " minutes.";
+      }
+      if (status === 400) return (body && body.error) || "Please check your entries.";
+      // 403 needsCaptcha is handled inline by the caller (renders Turnstile), not here.
+      return "Something went wrong. Please try again.";
+    }
 
   /* ---------------- initSync (grows across tasks) ---------------- */
 
@@ -398,6 +441,184 @@
       // keep the header in sync with engine state
       subscribe(function () { renderHeader(); });
 
+      /* ---------------- auth modal ---------------- */
+
+      var UNAME_RE = /^[a-zA-Z0-9_-]{3,20}$/;
+      var PIN_RE = /^[0-9]{6}$/;
+
+      function openAuthModal(startTab) {
+        var el = ns.el;
+        var tab = startTab === "signup" ? "signup" : "signin";
+        var mode = tab;                 // "signin" | "signup" | "reset"
+        var tsToken = null;             // solved Turnstile token, when required/present
+        var showCaptcha = false;        // signin: only after a 403
+
+        var modalRef = ns.modal("Sync your progress", "", [], {});
+        var veil = document.body.lastElementChild;
+        var mbody = veil.querySelector(".mbody");
+
+        // ---- Escape/veil guard used ONLY for the recovery handoff ----
+        // window-capture fires before ns.modal's document-capture Escape handler,
+        // so we can swallow Escape during the one un-dismissable state.
+        var guardOn = false;
+        function escGuard(e) {
+          if (guardOn && e.key === "Escape") { e.stopImmediatePropagation(); e.preventDefault(); }
+        }
+        if (typeof window !== "undefined") window.addEventListener("keydown", escGuard, true);
+        function removeGuard() {
+          if (typeof window !== "undefined") window.removeEventListener("keydown", escGuard, true);
+        }
+        var origClose = modalRef.close;
+        modalRef.close = function () { removeGuard(); origClose(); };
+
+        function field(id, labelText, opts) {
+          opts = opts || {};
+          var input = el("input", Object.assign({
+            id: id, type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false"
+          }, opts.attrs || {}));
+          if (opts.pin) {
+            input.className = "pin";
+            input.setAttribute("inputmode", "numeric");
+            input.setAttribute("maxlength", "6");
+          }
+          return el("div", { class: "authfield" }, el("label", { for: id }, labelText), input);
+        }
+
+        function render() {
+          mbody.innerHTML = "";
+          tsToken = null;
+
+          if (mode === "reset") return renderReset();
+
+          var tabs = el("div", { class: "authtabs" },
+            el("button", { class: mode === "signin" ? "on" : "", onclick: function () { mode = "signin"; showCaptcha = false; render(); } }, "Sign in"),
+            el("button", { class: mode === "signup" ? "on" : "", onclick: function () { mode = "signup"; render(); } }, "Create account"));
+          mbody.appendChild(tabs);
+
+          mbody.appendChild(field("au-user", "Username"));
+          mbody.appendChild(field("au-pin", "6-digit PIN", { pin: true }));
+          if (mode === "signup") mbody.appendChild(field("au-pin2", "Confirm PIN", { pin: true }));
+
+          var err = el("p", { class: "autherr" }, "");
+          var tsBox = el("div", { class: "ts-container" });
+          // signup always shows Turnstile; signin only after a 403
+          if (mode === "signup" || showCaptcha) {
+            if (mode === "signin") err.textContent = "Quick check — please verify below and try again.";
+            mountTurnstile(tsBox, function (tok) { tsToken = tok; });
+          }
+
+          var submit = el("button", { class: "btn wide", onclick: function () { onSubmit(err); } },
+            mode === "signup" ? "Create account" : "Sign in");
+
+          mbody.appendChild(err);
+          mbody.appendChild(tsBox);
+          mbody.appendChild(submit);
+
+          if (mode === "signin") {
+            mbody.appendChild(el("button", {
+              class: "linkish authlink", onclick: function () { mode = "reset"; render(); }
+            }, "Forgot PIN?"));
+          }
+          focusFirst();
+        }
+
+        function renderReset() {
+          mbody.appendChild(el("h4", { style: "margin-top:0" }, "Reset your PIN"));
+          mbody.appendChild(field("au-user", "Username"));
+          var rc = field("au-rc", "Recovery code");
+          rc.querySelector("input").style.fontFamily = "var(--font-mono)";
+          rc.querySelector("input").addEventListener("input", function (e) {
+            e.target.value = e.target.value.toUpperCase();
+          });
+          mbody.appendChild(rc);
+          mbody.appendChild(field("au-pin", "New 6-digit PIN", { pin: true }));
+          mbody.appendChild(field("au-pin2", "Confirm PIN", { pin: true }));
+          var err = el("p", { class: "autherr" }, "");
+          var tsBox = el("div", { class: "ts-container" });
+          mountTurnstile(tsBox, function (tok) { tsToken = tok; }); // reset always needs Turnstile
+          mbody.appendChild(err);
+          mbody.appendChild(tsBox);
+          mbody.appendChild(el("button", { class: "btn wide", onclick: function () { onReset(err); } }, "Reset PIN"));
+          mbody.appendChild(el("button", { class: "linkish authlink", onclick: function () { mode = "signin"; render(); } }, "Back to sign in"));
+          focusFirst();
+        }
+
+        function val(id) { var n = document.getElementById(id); return n ? n.value.trim() : ""; }
+        function focusFirst() { var f = mbody.querySelector("input"); if (f) f.focus(); }
+
+        function onSubmit(err) {
+          var u = val("au-user"), pin = val("au-pin");
+          if (!UNAME_RE.test(u)) { err.textContent = "Username must be 3-20 letters, numbers, _ or -."; return; }
+          if (!PIN_RE.test(pin)) { err.textContent = "PIN must be exactly 6 digits."; return; }
+          if (mode === "signup") {
+            if (pin !== val("au-pin2")) { err.textContent = "PINs don't match."; return; }
+            if (!tsToken) { err.textContent = "Please complete the verification."; return; }
+            err.textContent = "";
+            apiSignup({ username: u, pin: pin, turnstile: tsToken }).then(function (r) {
+              if (r.status === 200) { showRecovery(r.body.token, r.body.username, r.body.recoveryCode); return; }
+              handleAuthFail(r, err, "signup");
+            });
+          } else {
+            if (showCaptcha && !tsToken) { err.textContent = "Please complete the verification."; return; }
+            err.textContent = "";
+            var payload = { username: u, pin: pin };
+            if (tsToken) payload.turnstile = tsToken;
+            apiLogin(payload).then(function (r) {
+              if (r.status === 200) { modalRef.close(); setSession({ token: r.body.token, username: r.body.username }); return; }
+              handleAuthFail(r, err, "signin");
+            });
+          }
+        }
+
+        function onReset(err) {
+          var u = val("au-user"), rc = val("au-rc"), pin = val("au-pin");
+          if (!UNAME_RE.test(u)) { err.textContent = "Enter your username."; return; }
+          if (!rc) { err.textContent = "Enter your recovery code."; return; }
+          if (!PIN_RE.test(pin)) { err.textContent = "New PIN must be exactly 6 digits."; return; }
+          if (pin !== val("au-pin2")) { err.textContent = "PINs don't match."; return; }
+          if (!tsToken) { err.textContent = "Please complete the verification."; return; }
+          err.textContent = "";
+          apiResetPin({ username: u, recoveryCode: rc, newPin: pin, turnstile: tsToken }).then(function (r) {
+            if (r.status === 200) { showRecovery(r.body.token, r.body.username, r.body.recoveryCode); return; }
+            handleAuthFail(r, err, "reset");
+          });
+        }
+
+        function handleAuthFail(r, err, ctx) {
+          if (r.status === 403 && r.body && r.body.needsCaptcha) {
+            // signin: turn the captcha on and re-render so the user can verify + retry
+            if (mode === "signin") { showCaptcha = true; render(); return; }
+            err.textContent = "Quick check — please verify below and try again.";
+            return;
+          }
+          err.textContent = authErrorMessage(r.status, r.body);
+        }
+
+        // ---- recovery-code handoff (signup + reset success) ----
+        function showRecovery(token, username, code) {
+          guardOn = true;                     // Escape/veil disabled for this state
+          mbody.innerHTML = "";
+          mbody.appendChild(el("p", {}, "Your account is ready. Save this recovery code:"));
+          mbody.appendChild(el("div", { class: "recovery-code" }, code));
+          mbody.appendChild(el("p", { class: "recovery-warn" },
+            "This is the only way to recover your account if you forget your PIN. It will never be shown again."));
+
+          var copyBtn = el("button", { class: "btn secondary wide", onclick: function () {
+            if (navigator.clipboard) navigator.clipboard.writeText(code).then(function () { copyBtn.textContent = "Copied"; }, function () {});
+            else copyBtn.textContent = code;
+          } }, "Copy code");
+          mbody.appendChild(copyBtn);
+
+          mbody.appendChild(el("button", { class: "btn wide", style: "margin-top:10px", onclick: function () {
+            guardOn = false;
+            modalRef.close();
+            setSession({ token: token, username: username });
+          } }, "I've saved my code"));
+        }
+
+        render();
+      }
+
     var api = {
       onLocalSave: onLocalSave,
       syncNow: syncNow,
@@ -406,7 +627,7 @@
       subscribe: subscribe,
       getState: getState,
       mountHeader: mountHeader,
-      openAuthModal: function () {},            // Task 6 replaces
+      openAuthModal: openAuthModal,
       _ns: ns, _cfg: cfg
     };
 
