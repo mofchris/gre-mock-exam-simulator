@@ -63,14 +63,16 @@ The Worker lives in its own repo/directory (`study-sync/`), not inside either ap
 
 ```sql
 CREATE TABLE users (
-  id           INTEGER PRIMARY KEY AUTOINCREMENT,
-  username     TEXT NOT NULL UNIQUE,   -- stored lowercase
-  pin_hash     TEXT NOT NULL,          -- PBKDF2-SHA256, hex
-  pin_salt     TEXT NOT NULL,          -- 16 random bytes, hex
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  username      TEXT NOT NULL UNIQUE,  -- stored lowercase
+  pin_hash      TEXT NOT NULL,         -- PBKDF2-SHA256, hex
+  pin_salt      TEXT NOT NULL,         -- 16 random bytes, hex
   recovery_hash TEXT NOT NULL,         -- same scheme, for PIN reset
-  failed_count INTEGER NOT NULL DEFAULT 0,
-  locked_until INTEGER NOT NULL DEFAULT 0,  -- epoch ms
-  created_at   INTEGER NOT NULL
+  recovery_salt TEXT NOT NULL,         -- its own salt; never reuse the PIN's
+  failed_count  INTEGER NOT NULL DEFAULT 0,
+  lock_level    INTEGER NOT NULL DEFAULT 0,  -- how many times hard-locked; drives escalation
+  locked_until  INTEGER NOT NULL DEFAULT 0,  -- epoch ms
+  created_at    INTEGER NOT NULL
 );
 
 CREATE TABLE sessions (
