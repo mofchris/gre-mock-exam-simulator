@@ -86,7 +86,98 @@
     });
   }
 
-  /* ============ MERGE (Task 3 fills this) ============ */
+  /* ---------------- merge (pure; parent spec §7) ---------------- */
+
+  function isObj(x) { return x && typeof x === "object" && !Array.isArray(x); }
+  function objOf(x) { return isObj(x) ? x : {}; }
+  function clone(x) { return x == null ? x : JSON.parse(JSON.stringify(x)); }
+
+  function mergeAttempts(a, b) {
+    var map = {};
+    var order = [];
+    function add(arr) {
+      (Array.isArray(arr) ? arr : []).forEach(function (x) {
+        if (!x || x.date == null) return;
+        var k = String(x.date);
+        if (!(k in map)) { map[k] = x; order.push(x.date); }
+      });
+    }
+    add(a); add(b);
+    return order.sort(function (p, q) { return p < q ? -1 : p > q ? 1 : 0; })
+      .map(function (d) { return map[String(d)]; });
+  }
+
+  function mergeCourse(a, b) {
+    a = objOf(a); b = objOf(b);
+    var out = { modules: {}, checkpoints: {}, read: {} };
+    ["modules", "checkpoints"].forEach(function (bucket) {
+      var la = objOf(a[bucket]), lb = objOf(b[bucket]);
+      var ids = {};
+      Object.keys(la).forEach(function (k) { ids[k] = 1; });
+      Object.keys(lb).forEach(function (k) { ids[k] = 1; });
+      Object.keys(ids).forEach(function (id) {
+        var ra = objOf(la[id]), rb = objOf(lb[id]);
+        out[bucket][id] = {
+          best: Math.max(Number(ra.best) || 0, Number(rb.best) || 0),
+          passed: !!(ra.passed || rb.passed)
+        };
+      });
+    });
+    // read: union of {id:true}
+    var ra = objOf(a.read), rb = objOf(b.read);
+    Object.keys(ra).forEach(function (k) { out.read[k] = ra[k]; });
+    Object.keys(rb).forEach(function (k) { out.read[k] = rb[k]; });
+    return out;
+  }
+
+  function merge(local, server) {
+    // migration matrix (parent spec §8)
+    if (!isObj(local) && !isObj(server)) return {};
+    if (!isObj(server)) return clone(local);
+    if (!isObj(local)) return clone(server);
+
+    var ls = Number(local._savedAt) || 0;
+    var ss = Number(server._savedAt) || 0;
+    var localWins = ls > ss; // tie => server wins (safe default, §7)
+
+    var out = {};
+    var keys = {};
+    Object.keys(local).forEach(function (k) { keys[k] = 1; });
+    Object.keys(server).forEach(function (k) { keys[k] = 1; });
+
+    Object.keys(keys).forEach(function (k) {
+      if (k === "_savedAt") return;
+      switch (k) {
+        case "attempts":
+          out.attempts = mergeAttempts(local.attempts, server.attempts); break;
+        case "tutorSeen":
+          out.tutorSeen = {};
+          [objOf(local.tutorSeen), objOf(server.tutorSeen)].forEach(function (o) {
+            Object.keys(o).forEach(function (id) { out.tutorSeen[id] = o[id]; });
+          });
+          break;
+        case "course":
+          out.course = mergeCourse(local.course, server.course); break;
+        case "missed":
+          out.missed = clone((localWins ? local.missed : server.missed) || []); break;
+        case "recent":
+          // recency winner; already app-capped when written, so no extra cap needed
+          out.recent = clone((localWins ? local.recent : server.recent) || []); break;
+        case "inprogress":
+          out.inprogress = clone(localWins
+            ? (local.inprogress != null ? local.inprogress : null)
+            : (server.inprogress != null ? server.inprogress : null));
+          break;
+        default:
+          // generic tolerance for any unknown field: most-recent-device-wins
+          var inL = k in local, inS = k in server;
+          out[k] = clone(localWins ? (inL ? local[k] : server[k]) : (inS ? server[k] : local[k]));
+      }
+    });
+
+    out._savedAt = Math.max(ls, ss);
+    return out;
+  }
 
   /* ============ SYNC ENGINE (Task 4 fills this) ============ */
 
@@ -105,9 +196,9 @@
 
   /* ---------------- exports ---------------- */
 
-  var StudySync = { initSync: initSync, merge: null /* set in Task 3 */ };
+  var StudySync = { initSync: initSync, merge: merge };
   if (typeof window !== "undefined") { window.StudySync = StudySync; }
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { merge: null, initSync: initSync };
+    module.exports = { merge: merge, initSync: initSync };
   }
 })();
