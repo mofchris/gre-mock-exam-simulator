@@ -1,8 +1,13 @@
 # GRE Mock Exam Simulator
 
 A free, fully offline simulator of the **shorter (post-September-2023) GRE® General Test**,
-modeled on the ETS PowerPrep interface. No accounts, no tracking, no build step: pure
-HTML/CSS/JS. Your data never leaves your browser.
+modeled on the ETS PowerPrep interface. Anonymous by default — no account required, no
+build step: pure HTML/CSS/JS. Used anonymously, your data never leaves your browser.
+
+Optionally, you can sign in with a username and a 6-digit PIN to sync your progress across
+devices (the GRE and Network+ apps share one account); when signed in, your progress is also
+stored on the sync server. At signup you're shown a recovery code **once** — it is the only
+way to reset a forgotten PIN (there is no email recovery), so save it somewhere safe.
 
 **Take it here:** open `index.html`, or use the hosted version on GitHub Pages.
 
@@ -29,7 +34,7 @@ HTML/CSS/JS. Your data never leaves your browser.
 - **Tutor mode**: untimed practice by type/topic/difficulty with instant feedback,
   strategy guides for every question format, and a missed-questions deck for re-drilling.
 - **Progress tracking**: attempt history and score trend, stored in your browser
-  (localStorage) only.
+  (localStorage), and synced to the sync server as well when you're signed in.
 
 ## Documentation
 
