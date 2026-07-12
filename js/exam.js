@@ -199,7 +199,6 @@
       }));
       ang = a2;
     });
-    // side labels with values
     let ly = 40;
     spec.slices.forEach((sl, i) => {
       svg.appendChild(sv("rect", { x: 330, y: ly - 11, width: 13, height: 13, fill: fills[i % fills.length], stroke: "#333", "stroke-width": 1 }));
@@ -258,25 +257,45 @@
   };
 
   /* ================= question body rendering =================
-     item: {q, passage?, di?}   ansGet/ansSet close over answer storage
-     opts: {review, disabled, hideDirections}, review shows correct/incorrect */
+     item: {q, passage?, di?}   getAns/setAns close over answer storage
+     opts: {review, disabled, hideDirections} */
+
+  // Review state pairs color with an icon + tag, never color alone.
+  function reviewPaint(btn, q, i, ans, opts) {
+    if (!opts.review) return;
+    const el = GRE.el;
+    const corrArr = Array.isArray(q.answer) ? q.answer : [q.answer];
+    const ansArr = ans == null ? [] : (Array.isArray(ans) ? ans : [ans]);
+    if (corrArr.includes(i)) {
+      btn.classList.add("correct");
+      btn.appendChild(el("span", { class: "tag" }, GRE.icon("check", 13, 3), "Correct answer"));
+    }
+    if (ansArr.includes(i) && !corrArr.includes(i)) {
+      btn.classList.add("wrongpick");
+      btn.appendChild(el("span", { class: "tag" }, GRE.icon("x", 12, 2.8), "Your answer"));
+    }
+  }
 
   GRE.renderQBody = function (container, item, getAns, setAns, opts) {
     opts = opts || {};
     const q = item.q, el = GRE.el;
     const ro = opts.review || opts.disabled;
 
+    /* Reading Comprehension and Data Interpretation read as a split screen:
+       source material on the left, question on the right. */
     let qcol = container;
     if (item.passage) {
       const split = el("div", { class: "split" });
       const pside = el("div", { class: "passage" });
       if (item.di) {
         pside.appendChild(el("div", { class: "passage-label" }, "Questions are based on the following data"));
-        if (item.passage.intro) pside.appendChild(el("div", { class: "qtext", html: item.passage.intro }));
-        pside.appendChild(GRE.renderDisplay(item.passage.display || {}));
+        const body = el("div", { class: "ptext" });
+        if (item.passage.intro) body.appendChild(el("div", { html: item.passage.intro }));
+        body.appendChild(GRE.renderDisplay(item.passage.display || {}));
+        pside.appendChild(body);
       } else {
         pside.appendChild(el("div", { class: "passage-label" }, "Questions are based on this passage"));
-        pside.appendChild(el("div", { html: item.passage.text }));
+        pside.appendChild(el("div", { class: "ptext", html: item.passage.text }));
       }
       split.appendChild(pside);
       split.appendChild(el("div", { class: "divider" }));
@@ -289,15 +308,9 @@
       qcol.appendChild(el("div", { class: "directions" }, GRE.directionsFor(q)));
     }
 
-    const markChoice = (btn, state) => {
-      btn.classList.toggle("selected", !!state);
-    };
-
     /* ----- Text Completion ----- */
     if (q.type === "tc") {
       const blanks = q.blanks || 1;
-      let ans = getAns();
-      if (blanks > 1 && !Array.isArray(ans)) { ans = new Array(blanks).fill(null); }
 
       const sentence = el("div", { class: "qtext" });
       const renderSentence = () => {
@@ -316,72 +329,98 @@
 
       if (blanks === 1) {
         const box = el("div", { class: "choices" });
+        const btns = [];
+        const repaint = () => btns.forEach((b, j) => b.classList.toggle("selected", getAns() === j));
         q.choices.forEach((c, i) => {
-          const btn = el("button", { class: "choice", onclick: () => {
-            if (ro) return;
-            setAns(getAns() === i ? null : i);
-            box.querySelectorAll(".choice").forEach((b, j) => markChoice(b, getAns() === j));
-            renderSentence();
-          } }, el("span", { class: "oval" }), el("span", { html: c }));
-          markChoice(btn, getAns() === i);
+          const btn = el("button", {
+            class: "choice" + (ro ? " ro" : ""), type: "button",
+            onclick: () => {
+              if (ro) return;
+              setAns(getAns() === i ? null : i);
+              repaint();
+              renderSentence();
+            }
+          }, el("span", { class: "oval" }), el("span", { class: "ctext", html: c }));
           reviewPaint(btn, q, i, getAns(), opts);
+          btns.push(btn);
           box.appendChild(btn);
         });
         qcol.appendChild(box);
+        repaint();
       } else {
         const cols = el("div", { class: "blank-cols" });
         for (let b = 0; b < blanks; b++) {
           const col = el("div", { class: "blank-col" });
           col.appendChild(el("h4", null, "Blank (" + ["i", "ii", "iii"][b] + ")"));
+          const box = el("div", { class: "choices" });
+          const btns = [];
+          const repaint = () => btns.forEach((bt, j) =>
+            bt.classList.toggle("selected", Array.isArray(getAns()) && getAns()[b] === j));
           q.choices[b].forEach((c, i) => {
-            const btn = el("button", { class: "choice", onclick: () => {
-              if (ro) return;
-              let a = getAns();
-              if (!Array.isArray(a)) a = new Array(blanks).fill(null);
-              a = a.slice();
-              a[b] = (a[b] === i ? null : i);
-              setAns(a);
-              col.querySelectorAll(".choice").forEach((bt, j) => markChoice(bt, (getAns() || [])[b] === j));
-              renderSentence();
-            } }, el("span", { class: "oval" }), el("span", { html: c }));
-            markChoice(btn, Array.isArray(getAns()) && getAns()[b] === i);
+            const btn = el("button", {
+              class: "choice" + (ro ? " ro" : ""), type: "button",
+              onclick: () => {
+                if (ro) return;
+                let a = getAns();
+                if (!Array.isArray(a)) a = new Array(blanks).fill(null);
+                a = a.slice();
+                a[b] = (a[b] === i ? null : i);
+                setAns(a);
+                repaint();
+                renderSentence();
+              }
+            }, el("span", { class: "oval" }), el("span", { class: "ctext", html: c }));
             if (opts.review) {
-              if (q.answer[b] === i) btn.classList.add("correct");
-              if (Array.isArray(getAns()) && getAns()[b] === i && q.answer[b] !== i) btn.classList.add("wrongpick");
+              const cur = Array.isArray(getAns()) ? getAns()[b] : null;
+              if (q.answer[b] === i) {
+                btn.classList.add("correct");
+                btn.appendChild(el("span", { class: "tag" }, GRE.icon("check", 13, 3), "Correct"));
+              }
+              if (cur === i && q.answer[b] !== i) {
+                btn.classList.add("wrongpick");
+                btn.appendChild(el("span", { class: "tag" }, GRE.icon("x", 12, 2.8), "Yours"));
+              }
             }
-            col.appendChild(btn);
+            btns.push(btn);
+            box.appendChild(btn);
           });
+          col.appendChild(box);
+          repaint();
           cols.appendChild(col);
         }
         qcol.appendChild(cols);
+        if (!opts.review) {
+          qcol.appendChild(el("div", { class: "selcount" },
+            "Every blank must be right for credit."));
+        }
       }
       return;
     }
 
-    /* ----- QC ----- */
+    /* ----- Quantitative Comparison ----- */
     if (q.type === "qc") {
       if (q.info) qcol.appendChild(el("div", { class: "qc-info", html: q.info }));
-      if (q.figure) {
-        const f = el("div", { class: "figure", html: q.figure });
-        qcol.appendChild(f);
-      }
+      if (q.figure) qcol.appendChild(el("div", { class: "figure", html: q.figure }));
       const tb = el("table", { class: "qc-table" });
       tb.innerHTML = `<tr><th>Quantity A</th><th>Quantity B</th></tr>
         <tr><td>${q.qa}</td><td>${q.qb}</td></tr>`;
       qcol.appendChild(tb);
       qcol.appendChild(el("hr", { class: "qc-line" }));
-      const box = el("div", { class: "choices" });
+
+      const box = el("div", { class: "choices qc" });
+      const btns = [];
+      const repaint = () => btns.forEach((b, j) => b.classList.toggle("selected", getAns() === j));
       QC_CHOICES.forEach((c, i) => {
-        const btn = el("button", { class: "choice", onclick: () => {
-          if (ro) return;
-          setAns(getAns() === i ? null : i);
-          box.querySelectorAll(".choice").forEach((b, j) => markChoice(b, getAns() === j));
-        } }, el("span", { class: "oval" }), el("span", null, c));
-        markChoice(btn, getAns() === i);
+        const btn = el("button", {
+          class: "choice" + (ro ? " ro" : ""), type: "button",
+          onclick: () => { if (ro) return; setAns(getAns() === i ? null : i); repaint(); }
+        }, el("span", { class: "oval" }), el("span", { class: "ctext" }, c));
         reviewPaint(btn, q, i, getAns(), opts);
+        btns.push(btn);
         box.appendChild(btn);
       });
       qcol.appendChild(box);
+      repaint();
       return;
     }
 
@@ -397,30 +436,42 @@
         let a = getAns();
         if (!Array.isArray(a)) a = ["", ""];
         const fb = el("div", { class: "fracbar" });
-        const top = el("input", { type: "text", value: a[0] || "", oninput: e => {
-          const cur = Array.isArray(getAns()) ? getAns().slice() : ["", ""];
-          cur[0] = e.target.value; setAns(cur);
-        } });
-        const bot = el("input", { type: "text", value: a[1] || "", oninput: e => {
-          const cur = Array.isArray(getAns()) ? getAns().slice() : ["", ""];
-          cur[1] = e.target.value; setAns(cur);
-        } });
+        const top = el("input", {
+          type: "text", value: a[0] || "", "aria-label": "Numerator",
+          oninput: e => {
+            const cur = Array.isArray(getAns()) ? getAns().slice() : ["", ""];
+            cur[0] = e.target.value; setAns(cur);
+          }
+        });
+        const bot = el("input", {
+          type: "text", value: a[1] || "", "aria-label": "Denominator",
+          oninput: e => {
+            const cur = Array.isArray(getAns()) ? getAns().slice() : ["", ""];
+            cur[1] = e.target.value; setAns(cur);
+          }
+        });
         if (ro) { top.disabled = true; bot.disabled = true; }
         focusTransfer(top); focusTransfer(bot);
         fb.appendChild(top); fb.appendChild(el("hr")); fb.appendChild(bot);
         wrap.appendChild(fb);
       } else {
-        const inp = el("input", { type: "text", value: getAns() || "", oninput: e => setAns(e.target.value) });
+        const inp = el("input", {
+          type: "text", value: getAns() || "", "aria-label": "Answer",
+          oninput: e => setAns(e.target.value)
+        });
         if (ro) inp.disabled = true;
         focusTransfer(inp);
         wrap.appendChild(inp);
-        if (q.unitAfter) wrap.appendChild(el("span", { html: q.unitAfter }));
+        if (q.unitAfter) wrap.appendChild(el("span", { class: "unit", html: q.unitAfter }));
       }
       qcol.appendChild(wrap);
+      if (q.frac && !opts.review) {
+        qcol.appendChild(el("div", { class: "fracnote" }, "Equivalent fractions are accepted."));
+      }
       if (opts.review) {
         const corr = q.frac ? (q.ansFrac[0] + "/" + q.ansFrac[1]) : String(q.answer);
-        qcol.appendChild(el("p", { style: "margin-top:12px;font-size:15px" },
-          "Correct answer: ", el("strong", null, corr)));
+        qcol.appendChild(el("p", { class: "correct-answer" },
+          "Correct answer: ", el("strong", { class: "mono" }, corr)));
       }
       return;
     }
@@ -435,38 +486,58 @@
     const multi = (q.type === "se" || q.type === "mcma");
     const maxSel = q.type === "se" ? 2 : Infinity;
     const box = el("div", { class: "choices" });
+    const btns = [];
+    const count = el("div", { class: "selcount" });
+
+    const repaint = () => {
+      const a = getAns();
+      const sel = i => multi ? (Array.isArray(a) && a.includes(i)) : a === i;
+      const n = Array.isArray(a) ? a.length : (a != null ? 1 : 0);
+      const atMax = multi && isFinite(maxSel) && n >= maxSel;
+      btns.forEach((b, i) => {
+        const on = sel(i);
+        b.classList.toggle("selected", on);
+        b.classList.toggle("dim", !opts.review && atMax && !on);
+        const hint = b.querySelector(".maxhint");
+        if (hint) hint.classList.toggle("hidden", !(atMax && !on));
+      });
+      if (q.type === "se" && !opts.review) {
+        count.textContent = `${n} of 2 selected · both must be right for credit`;
+      } else if (q.type === "mcma" && !opts.review) {
+        count.textContent = `${n} selected · credit requires every correct choice`;
+      }
+    };
+
     q.choices.forEach((c, i) => {
-      const btn = el("button", { class: "choice", onclick: () => {
-        if (ro) return;
-        if (multi) {
-          let a = Array.isArray(getAns()) ? getAns().slice() : [];
-          if (a.includes(i)) a = a.filter(x => x !== i);
-          else { if (a.length >= maxSel) return; a.push(i); }
-          setAns(a.length ? a : null);
-          box.querySelectorAll(".choice").forEach((b, j) =>
-            markChoice(b, Array.isArray(getAns()) && getAns().includes(j)));
-        } else {
-          setAns(getAns() === i ? null : i);
-          box.querySelectorAll(".choice").forEach((b, j) => markChoice(b, getAns() === j));
+      const btn = el("button", {
+        class: "choice" + (ro ? " ro" : ""), type: "button",
+        onclick: () => {
+          if (ro) return;
+          if (multi) {
+            let a = Array.isArray(getAns()) ? getAns().slice() : [];
+            if (a.includes(i)) a = a.filter(x => x !== i);
+            else { if (a.length >= maxSel) return; a.push(i); }
+            setAns(a.length ? a : null);
+          } else {
+            setAns(getAns() === i ? null : i);
+          }
+          repaint();
         }
-      } },
-        el("span", { class: multi ? "sqr" : "oval" }),
-        el("span", { html: c }));
-      const sel = multi ? (Array.isArray(getAns()) && getAns().includes(i)) : getAns() === i;
-      markChoice(btn, sel);
+      },
+        el("span", { class: multi ? "sqr" : "oval" }, multi ? GRE.icon("check", 13, 3.4) : null),
+        el("span", { class: "ctext", html: c }));
+
+      if (q.type === "se" && !opts.review) {
+        btn.appendChild(el("span", { class: "maxhint hidden" }, "max 2 reached"));
+      }
       reviewPaint(btn, q, i, getAns(), opts);
+      btns.push(btn);
       box.appendChild(btn);
     });
     qcol.appendChild(box);
+    if (multi && !opts.review) qcol.appendChild(count);
+    repaint();
   };
-
-  function reviewPaint(btn, q, i, ans, opts) {
-    if (!opts.review) return;
-    const corrArr = Array.isArray(q.answer) ? q.answer : [q.answer];
-    const ansArr = ans == null ? [] : (Array.isArray(ans) ? ans : [ans]);
-    if (corrArr.includes(i)) btn.classList.add("correct");
-    if (ansArr.includes(i) && !corrArr.includes(i)) btn.classList.add("wrongpick");
-  }
 
   /* ================= exam assembly ================= */
 
@@ -479,14 +550,12 @@
   ];
 
   function draw(pool, n, avoid) {
-    // prefer questions not in `avoid` (recent/current-exam ids); random within groups
     const fresh = [], stale = [];
     GRE.shuffle(pool).forEach(x => (avoid.has(x.id) ? stale : fresh).push(x));
     return fresh.concat(stale).slice(0, n);
   }
 
   function drawSpread(pool, n, avoid, keyFn) {
-    // like draw() but spreads across keyFn values (topics)
     const fresh = [], stale = [];
     GRE.shuffle(pool).forEach(x => (avoid.has(x.id) ? stale : fresh).push(x));
     const ordered = fresh.concat(stale);
@@ -509,7 +578,6 @@
     if (!cand.length) return null;
     const fresh = cand.filter(p => !p.questions.some(q => avoid.has(q.id)));
     const pick = GRE.shuffle(fresh.length ? fresh : cand)[0];
-    // prefer exact question count
     const exact = (fresh.length ? fresh : cand).filter(p => p.questions.length === nq);
     return exact.length ? GRE.shuffle(exact)[0] : pick;
   }
@@ -536,7 +604,6 @@
     se.forEach(q => ids.push(q.id));
     if (p2) p2.questions.slice(0, 2).forEach(q => ids.push(q.id));
 
-    // top up / trim to exact target with extra SE/TC if pools ran short
     const target = isS2 ? 15 : 12;
     if (ids.length < target) {
       const extra = draw(byTypeAny("se").concat(byTypeAny("tc")), target - ids.length,
@@ -644,9 +711,14 @@
     GRE.store.save();
   }
 
+  /* -------- intro -------- */
+
   E.startIntro = function (skipGate) {
     if (GRE.store.data.inprogress) {
-      GRE.modal("Exam in progress", "<p>You already have an unfinished mock. Resume it from the home screen, or discard it first.</p>");
+      GRE.modal("Exam in progress",
+        "<p>You already have an unfinished mock. Resume or discard it from the dashboard first.</p>",
+        [{ label: "Go to dashboard", action: () => GRE.show(GRE.screens.home) }],
+        { intent: "warning" });
       return;
     }
     // The mock is the finish line of the course. Gate it, but let a determined
@@ -662,39 +734,47 @@
         [
           { label: "Go to the course", action: () => GRE.show(GRE.screens.course) },
           { label: "Take the mock anyway", secondary: true, action: () => E.startIntro(true) }
-        ]);
+        ],
+        { intent: "info" });
       return;
     }
+
     GRE.show(root => {
-      const { bar, stage, inner } = GRE.chrome("GRE® General Test", "Full mock exam");
-      root.appendChild(bar); root.appendChild(stage);
-      inner.appendChild(GRE.el("h1", { class: "screen-title" }, "Before you begin"));
-      const card = GRE.el("div", { class: "card" });
-      card.innerHTML = `
-        <h3>Test overview: total time about 1 hour 58 minutes</h3>
-        <ol>
-          <li><strong>Analytical Writing</strong> ("Analyze an Issue"): 1 task, 30 minutes</li>
-          <li><strong>Verbal Reasoning, Section 1</strong>: 12 questions, 18 minutes</li>
-          <li><strong>Quantitative Reasoning, Section 1</strong>: 12 questions, 21 minutes</li>
-          <li><strong>Verbal Reasoning, Section 2</strong>: 15 questions, 23 minutes</li>
-          <li><strong>Quantitative Reasoning, Section 2</strong>: 15 questions, 26 minutes</li>
-        </ol>
-        <p>The second section of each measure is <strong>adaptive</strong>: its difficulty depends on your
-        performance in the first section, and the 130–170 scaled score reflects both how many questions
-        you answered correctly and which second section you received.</p>
-        <h3>Rules of engagement (like test day)</h3>
-        <ul>
-          <li>There are <strong>no scheduled breaks</strong> on the shorter GRE. Section clocks run whether or not you're looking at the screen, but the clock pauses if you close this app mid-exam and resume later.</li>
-          <li>Within a section you can move freely: <strong>Back</strong>, <strong>Next</strong>, <strong>Mark</strong> for review, and the <strong>Review</strong> screen.</li>
-          <li>Once you <strong>Exit</strong> a section you cannot return to it.</li>
-          <li>An on-screen <strong>calculator</strong> is available in Quantitative sections only.</li>
-          <li>There is no penalty for guessing, never leave a question blank.</li>
-        </ul>
-        <p>Use scratch paper and work somewhere quiet. Treat it like the real thing.</p>`;
-      inner.appendChild(card);
-      const row = GRE.el("div", { class: "btnrow" });
-      row.appendChild(GRE.el("button", { class: "bigbtn", onclick: () => { newExam(); enterSection(0); } }, "Begin test"));
-      row.appendChild(GRE.el("button", { class: "bigbtn secondary", onclick: () => GRE.show(GRE.screens.home) }, "Not yet"));
+      const el = GRE.el;
+      root.appendChild(el("div", { class: "examhead" },
+        el("div", { class: "etitle" }, "GRE® General Test, Mock"),
+        el("span", { class: "note-right" }, "not started")));
+      const { stage, inner } = GRE.stage("exam");
+      root.appendChild(stage);
+
+      inner.appendChild(el("h1", { class: "screen-title" }, "Before you begin"));
+      inner.appendChild(el("p", { class: "screen-sub" },
+        "Total time about 1 hour 58 minutes. The second Verbal and Quant sections are adaptive."));
+
+      const rules = el("div", { class: "rules" });
+      const rule = (key, cls, html) => rules.appendChild(el("div", { class: "rule" },
+        el("span", { class: "key" + (cls ? " " + cls : "") }, key),
+        el("span", { class: "txt", html })));
+      rule("30m", "", "<strong>Analytical Writing</strong> — Analyze an Issue · 1 task");
+      rule("18m", "v", "<strong>Verbal</strong> · Section 1 — 12 questions");
+      rule("21m", "q", "<strong>Quant</strong> · Section 1 — 12 questions");
+      rule("23m", "v", "<strong>Verbal</strong> · Section 2 — 15 questions <span class='adaptive'>· adaptive</span>");
+      rule("26m", "q", "<strong>Quant</strong> · Section 2 — 15 questions <span class='adaptive'>· adaptive</span>");
+      inner.appendChild(rules);
+
+      inner.appendChild(el("p", { style: "font-size:13px;color:var(--muted);margin:16px 0 0;line-height:1.55" },
+        "Move freely within a section (Back / Next / Mark / Review). Once you Exit a section you " +
+        "can't return. The calculator is Quant-only. There is no penalty for guessing. The clock " +
+        "pauses if you close this app mid-exam and resume later."));
+
+      const row = el("div", { class: "btnrow" });
+      row.appendChild(el("button", {
+        class: "btn exam", style: "flex:1",
+        onclick: () => { newExam(); enterSection(0); }
+      }, "Begin test"));
+      row.appendChild(el("button", {
+        class: "btn secondary", onclick: () => GRE.show(GRE.screens.home)
+      }, "Not yet"));
       inner.appendChild(row);
     });
   };
@@ -717,14 +797,35 @@
     showDirections(i);
   }
 
+  function sectionTitle(i) {
+    const sec = X.sections[i];
+    const names = { awa: "Analytical Writing, Analyze an Issue", verbal: "Verbal Reasoning", quant: "Quantitative Reasoning" };
+    const base = names[sec.kind] + (sec.no ? ` · Section ${sec.no === 1 ? 1 : 2}` : "");
+    return `Section ${i + 1} of 5: ${base}`;
+  }
+
+  function shortTitle(i) {
+    const sec = X.sections[i];
+    if (sec.kind === "awa") return "Analytical Writing · Analyze an Issue";
+    return (sec.kind === "verbal" ? "Verbal Reasoning" : "Quantitative Reasoning") + " · Section " + sec.no;
+  }
+
+  function examBarSimple(note) {
+    const el = GRE.el;
+    return el("div", { class: "examhead" },
+      el("div", { class: "etitle" }, "GRE® General Test, Mock"),
+      el("span", { class: "note-right" }, note || ""));
+  }
+
   function showDirections(i) {
     const sec = X.sections[i];
     GRE.show(root => {
-      const { bar, stage, inner } = GRE.chrome("GRE® General Test", sectionTitle(i));
-      // no Home button during the exam - replace bar
-      root.appendChild(examBarSimple(sectionTitle(i)));
+      const el = GRE.el;
+      root.appendChild(examBarSimple(shortTitle(i)));
+      const { stage, inner } = GRE.stage("exam");
       root.appendChild(stage);
-      inner.appendChild(GRE.el("h1", { class: "screen-title" }, sectionTitle(i)));
+
+      inner.appendChild(el("h1", { class: "screen-title" }, sectionTitle(i)));
       const card = GRE.el("div", { class: "card" });
       if (sec.kind === "awa") {
         card.innerHTML = `
@@ -758,32 +859,19 @@
           </ul>`;
       }
       inner.appendChild(card);
+
       if (sec.remaining < sec.durSec && !sec.started) sec.remaining = sec.durSec;
-      const row = GRE.el("div", { class: "btnrow" });
-      row.appendChild(GRE.el("button", { class: "bigbtn", onclick: () => {
-        sec.started = true;
-        save();
-        runSection(i);
-      } }, sec.kind === "awa" ? "Start writing" : "Start section"));
+      const row = el("div", { class: "btnrow" });
+      row.appendChild(el("button", {
+        class: "btn exam", onclick: () => { sec.started = true; save(); runSection(i); }
+      }, sec.kind === "awa" ? "Start writing" : "Start section", GRE.icon("arrow", 17)));
       inner.appendChild(row);
       if (i > 0) {
-        inner.appendChild(GRE.el("p", { class: "footnote" },
-          "The section clock starts when you click the button. Pausing here is possible but the real test moves you along automatically: don't linger."));
+        inner.appendChild(el("p", { class: "footnote" },
+          "The section clock starts when you click the button. Pausing here is possible but the real " +
+          "test moves you along automatically: don't linger."));
       }
     });
-  }
-
-  function sectionTitle(i) {
-    const sec = X.sections[i];
-    const names = { awa: "Analytical Writing, Analyze an Issue", verbal: "Verbal Reasoning", quant: "Quantitative Reasoning" };
-    const base = names[sec.kind] + (sec.no ? ` · Section ${sec.no === 1 ? 1 : 2}` : "");
-    return `Section ${i + 1} of 5: ${base}`;
-  }
-
-  function examBarSimple(title) {
-    return GRE.el("div", { class: "topbar" },
-      GRE.el("div", { class: "brand" }, "GRE® General Test, Mock",
-        GRE.el("small", null, title)));
   }
 
   /* -------- running a timed section -------- */
@@ -797,68 +885,86 @@
     stopTicker();
 
     GRE.show(root => {
-      /* ---- top bar ---- */
-      const btns = GRE.el("div", { class: "btns" });
-      const bar = GRE.el("div", { class: "topbar" },
-        GRE.el("div", { class: "brand" }, "GRE® General Test, Mock",
-          GRE.el("small", null, sectionTitle(i))),
-        btns);
+      const el = GRE.el;
+      const isAwa = sec.kind === "awa";
 
-      const tbtn = (ic, label, fn, cls) => {
-        const b = GRE.el("button", { class: "tbtn" + (cls ? " " + cls : ""), onclick: fn },
-          GRE.el("span", { class: "ic" }, ic), label);
-        btns.appendChild(b);
+      /* ---- exam header: title + PowerPrep-style toolbar ---- */
+      const toolbar = el("div", { class: "toolbar" });
+      const head = el("div", { class: "examhead" },
+        el("div", { class: "brand" },
+          el("div", { class: "etitle" }, "GRE® Mock"),
+          el("div", { class: "enote" }, shortTitle(i))),
+        toolbar);
+
+      const tbtn = (icon, label, fn, cls) => {
+        const b = el("button", {
+          class: "tbtn" + (cls ? " " + cls : ""), onclick: fn,
+          type: "button", "aria-label": label
+        }, GRE.icon(icon, 16), el("span", { class: "lb" }, label));
+        toolbar.appendChild(b);
         return b;
       };
 
-      let markBtn, backBtn, nextBtn;
-      const isAwa = sec.kind === "awa";
+      let markBtn, backBtn, nextBtn, calcBtn;
 
-      tbtn("🚪", "Exit Section", () => confirmExit());
+      tbtn("exit", "Exit", () => confirmExit());
       if (!isAwa) {
-        tbtn("☰", "Review", () => { onReview = true; paint(); });
-        markBtn = tbtn("🚩", "Mark", () => {
-          sec.marked[qIdxOf()] = !sec.marked[qIdxOf()];
+        tbtn("list", "Review", () => { commitTime(); onReview = true; paint(); });
+        markBtn = tbtn("flag", "Mark", () => {
+          sec.marked[cur] = !sec.marked[cur];
           save(); paint();
         });
       }
-      tbtn("❓", "Help", () => showHelp(sec));
-      if (sec.kind === "quant") tbtn("🖩", "Calc", () => GRE.calc.toggle());
+      tbtn("help", "Help", () => showHelp(sec));
+      if (sec.kind === "quant") {
+        calcBtn = tbtn("calc", "Calc", () => {
+          GRE.calc.toggle();
+          calcBtn.classList.toggle("on", !GRE.calc.isHidden());
+        });
+      }
+      toolbar.appendChild(el("div", { class: "toolsep" }));
       if (!isAwa) {
-        backBtn = tbtn("◀", "Back", () => { if (cur > 0) { moveTo(cur - 1); } });
-        nextBtn = tbtn("▶", "Next", () => {
+        backBtn = tbtn("chevL", "Back", () => { if (cur > 0) moveTo(cur - 1); }, "wide");
+        nextBtn = tbtn("chevR", "Next", () => {
           if (cur < sec.items.length - 1) moveTo(cur + 1);
           else endOfSectionPrompt();
-        });
+        }, "wide next");
       } else {
-        tbtn("▶", "Next", () => confirmExit(true));
+        tbtn("chevR", "Next", () => confirmExit(true), "wide next");
       }
-      root.appendChild(bar);
+      root.appendChild(head);
 
-      /* ---- substrip with counter + timer ---- */
-      const counter = GRE.el("span", { class: "qcount" });
-      const timerEl = GRE.el("span", { class: "timer" });
-      const hideBtn = GRE.el("button", { class: "linkish", onclick: () => {
-        timerHidden = !timerHidden;
-        hideBtn.textContent = timerHidden ? "Show Time" : "Hide Time";
-        tick();
-      } }, "Hide Time");
-      root.appendChild(GRE.el("div", { class: "substrip" },
+      /* ---- sub-strip: counter + hideable timer ---- */
+      const counter = el("span", { class: "qcount" });
+      const timerEl = el("span", { class: "timer" });
+      const hideBtn = el("button", {
+        class: "hidebtn", type: "button",
+        onclick: () => {
+          timerHidden = !timerHidden;
+          hideBtn.textContent = timerHidden ? "Show Time" : "Hide Time";
+          tick();
+        }
+      }, "Hide Time");
+      root.appendChild(el("div", { class: "substrip" },
         counter,
-        GRE.el("span", { class: "right" }, hideBtn, timerEl)));
+        el("span", { class: "right" }, hideBtn, timerEl)));
 
-      const stage = GRE.el("div", { class: "stage" });
-      const inner = GRE.el("div", { class: "stage-inner" });
-      stage.appendChild(inner);
+      /* Live region for the 5-minute warning: announced, not just colored. */
+      const low = el("div", { class: "lowtime hidden", role: "status", "aria-live": "polite" });
+      const lowText = el("span", null, "");
+      low.appendChild(GRE.icon("clock", 17));
+      low.appendChild(lowText);
+      root.appendChild(low);
+      let lowShown = false;
+
+      const { stage, inner } = GRE.stage("exam");
       root.appendChild(stage);
 
       let cur = 0;
-      // resume at first unseen question
       if (!isAwa) {
         const firstUnseen = sec.seen.findIndex(s => !s);
         cur = firstUnseen === -1 ? 0 : firstUnseen;
       }
-      const qIdxOf = () => cur;
 
       function commitTime() {
         if (isAwa) return;
@@ -879,43 +985,78 @@
         inner.innerHTML = "";
         if (isAwa) { paintEssay(); return; }
         if (onReview) { paintReview(); return; }
+
         sec.seen[cur] = true;
-        counter.textContent = `Question ${cur + 1} of ${sec.items.length}`;
+        counter.innerHTML = "";
+        counter.appendChild(document.createTextNode(`Question ${cur + 1} of ${sec.items.length}`));
+        if (sec.marked[cur]) counter.appendChild(el("span", { class: "fl" }, GRE.icon("flag", 13)));
+
         markBtn.classList.toggle("marked", !!sec.marked[cur]);
+        markBtn.querySelector(".lb").textContent = sec.marked[cur] ? "Marked" : "Mark";
         backBtn.disabled = cur === 0;
+
         const id = sec.items[cur];
         const item = GRE.byId[id];
         if (!item) { inner.textContent = "Question unavailable."; return; }
+
+        // reading/data questions get a wider stage for the split layout
+        inner.classList.toggle("splitwide", !!item.passage);
+
         GRE.renderQBody(inner, item,
           () => sec.answers[cur],
           v => { sec.answers[cur] = v; save(); },
           {});
         stamp = Date.now();
+        stage.scrollTop = 0;
       }
 
       function paintReview() {
-        counter.textContent = "Review: " + sectionTitle(i);
-        const box = GRE.el("div");
-        box.appendChild(GRE.el("h2", { class: "screen-title" }, "Review your answers"));
-        box.appendChild(GRE.el("p", { class: "screen-sub" },
+        counter.textContent = "Review · " + shortTitle(i);
+        inner.classList.remove("splitwide");
+
+        inner.appendChild(el("h1", { class: "screen-title" }, "Review your answers"));
+        inner.appendChild(el("p", { class: "screen-sub" },
           "Click a row to go to that question. You can change answers until you exit the section."));
-        const tb = GRE.el("table", { class: "review-table" });
-        tb.innerHTML = "<tr><th>Question</th><th>Status</th><th>Marked</th></tr>";
+
+        const wrap = el("div", { class: "review-wrap" });
+        const tb = el("table", { class: "review-table" });
+        const thead = el("thead");
+        thead.innerHTML = "<tr><th>QUESTION</th><th>STATUS</th><th>MARK</th></tr>";
+        tb.appendChild(thead);
+        const tbody = el("tbody");
+
         sec.items.forEach((id, j) => {
           const item = GRE.byId[id];
           const answered = item && GRE.isAnswered(item.q, sec.answers[j]);
-          const st = answered ? '<span class="st-ans">Answered</span>'
-            : (sec.seen[j] ? '<span class="st-not">Not Answered</span>' : '<span class="st-seen">Not Seen</span>');
-          const tr = GRE.el("tr", { class: j === cur ? "cur" : "", onclick: () => moveTo(j) });
-          tr.innerHTML = `<td>Question ${j + 1}</td><td>${st}</td><td>${sec.marked[j] ? "🚩" : ""}</td>`;
-          tb.appendChild(tr);
+          const tr = el("tr", { class: j === cur ? "cur" : "", onclick: () => moveTo(j) });
+          tr.appendChild(el("td", null, `Question ${j + 1}`));
+
+          const std = el("td");
+          const st = el("span", { class: "st " + (answered ? "ans" : sec.seen[j] ? "not" : "unseen") });
+          if (answered) { st.appendChild(GRE.icon("check", 12, 3)); st.appendChild(document.createTextNode("Answered")); }
+          else if (sec.seen[j]) { st.appendChild(GRE.icon("x", 12, 2.6)); st.appendChild(document.createTextNode("Not Answered")); }
+          else { st.appendChild(document.createTextNode("Not Seen")); }
+          std.appendChild(st);
+          tr.appendChild(std);
+
+          const mkd = el("td");
+          if (sec.marked[j]) mkd.appendChild(el("span", { class: "mk" }, GRE.icon("flag", 13)));
+          tr.appendChild(mkd);
+          tbody.appendChild(tr);
         });
-        box.appendChild(tb);
-        const row = GRE.el("div", { class: "btnrow" });
-        row.appendChild(GRE.el("button", { class: "bigbtn", onclick: () => { onReview = false; paint(); } }, "Return to question"));
-        row.appendChild(GRE.el("button", { class: "bigbtn secondary", onclick: () => confirmExit() }, "Exit section"));
-        box.appendChild(row);
-        inner.appendChild(box);
+        tb.appendChild(tbody);
+        wrap.appendChild(tb);
+        inner.appendChild(wrap);
+
+        const row = el("div", { class: "btnrow" });
+        row.appendChild(el("button", {
+          class: "btn exam", style: "flex:1", onclick: () => { onReview = false; paint(); }
+        }, "Return to question"));
+        row.appendChild(el("button", {
+          class: "btn secondary", onclick: () => confirmExit()
+        }, "Exit section"));
+        inner.appendChild(row);
+        stage.scrollTop = 0;
       }
 
       /* ---- essay ---- */
@@ -923,17 +1064,20 @@
       function paintEssay() {
         counter.textContent = "Analyze an Issue";
         const prompt = window.GREBANK.essays.find(e => e.id === X.essay.promptId);
-        const wrap = GRE.el("div", { class: "essay-wrap" });
-        wrap.appendChild(GRE.el("div", { class: "essay-prompt", html:
-          "<p><strong>" + GRE.esc(prompt.prompt) + "</strong></p><p style='font-size:14px'>" + GRE.esc(prompt.task) + "</p>" }));
+        const wrap = el("div", { class: "essay-wrap" });
+        wrap.appendChild(el("div", { class: "essay-prompt", html:
+          "<p>" + GRE.esc(prompt.prompt) + "</p><p>" + GRE.esc(prompt.task) + "</p>" }));
 
-        const toolbar = GRE.el("div", { class: "essay-toolbar" });
-        const box = GRE.el("textarea", { class: "essay-box", spellcheck: "false", autocomplete: "off" });
+        const toolbar2 = el("div", { class: "essay-toolbar" });
+        const box = el("textarea", {
+          class: "essay-box", spellcheck: "false", autocomplete: "off",
+          "aria-label": "Essay response"
+        });
         box.value = X.essay.text || "";
-        const wc = GRE.el("span", { class: "wc" });
+        const wc = el("span", { class: "wc" });
         const updWC = () => {
           const words = box.value.trim() ? box.value.trim().split(/\s+/).length : 0;
-          wc.textContent = words + " word" + (words === 1 ? "" : "s");
+          wc.textContent = words + " word" + (words === 1 ? "" : "s") + " · no spell-check";
         };
         updWC();
 
@@ -953,11 +1097,8 @@
             if (e.inputType && !e.inputType.startsWith("history")) pushUndo();
           }
         });
-        // block external clipboard, allow internal
-        box.addEventListener("paste", e => {
-          e.preventDefault();
-          insertAtCursor(clipboard);
-        });
+        // block external clipboard, allow internal (like the real editor)
+        box.addEventListener("paste", e => { e.preventDefault(); insertAtCursor(clipboard); });
         box.addEventListener("copy", e => { e.preventDefault(); clipboard = selText(); });
         box.addEventListener("cut", e => {
           e.preventDefault(); clipboard = selText(); pushUndo(); replaceSel(""); sync();
@@ -971,7 +1112,8 @@
         function insertAtCursor(t) { if (t) { pushUndo(); replaceSel(t); sync(); } }
         function sync() { X.essay.text = box.value; updWC(); save(); }
 
-        const tbBtn = (label, fn) => toolbar.appendChild(GRE.el("button", { onclick: () => { fn(); box.focus(); } }, label));
+        const tbBtn = (label, fn) => toolbar2.appendChild(
+          el("button", { type: "button", onclick: () => { fn(); box.focus(); } }, label));
         tbBtn("Cut", () => { clipboard = selText(); pushUndo(); replaceSel(""); sync(); });
         tbBtn("Copy", () => { clipboard = selText(); });
         tbBtn("Paste", () => insertAtCursor(clipboard));
@@ -981,9 +1123,9 @@
         tbBtn("Redo", () => {
           if (redoStack.length) { undoStack.push(box.value); box.value = redoStack.pop(); sync(); }
         });
-        toolbar.appendChild(wc);
+        toolbar2.appendChild(wc);
 
-        wrap.appendChild(toolbar);
+        wrap.appendChild(toolbar2);
         wrap.appendChild(box);
         inner.appendChild(wrap);
         box.focus();
@@ -993,15 +1135,33 @@
       function tick() {
         const remain = Math.max(0, (endsAt - Date.now()) / 1000);
         sec.remaining = remain;
-        const low = remain <= 300;
-        if (low && timerHidden) { timerHidden = false; hideBtn.textContent = "Hide Time"; }
+        const low5 = remain <= 300 && remain > 0;
+
+        // at 5:00 the timer comes back and can no longer be hidden
+        if (low5 && timerHidden) { timerHidden = false; hideBtn.textContent = "Hide Time"; }
+        hideBtn.disabled = low5;
+
         timerEl.textContent = timerHidden ? "" : GRE.fmtTime(remain);
-        timerEl.classList.toggle("low", low && remain > 0);
+        timerEl.classList.toggle("low", low5);
+
+        if (low5) {
+          const inc = isAwa ? 0 :
+            sec.items.filter((id, j) => !GRE.isAnswered(GRE.byId[id].q, sec.answers[j])).length;
+          const msg = isAwa
+            ? "5 minutes left in this section. The timer is back and can't be hidden."
+            : `5 minutes left in this section. ${inc} ${inc === 1 ? "question is" : "questions are"} ` +
+              "unanswered. The timer is back and can't be hidden.";
+          if (!lowShown) { low.classList.remove("hidden"); lowShown = true; }
+          if (lowText.textContent !== msg) lowText.textContent = msg;
+        }
+
         if (remain <= 0) {
           stopTicker();
           commitTime();
-          GRE.modal("Time expired", "<p>Time has expired for this section. Your answers have been recorded.</p>",
-            [{ label: "Continue", action: () => finalizeSection(i) }]);
+          GRE.modal("Time expired",
+            "<p>Time has expired for this section. Your answers have been recorded.</p>",
+            [{ label: "Continue", action: () => finalizeSection(i) }],
+            { intent: "warning" });
         }
       }
       ticker = setInterval(() => { tick(); if (Math.floor(sec.remaining) % 10 === 0) save(); }, 500);
@@ -1012,22 +1172,30 @@
           sec.items.filter((id, j) => !GRE.isAnswered(GRE.byId[id].q, sec.answers[j])).length;
         const msg = isAwa
           ? "<p>Finish the Analytical Writing section? You cannot return to your essay afterwards.</p>"
-          : `<p>Exit this section? You cannot return to it.</p>` +
-            (unanswered ? `<p><strong>${unanswered}</strong> question${unanswered === 1 ? " is" : "s are"} unanswered, unanswered questions score as incorrect.</p>` : "");
-        GRE.modal(fromNext ? "Continue?" : "Exit section?", msg, [
-          { label: isAwa ? "Finish essay" : "Exit section", action: () => { stopTicker(); commitTime(); finalizeSection(i); } },
-          { label: "Return", secondary: true }
-        ]);
+          : "<p>You cannot return to this section once you leave.</p>" +
+            (unanswered
+              ? `<p><strong>${unanswered}</strong> question${unanswered === 1 ? " is" : "s are"} ` +
+                "unanswered and will be scored as incorrect.</p>"
+              : "");
+        GRE.modal(fromNext && isAwa ? "Finish the essay?" : "Exit this section?", msg, [
+          {
+            label: isAwa ? "Finish essay" : "Exit section", danger: true,
+            action: () => { stopTicker(); commitTime(); finalizeSection(i); }
+          },
+          { label: "Keep working", secondary: true }
+        ], { intent: "danger" });
       }
 
       function endOfSectionPrompt() {
         GRE.modal("End of section",
-          "<p>You are at the last question. Use <strong>Review</strong> to check your answers, or exit the section to continue the test.</p>",
+          "<p>You are at the last question. Use <strong>Review</strong> to check your answers, " +
+          "or exit the section to continue the test.</p>",
           [
-            { label: "Review answers", action: () => { onReview = true; paint(); } },
+            { label: "Review answers", action: () => { commitTime(); onReview = true; paint(); } },
             { label: "Exit section", action: () => confirmExit() },
             { label: "Return", secondary: true }
-          ]);
+          ],
+          { intent: "info" });
       }
 
       paint();
@@ -1044,15 +1212,15 @@
         <li><strong>Next / Back</strong> move within the section.</li>
         <li><strong>Mark</strong> flags a question so you can find it on the Review screen.</li>
         <li><strong>Review</strong> shows every question's status; click a row to jump to it.</li>
-        <li><strong>Exit Section</strong> ends the section permanently.</li>
+        <li><strong>Exit</strong> ends the section permanently.</li>
         <li><strong>Hide Time</strong> hides the clock; it reappears automatically at 5:00 remaining.</li>
       </ul>`;
     const per = sec.kind === "quant"
-      ? "<h4>Quantitative</h4><p>The Calculator button opens the on-screen calculator. In Numeric Entry questions, click a box then use <em>Transfer Display</em> to copy the calculator value into it.</p>"
+      ? "<h4>Quantitative</h4><p>The Calc button opens the on-screen calculator. In Numeric Entry questions, click a box then use <em>Transfer Display</em> to copy the calculator value into it.</p>"
       : sec.kind === "verbal"
         ? "<h4>Verbal</h4><p>Text Completion gives credit only when every blank is correct. Sentence Equivalence requires both correct choices.</p>"
         : "<h4>Analytical Writing</h4><p>Use the toolbar for Cut / Copy / Paste / Undo / Redo. There is no spell-check.</p>";
-    GRE.modal("Help", nav + per, [{ label: "Return" }]);
+    GRE.modal("Help", nav + per, [{ label: "Return" }], { intent: "info", large: true });
   }
 
   /* -------- finalize / score -------- */
@@ -1076,23 +1244,24 @@
 
   function transition(next) {
     GRE.show(root => {
+      const el = GRE.el;
       root.appendChild(examBarSimple("Section complete"));
-      const stage = GRE.el("div", { class: "stage" });
-      const inner = GRE.el("div", { class: "stage-inner" });
-      stage.appendChild(inner); root.appendChild(stage);
-      inner.appendChild(GRE.el("h1", { class: "screen-title" }, "Section complete"));
-      inner.appendChild(GRE.el("p", { class: "screen-sub" },
-        `Up next: ${sectionTitle(next).replace(/^Section \d of 5: /, "")}. ` +
+      const { stage, inner } = GRE.stage("exam");
+      root.appendChild(stage);
+      inner.appendChild(el("h1", { class: "screen-title" }, "Section complete"));
+      inner.appendChild(el("p", { class: "screen-sub" },
+        `Up next: ${shortTitle(next)}. ` +
         "On the real test the next section begins almost immediately: click through when you're ready."));
-      const row = GRE.el("div", { class: "btnrow" });
-      row.appendChild(GRE.el("button", { class: "bigbtn", onclick: () => enterSection(next) }, "Continue"));
+      const row = el("div", { class: "btnrow" });
+      row.appendChild(el("button", {
+        class: "btn exam", onclick: () => enterSection(next)
+      }, "Continue", GRE.icon("arrow", 17)));
       inner.appendChild(row);
     });
   }
 
   function finishExam() {
     stopTicker();
-    // score both measures
     const v1 = X.sections[1], q1 = X.sections[2], v2 = X.sections[3], q2 = X.sections[4];
     const vPath = X.vPath || GRE.routeFor(v1.raw || 0);
     const qPath = X.qPath || GRE.routeFor(q1.raw || 0);
@@ -1130,11 +1299,9 @@
 
     const D = GRE.store.data;
     D.attempts.push(attempt);
-    // missed deck
     attempt.sections.forEach(s => s.detail.forEach(d => {
       if (!d.ok && !D.missed.includes(d.qid)) D.missed.push(d.qid);
     }));
-    // recency list - last ~3 exams of ids
     const ids = [];
     X.sections.slice(1).forEach(s => (s.items || []).forEach(id => ids.push(id)));
     D.recent = (D.recent || []).concat(ids).slice(-170);

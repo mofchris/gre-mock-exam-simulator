@@ -7,6 +7,8 @@
   const T = {};
   GRE.tutor = T;
 
+  const SIZES = [5, 10, 20];
+
   const GUIDES = {
     tc: ["Text Completion",
       `<p><strong>Read for the logic first, vocabulary second.</strong> Cover the choices, read the sentence, and predict a simple word for each blank based on the sentence's internal clues: pivot words (<em>although, yet, despite</em>) signal contrast; colons, semicolons, and "indeed" signal continuation.</p>
@@ -38,47 +40,95 @@
 
   GRE.screens.tutor = function (root) {
     const el = GRE.el;
-    const { bar, stage, inner } = GRE.chrome("Tutor Mode");
-    root.appendChild(bar); root.appendChild(stage);
-    inner.appendChild(el("h1", { class: "screen-title" }, "Tutor Mode"));
+    root.appendChild(GRE.crumb([["Dashboard", () => GRE.show(GRE.screens.home)], "Tutor Mode"]));
+    const { stage, inner } = GRE.stage();
+    root.appendChild(stage);
+
+    inner.appendChild(el("h1", { class: "screen-title" }, "Build a practice set"));
     inner.appendChild(el("p", { class: "screen-sub" },
-      "Untimed practice with instant feedback and full explanations. Pick your filters, or read a strategy guide first."));
+      "Untimed, with instant feedback, full explanations, and a strategy guide for every format."));
 
-    /* filters */
-    const fWrap = el("div", { class: "card" });
-    fWrap.appendChild(el("h3", null, "Practice a set"));
-    const filters = el("div", { class: "tutor-filters" });
-    const mk = (label, opts) => {
-      const s = el("select");
-      opts.forEach(([v, t]) => s.appendChild(el("option", { value: v }, t)));
-      const wrap = el("label", { style: "font-size:13px;color:#5a6470" }, label + " ", s);
-      filters.appendChild(wrap);
-      return s;
+    const card = el("div", { class: "card" });
+    const grid = el("div", { class: "ctlgrid" });
+
+    const mkSelect = (label, opts) => {
+      const wrap = el("div", { class: "ctl" });
+      wrap.appendChild(el("div", { class: "lbl" }, label));
+      const sel = el("select", { "aria-label": label });
+      opts.forEach(([v, t]) => sel.appendChild(el("option", { value: v }, t)));
+      const sw = el("div", { class: "selwrap" }, sel);
+      sw.appendChild(el("span", { class: "chev" }, GRE.icon("chevD", 15)));
+      wrap.appendChild(sw);
+      grid.appendChild(wrap);
+      return sel;
     };
-    const selMeasure = mk("Measure", [["any", "Both"], ["verbal", "Verbal"], ["quant", "Quant"]]);
-    const selType = mk("Type", [["any", "All types"],
-      ["tc", "Text Completion"], ["se", "Sentence Equivalence"], ["rc", "Reading Comp"], ["cr", "Critical Reasoning"],
-      ["qc", "Quantitative Comparison"], ["mcq", "Multiple Choice"], ["mcma", "Multiple-answer"], ["num", "Numeric Entry"], ["di", "Data Interpretation"]]);
-    const selTopic = mk("Quant topic", [["any", "All topics"], ["arithmetic", "Arithmetic"], ["algebra", "Algebra"], ["geometry", "Geometry"], ["data", "Data Analysis"]]);
-    const selDiff = mk("Difficulty", [["any", "Mixed"], ["easy", "Easy"], ["medium", "Medium"], ["hard", "Hard"]]);
-    const selN = mk("Questions", [["10", "10"], ["5", "5"], ["20", "20"]]);
-    fWrap.appendChild(filters);
-    const row = el("div", { class: "btnrow" });
-    row.appendChild(el("button", { class: "bigbtn", onclick: () => {
-      const ids = pickSet(selMeasure.value, selType.value, selTopic.value, selDiff.value, parseInt(selN.value, 10));
-      if (!ids.length) { GRE.modal("No questions", "<p>No questions match those filters. Loosen them and try again.</p>"); return; }
-      startSession(ids, { deck: false });
-    } }, "Start practice"));
-    fWrap.appendChild(row);
-    inner.appendChild(fWrap);
 
-    /* guides */
+    const selMeasure = mkSelect("Measure", [["any", "Both"], ["verbal", "Verbal"], ["quant", "Quant"]]);
+    const selType = mkSelect("Type", [["any", "All types"],
+      ["tc", "Text Completion"], ["se", "Sentence Equivalence"], ["rc", "Reading Comprehension"],
+      ["cr", "Critical Reasoning"], ["qc", "Quantitative Comparison"], ["mcq", "Multiple Choice"],
+      ["mcma", "Multiple-answer"], ["num", "Numeric Entry"], ["di", "Data Interpretation"]]);
+    const selTopic = mkSelect("Quant topic", [["any", "All topics"],
+      ["arithmetic", "Arithmetic"], ["algebra", "Algebra"], ["geometry", "Geometry"], ["data", "Data Analysis"]]);
+    const selDiff = mkSelect("Difficulty", [["any", "Mixed"], ["easy", "Easy"], ["medium", "Medium"], ["hard", "Hard"]]);
+
+    // Question count is a segmented control, not a dropdown.
+    let count = 10;
+    const nWrap = el("div", { class: "ctl" });
+    nWrap.appendChild(el("div", { class: "lbl" }, "Questions"));
+    const seg = el("div", { class: "seg", role: "group", "aria-label": "Questions" });
+    SIZES.forEach(n => {
+      seg.appendChild(el("button", {
+        class: n === count ? "on" : "",
+        type: "button",
+        "aria-pressed": n === count ? "true" : "false",
+        onclick: e => {
+          count = n;
+          seg.querySelectorAll("button").forEach(b => {
+            b.classList.remove("on"); b.setAttribute("aria-pressed", "false");
+          });
+          e.currentTarget.classList.add("on");
+          e.currentTarget.setAttribute("aria-pressed", "true");
+          relabel();
+        }
+      }, String(n)));
+    });
+    nWrap.appendChild(seg);
+    grid.appendChild(nWrap);
+    card.appendChild(grid);
+
+    const startBtn = el("button", {
+      class: "btn big wide", style: "margin-top:20px",
+      onclick: () => {
+        const ids = pickSet(selMeasure.value, selType.value, selTopic.value, selDiff.value, count);
+        if (!ids.length) {
+          GRE.modal("No questions",
+            "<p>No questions match those filters. Loosen them and try again.</p>",
+            [{ label: "OK" }], { intent: "info" });
+          return;
+        }
+        startSession(ids, { deck: false });
+      }
+    });
+    const relabel = () => {
+      startBtn.innerHTML = "";
+      startBtn.appendChild(document.createTextNode(`Start practice — ${count} questions`));
+      startBtn.appendChild(GRE.icon("arrow", 17));
+    };
+    relabel();
+    card.appendChild(startBtn);
+    inner.appendChild(card);
+
+    /* strategy guides */
     const g = el("div", { class: "card" });
     g.appendChild(el("h3", null, "Strategy guides"));
-    const grow = el("div", { style: "display:flex;flex-wrap:wrap;gap:8px" });
+    const grow = el("div", { class: "guides" });
     Object.keys(GUIDES).forEach(k => {
-      grow.appendChild(el("button", { class: "bigbtn secondary", style: "font-size:13.5px;padding:8px 14px", onclick: () =>
-        GRE.modal(GUIDES[k][0], GUIDES[k][1], [{ label: "Got it" }]) }, GUIDES[k][0]));
+      grow.appendChild(el("button", {
+        type: "button",
+        onclick: () => GRE.modal(GUIDES[k][0], GUIDES[k][1],
+          [{ label: "Got it" }], { intent: "info", large: true })
+      }, GUIDES[k][0]));
     });
     g.appendChild(grow);
     inner.appendChild(g);
@@ -118,107 +168,164 @@
   };
 
   function startSession(ids, opts) {
-    let i = 0, correct = 0;
+    let i = 0, correct = 0, graduated = 0;
     let ans = null, submitted = false;
 
     GRE.show(root => {
       const el = GRE.el;
-      const bar = el("div", { class: "topbar" },
-        el("div", { class: "brand" }, opts.deck ? "Missed Questions Drill" : "Tutor Mode, Practice",
-          el("small", null, "Untimed · instant feedback")),
-        el("div", { class: "btns" },
-          el("button", { class: "tbtn", onclick: () => quit() },
-            el("span", { class: "ic" }, "🚪"), "End session")));
-      root.appendChild(bar);
-      const counter = el("span", { class: "qcount" });
-      const scoreEl = el("span", null);
-      root.appendChild(el("div", { class: "substrip" }, counter, el("span", { class: "right" }, scoreEl)));
-      const stage = el("div", { class: "stage" });
-      const inner = el("div", { class: "stage-inner" });
-      stage.appendChild(inner);
+      const title = opts.deck ? "Missed Questions Drill" : "Tutor Mode · Practice";
+
+      const crumb = GRE.crumb([["Tutor", () => GRE.show(GRE.screens.tutor)], title], "untimed");
+      root.appendChild(crumb);
+
+      const hair = GRE.hairline(0);
+      root.appendChild(hair);
+      const fill = hair.firstChild;
+
+      const { stage, inner } = GRE.stage();
       root.appendChild(stage);
 
-      function quit() {
-        GRE.calc.hide();
-        summary();
-      }
-
       function summary() {
+        GRE.calc.hide();
         inner.innerHTML = "";
-        counter.textContent = "Session complete";
-        const done = i + (submitted ? 1 : 0);
-        inner.appendChild(el("h2", { class: "screen-title" }, "Session summary"));
-        inner.appendChild(el("p", { class: "screen-sub" },
-          `${correct} correct out of ${done || 0} answered${opts.deck ? ": correct answers have left the missed deck." : "."}`));
-        const row = el("div", { class: "btnrow" });
-        row.appendChild(el("button", { class: "bigbtn", onclick: () => GRE.show(GRE.screens.tutor) }, "Back to Tutor Mode"));
-        row.appendChild(el("button", { class: "bigbtn secondary", onclick: () => GRE.show(GRE.screens.home) }, "Home"));
-        inner.appendChild(row);
+        const answered = i + (submitted ? 1 : 0);
+        fill.style.width = "100%";
+
+        inner.appendChild(el("h1", { class: "screen-title" }, "Session complete"));
+        const card = el("div", { class: "card" });
+        const s = el("div", { class: "summary" });
+        s.appendChild(el("div", { class: "big", html:
+          `${correct}<span>/${answered || ids.length}</span>` }));
+        s.appendChild(el("div", { class: "cap" }, "correct this session"));
+
+        const tiles = el("div", { class: "tiles" });
+        if (opts.deck) {
+          tiles.appendChild(el("div", { class: "stat good" },
+            el("div", { class: "v" }, String(graduated)),
+            el("div", { class: "l" }, "left the deck")));
+        }
+        tiles.appendChild(el("div", { class: "stat" },
+          el("div", { class: "v" }, String(ids.length)),
+          el("div", { class: "l" }, "in the set")));
+        s.appendChild(tiles);
+
+        const row = el("div", { style: "display:flex;gap:10px" });
+        row.appendChild(el("button", {
+          class: "btn", style: "flex:1", onclick: () => GRE.show(GRE.screens.tutor)
+        }, "Practice more"));
+        row.appendChild(el("button", {
+          class: "btn secondary", onclick: () => GRE.show(GRE.screens.home)
+        }, "Dashboard"));
+        s.appendChild(row);
+        card.appendChild(s);
+        inner.appendChild(card);
       }
 
       function paint() {
         if (i >= ids.length) { summary(); return; }
         ans = null; submitted = false;
         inner.innerHTML = "";
-        counter.textContent = `Question ${i + 1} of ${ids.length}`;
-        scoreEl.textContent = `${correct} correct so far`;
+        fill.style.width = (100 * (i + 1) / ids.length) + "%";
+
         const entry = GRE.byId[ids[i]];
         if (!entry) { i++; paint(); return; }
         const q = entry.q;
 
-        const head = el("div", { style: "margin-bottom:10px" },
+        inner.classList.toggle("splitwide", !!entry.passage);
+
+        inner.appendChild(el("div", { class: "pillrow" },
+          el("span", { class: "pill" }, `Question ${i + 1} of ${ids.length}`),
           el("span", { class: "pill" }, GRE.describeType(q, entry)),
-          q.topic ? el("span", { class: "pill" }, { arithmetic: "Arithmetic", algebra: "Algebra", geometry: "Geometry", data: "Data Analysis" }[q.topic] || q.topic) : null,
-          el("span", { class: "pill" }, q.diff || (entry.passage && entry.passage.diff) || "medium"));
-        inner.appendChild(head);
+          q.topic ? el("span", { class: "pill" }, GRE.TOPICS[q.topic] || q.topic) : null,
+          el("span", { class: "pill" }, q.diff || (entry.passage && entry.passage.diff) || "medium")));
 
         const qbox = el("div");
         inner.appendChild(qbox);
-        const isQuant = (q.type === "qc" || q.type === "mcq" || q.type === "mcma" || q.type === "num" || entry.di);
+
+        const isQuant = (q.type === "qc" || q.type === "mcq" || q.type === "mcma" ||
+                         q.type === "num" || entry.di);
         if (isQuant) GRE.calc.transferTarget = null;
 
         const paintBody = () => {
           qbox.innerHTML = "";
-          GRE.renderQBody(qbox, entry, () => ans, v => { ans = v; }, submitted ? { review: true, disabled: true } : {});
+          GRE.renderQBody(qbox, entry, () => ans, v => { ans = v; },
+            submitted ? { review: true, disabled: true } : {});
         };
         paintBody();
 
-        const ctl = el("div", { class: "btnrow" });
         const fb = el("div");
-        const submitBtn = el("button", { class: "bigbtn", onclick: () => {
-          if (submitted) return;
-          if (!GRE.isAnswered(q, ans)) {
-            GRE.modal("No answer", "<p>Choose or enter an answer first, on the real test you'd never leave a blank.</p>");
-            return;
+        const ctl = el("div", { class: "btnrow" });
+
+        const submitBtn = el("button", {
+          class: "btn", onclick: () => {
+            if (submitted) return;
+            if (!GRE.isAnswered(q, ans)) {
+              GRE.modal("No answer",
+                "<p>Choose or enter an answer first, on the real test you'd never leave a blank.</p>",
+                [{ label: "OK" }], { intent: "info" });
+              return;
+            }
+            submitted = true;
+            const ok = GRE.gradeQ(q, ans);
+            if (ok) correct++;
+
+            const D = GRE.store.data;
+            if (ok) {
+              if (opts.deck && D.missed.includes(q.id)) {
+                D.missed = D.missed.filter(x => x !== q.id);
+                graduated++;
+                GRE.store.save();
+              }
+            } else if (!D.missed.includes(q.id)) {
+              D.missed.push(q.id);
+              GRE.store.save();
+            }
+
+            paintBody();
+            fb.innerHTML = "";
+
+            const banner = el("div", { class: "fb-banner " + (ok ? "good" : "bad") });
+            banner.appendChild(GRE.icon(ok ? "check" : "x", 18, 2.6));
+            banner.appendChild(document.createTextNode(ok ? "Correct" : "Incorrect"));
+            fb.appendChild(banner);
+
+            if (!ok) {
+              fb.appendChild(el("p", { class: "fb-note" },
+                "Added to your missed-questions deck for re-drilling."));
+            } else if (opts.deck) {
+              fb.appendChild(el("p", { class: "fb-note" },
+                "Graduated out of the missed deck."));
+            }
+
+            const ex = el("div", { class: "expl" });
+            ex.innerHTML = "<strong>Explanation.</strong> " + q.expl +
+              (q.tip ? `<div class="tip"><strong>Strategy:</strong> ${q.tip}</div>` : "");
+            fb.appendChild(ex);
+
+            submitBtn.classList.add("hidden");
+            nextBtn.classList.remove("hidden");
+            nextBtn.focus();
           }
-          submitted = true;
-          const ok = GRE.gradeQ(q, ans);
-          if (ok) correct++;
-          scoreEl.textContent = `${correct} correct so far`;
-          const D = GRE.store.data;
-          if (ok) {
-            if (opts.deck) { D.missed = D.missed.filter(x => x !== q.id); GRE.store.save(); }
-          } else if (!D.missed.includes(q.id)) {
-            D.missed.push(q.id); GRE.store.save();
-          }
-          paintBody();
-          fb.innerHTML = "";
-          fb.appendChild(el("div", { class: "feedback-banner " + (ok ? "good" : "bad") },
-            ok ? "✔ Correct" : "✘ Incorrect"));
-          const ex = el("div", { class: "expl" });
-          ex.innerHTML = "<strong>Explanation.</strong> " + q.expl +
-            (q.tip ? `<div class="tip"><strong>Strategy:</strong> ${q.tip}</div>` : "");
-          fb.appendChild(ex);
-          submitBtn.classList.add("hidden");
-          nextBtn.classList.remove("hidden");
-          nextBtn.focus();
-        } }, "Submit answer");
-        const nextBtn = el("button", { class: "bigbtn hidden", onclick: () => { i++; GRE.calc.hide(); paint(); window.scrollTo(0, 0); stage.scrollTop = 0; } },
-          i + 1 >= ids.length ? "Finish" : "Next question");
-        const calcBtn = isQuant ? el("button", { class: "bigbtn secondary", onclick: () => GRE.calc.toggle() }, "Calculator") : null;
-        ctl.appendChild(submitBtn); ctl.appendChild(nextBtn); if (calcBtn) ctl.appendChild(calcBtn);
-        inner.appendChild(ctl);
+        }, "Submit answer");
+
+        const nextBtn = el("button", {
+          class: "btn hidden",
+          onclick: () => { i++; GRE.calc.hide(); paint(); window.scrollTo(0, 0); stage.scrollTop = 0; }
+        }, i + 1 >= ids.length ? "Finish" : "Next question");
+
+        ctl.appendChild(submitBtn);
+        ctl.appendChild(nextBtn);
+        if (isQuant) {
+          ctl.appendChild(el("button", {
+            class: "btn secondary", onclick: () => GRE.calc.toggle()
+          }, "Calculator"));
+        }
+        ctl.appendChild(el("button", {
+          class: "btn secondary", onclick: () => summary()
+        }, "End session"));
+
         inner.appendChild(fb);
+        inner.appendChild(ctl);
       }
 
       paint();

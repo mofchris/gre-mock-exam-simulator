@@ -167,16 +167,23 @@
 
   function build() {
     const el = GRE.el;
-    const node = el("div", { class: "calc hidden" });
-    node.style.left = "60px"; node.style.top = "120px";
+    const node = el("div", {
+      class: "calc hidden", role: "dialog", "aria-label": "On-screen calculator"
+    });
+    node.style.left = "60px"; node.style.top = "150px";
 
     const head = el("div", { class: "calc-head" },
       el("span", null, "Calculator"),
-      el("button", { onclick: () => C.hide(), title: "Close" }, "✕"));
+      el("button", { onclick: () => C.hide(), title: "Close", "aria-label": "Close calculator" },
+        GRE.icon("x", 14, 2.4)));
     node.appendChild(head);
-    node.appendChild(el("div", { class: "calc-display" }, "0"));
+    node.appendChild(el("div", {
+      class: "calc-display", role: "status", "aria-live": "polite", "aria-label": "Display"
+    }, "0"));
     node.appendChild(el("div", { class: "calc-mem" }));
 
+    // Key set is unchanged: parentheses and CE are kept because the evaluator
+    // supports them, and removing them would take capability away.
     const keys = [
       "MR", "MC", "M+", "(", ")",
       "7", "8", "9", "÷", "CE",
@@ -186,8 +193,9 @@
     ];
     const grid = el("div", { class: "calc-grid" });
     keys.forEach(k => {
-      const isOp = ["÷", "×", "−", "+", "=", "√", "(", ")", "CE", "C", "MR", "MC", "M+", "±"].includes(k);
-      grid.appendChild(el("button", { class: isOp ? "op" : "", onclick: () => key(k) }, k));
+      const isOp = ["÷", "×", "−", "+", "√", "(", ")", "CE", "C", "MR", "MC", "M+", "±"].includes(k);
+      const cls = k === "=" ? "eq" : isOp ? "op" : "";
+      grid.appendChild(el("button", { class: cls, type: "button", onclick: () => key(k) }, k));
     });
     node.appendChild(grid);
 
@@ -225,9 +233,8 @@
     display();
   };
   C.hide = function () { if (C.node) C.node.classList.add("hidden"); };
-  C.toggle = function () {
-    if (!C.node || C.node.classList.contains("hidden")) C.show(); else C.hide();
-  };
+  C.isHidden = function () { return !C.node || C.node.classList.contains("hidden"); };
+  C.toggle = function () { if (C.isHidden()) C.show(); else C.hide(); };
   C.reset = function () { clearAll(); C.memory = 0; C.hasMemory = false; if (C.node) display(); };
 
   GRE.calc = C;
