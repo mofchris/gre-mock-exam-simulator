@@ -44,6 +44,16 @@ Behavior:
 
 Sun/moon icon button in the header right group (`.topright`, next to the sync widget), rendered by each app's `chrome()`. Text glyphs, no new fonts/images: **☀** (light), **☾** (dark), **◐** (auto — half-filled circle read as "follows system"). Tooltip/aria-label states the mode: "Theme: auto (dark)" / "Theme: dark" / "Theme: light". Click calls `StudyTheme.cycle()`; the button re-renders via `StudyTheme.onChange`. Keyboard/focus styles inherit existing `.btn` treatment.
 
+### 2.4 Mobile header (user requirement: must not be cramped)
+
+Today at ≤720px `.tophead` merely `flex-wrap`s, so brand + nav + sync pill + the new theme button would wrap unpredictably. Replace with a **controlled two-row layout** at ≤720px, pure CSS:
+
+- **Row 1:** brand block left; a compact chip cluster right (`.topright`): the sync pill **collapses to its status dot only** (username hidden — full detail remains one tap away in the account modal) and the theme button is its single glyph (~36px tap target, ≥40px hit area via padding).
+- **Row 2:** the nav gets `order` + `flex-basis: 100%` so it drops to its own full-width row, buttons evenly spread (`flex: 1`) — same pattern the exam toolbar already uses at this breakpoint (`.tbtn { flex: 1 }`), so it reads as native to the design.
+- Tap targets ≥ 40px, no horizontal scrolling, nothing truncated except the intentionally hidden pill username.
+
+This costs ~10 lines of CSS per app inside the existing `@media (max-width: 720px)` block and degrades gracefully between 720px and desktop (pill keeps the username as long as it fits, `min-width: 0` + ellipsis already handle the squeeze).
+
 ## 3. Touches per app
 
 1. `index.html`: `<script src="js/theme.js">` in `<head>` before the stylesheet link
@@ -65,6 +75,7 @@ Nothing else changes. sync.js is untouched (its UI is already fully tokenized).
 - **Visual pass per app (live browser):** every screen in dark — dashboard, course, tutor, exam (all question formats incl. split-screen RC / DI charts / NP PBQs), calculator, results/score report, history, auth modal + segmented PIN, sync states — no white flashes, no unreadable text, no light-mode remnants
 - **Contrast spot-checks:** body text, muted text, accent buttons, semantic states against their actual dark surfaces (AA for text)
 - **Mechanics:** auto follows OS live (emulate `prefers-color-scheme` flip); cycle persists across reloads; `study-theme` absent = auto; no-flash on cold load at night (script-before-stylesheet verified)
+- **Mobile pass (375×812 and 360×640, both themes, both apps):** two-row header renders un-cramped — dot-only pill, glyph theme button, full-width evenly-spread nav; no horizontal scroll anywhere; account modal still shows full username/status; tap targets ≥ 40px
 - **Drift check:** `git diff --no-index` on the two `theme.js` copies is empty
 - **Regression:** light mode pixel-safe after the tokenization pass (it must be a no-op in light); merge tests still 10/10; anonymous invariant untouched
 
