@@ -236,6 +236,20 @@
   GRE.chrome = function (active) {
     const el = GRE.el;
     const syncMount = el("div", { class: "syncwrap" });
+
+    const themeBtn = el("button", {
+      class: "themebtn", type: "button",
+      onclick: function () { StudyTheme.cycle(); }
+    });
+    const paintTheme = function (mode, res) {
+      const glyph = mode === "auto" ? "◐" : (mode === "dark" ? "☾" : "☀");
+      const label = mode === "auto" ? "Theme: auto (" + res + ")" : "Theme: " + mode;
+      themeBtn.textContent = glyph;
+      themeBtn.setAttribute("aria-label", label);
+      themeBtn.setAttribute("title", label);
+    };
+    StudyTheme.onChange(paintTheme); // fires once immediately to set the initial glyph
+
     const head = el("div", { class: "tophead" },
       el("div", { class: "brandwrap" },
         el("span", { class: "logo" }, GRE.icon("logo", 19)),
@@ -249,7 +263,8 @@
             "aria-current": active === label ? "page" : null,
             onclick: go
           }, label))),
-        syncMount));
+        syncMount,
+        themeBtn));
 
     if (GRE.sync) GRE.sync.mountHeader(syncMount);
 
