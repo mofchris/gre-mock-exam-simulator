@@ -1291,3 +1291,99 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
     scroll-behavior: auto !important;
   }
 }
+
+/* ================= dark theme ================= */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* surfaces — deep desaturated blue-gray ladder (L0 page → L2 fill) */
+  --page:   #090d13;   /* deepest, behind everything */
+  --sub:    #0e131c;   /* app / stage / page background (L0) */
+  --paper:  #171e29;   /* cards, modal, elevated surfaces (L1) */
+  --sub2:   #1f2836;   /* fills, table headers, pills (L2) */
+  --faint:  #273143;   /* faint fills / hairlines */
+  --line:   #333d51;   /* visible borders */
+  --line-hover: #3f4a60;
+  --tool-line-hover: #3f4a60;
+
+  /* ink */
+  --ink:        #e8ecf3;   /* body text  (14.1:1 on --paper) */
+  --muted:      #9aa6b6;   /* muted text (6.8:1 on --paper, 7.3:1 on --sub) */
+  --figure-ink: #e8ecf3;   /* big score numbers / worked h4 (was --headink text role) */
+  --pill-ink:   #c2cbd8;
+
+  /* chrome — stays dark, elevated a touch above the page */
+  --headink:        #141c2b;   /* study header / crumb / default button bar */
+  --headink2:       #1c2740;   /* hero gradient stop */
+  --headink-hover:  #1f2a3d;
+  --exam-head:      #1a2432;   /* exam toolbar / calc head — elevated exam tier */
+  --exam-head-hover:#212c3d;
+  --on-dark: #eef2f8;   /* text/glyphs on dark chrome (softened from pure white) */
+
+  /* accent — lightened + slightly desaturated blue */
+  --accent:        #5a8fe0;   /* solid interactive; #fff text ≈ 3.2:1 */
+  --accent2:       #9cc0f5;   /* link / eyebrow text (9.0:1 on --paper) */
+  --accentsoft:    #1b2942;   /* soft chip fill */
+  --accent-border: #34517d;
+  --accent-lite:   #7aa6ec;   /* gradient partner */
+  --accent-glow:   rgba(122,166,236,.28);
+  --accentsoft-hover: #223458;
+  --tbtn-on-bg:    rgba(122,166,236,.30);
+  --next-shadow:   rgba(90,143,224,.30);
+
+  /* measures */
+  --verbal:   #6f9fe6;
+  --quant:    #d9973f;
+  --quantsoft:#2c2415;
+
+  /* semantic — retuned, same meaning mapping */
+  --good: #46b071;  --goodsoft: #16311f;  --good-border: #2f6b45;
+  --good-tint: #12261a; --good-chip: #2b5a3c; --good-row: #234a30;
+  --good-tint-hover: #16311f; --good-alt: #3f9a68;
+  --good-border2: #2f6b45; --good-ink: #8fd3a9; --good-hover: #3a9560;
+  --good-grad: #2f8f57;
+
+  --bad: #e5716b;   --badsoft: #331b1b;   --bad-border: #6e3230;
+  --bad-hover: #c85852; --bad-grad: #c1524d;
+
+  --amber: #dca63f; --ambersoft: #2c2312; --amber-border: #5e4a24;
+  --amber-soft-border: #5e4a24; --amber-ink: #e0b878;
+  --track-amber: #3a2f16;
+
+  /* exam choice pick tint */
+  --pick: #24344a;  --pick-border: #3d5f8c;
+
+  /* markers + fields (inputs elevate above the page, readable in exam) */
+  --marker-border: #6b788c;
+  --field-bg: #10151e;   --field-border: #46536a;
+  --directions-ink: #b7c0cd;  --passage-ink: #d4dae4;  --di-border: #3a4560;
+  --lesson-ink: #d4dae4;
+
+  /* calculator — elevated exam device */
+  --calc-body: #212b3a;   --calc-frame: #3a4658;
+  --calc-shadow: rgba(0,0,0,.55);  --calc-display-line: #45516a;
+  --calc-btn: #2a3547;    --calc-btn-line: #45516a;
+  --calc-btn-op: #33415a; --calc-btn-op-hover: #3d4d69;
+
+  /* generic hovers on light surfaces → one step lighter than the surface */
+  --hover-soft: #202a39;  --white-hover: #202a39;  --essaytool-hover: #293346;
+
+  /* shadows → borders (drop shadows read as dirt on dark) */
+  --shadow-card:  0 0 0 1px rgba(0,0,0,.35);
+  --shadow-frame: 0 0 0 1px rgba(0,0,0,.4);
+  --shadow-modal: 0 24px 60px rgba(0,0,0,.7);
+
+  --focus-ring: 0 0 0 3px rgba(122,166,236,.55);
+
+  --veil: rgba(4,7,12,.72);
+
+  /* white-alpha overlays on permanently-dark chrome keep working unchanged;
+     restated here only so the intent is explicit. */
+  --on-dark-85: rgba(255,255,255,.82); --on-dark-70: rgba(255,255,255,.66);
+  --on-dark-60: rgba(255,255,255,.58); --on-dark-55: rgba(255,255,255,.55);
+  --on-dark-50: rgba(255,255,255,.5);  --on-dark-45: rgba(255,255,255,.45);
+  --overlay-08: rgba(255,255,255,.06); --overlay-10: rgba(255,255,255,.08);
+  --overlay-13: rgba(255,255,255,.11); --overlay-14: rgba(255,255,255,.13);
+  --overlay-15: rgba(255,255,255,.14); --overlay-18: rgba(255,255,255,.16);
+}
