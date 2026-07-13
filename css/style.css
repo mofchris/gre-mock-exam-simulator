@@ -125,6 +125,19 @@
   --bad-grad: #c93b3b;
   --veil: rgba(8, 12, 20, .62);
 
+  /* JS-drawn SVG chart inks/fills (rendered on --paper cards).
+     Light values are the exact former hardcoded literals — light mode is a no-op. */
+  --chart-axis:         #333;     /* axes, baselines, bar/pie outlines, swatch borders */
+  --chart-grid:         #ddd;     /* DI gridlines */
+  --chart-label:        #333;     /* DI tick / category labels */
+  --chart-label-muted:  #555;     /* DI unit tags, figure notes */
+  --chart-label-strong: #222;     /* DI pie legend text */
+  --chart-stroke:       #222;     /* DI line-series strokes + filled markers */
+  --chart-fill-1: #ffffff;  --chart-fill-2: #c8ced6;  --chart-fill-3: #9aa4b0;
+  --chart-fill-4: #6b7684;  --chart-fill-5: #3d4854;  --chart-fill-6: #e8ebef;
+  --chart-trend-axis:   #8a94a2;  /* results trend baseline */
+  --chart-trend-grid:   #e3e7ec;  /* results trend gridlines */
+
   --r-frame: 16px; --r-card: 14px; --r-ctl: 10px; --r-input: 8px; --r-pill: 999px;
 
   --shadow-card: 0 1px 2px rgba(16, 24, 40, .05);
@@ -1386,4 +1399,17 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   --overlay-08: rgba(255,255,255,.06); --overlay-10: rgba(255,255,255,.08);
   --overlay-13: rgba(255,255,255,.11); --overlay-14: rgba(255,255,255,.13);
   --overlay-15: rgba(255,255,255,.14); --overlay-18: rgba(255,255,255,.16);
+
+  /* JS-drawn SVG charts — retuned for readability on --paper (#171e29).
+     axes/grid >=3:1, labels >=4.5:1, series from the measure/gray dark family. */
+  --chart-axis:         #8b96a8;   /* 5.60:1 */
+  --chart-grid:         #616d87;   /* 3.23:1 */
+  --chart-label:        #b3bcca;   /* 8.74:1 */
+  --chart-label-muted:  #9aa6b6;   /* 6.78:1 */
+  --chart-label-strong: #ccd4df;   /* 11.2:1 */
+  --chart-stroke:       #c3ccd8;   /* 10.3:1 */
+  --chart-fill-1: #dfe4ec;  --chart-fill-2: #b3bcca;  --chart-fill-3: #8791a2;
+  --chart-fill-4: #5f6a7d;  --chart-fill-5: #454f63;  --chart-fill-6: #cbd2dd;
+  --chart-trend-axis:   #7c879a;   /* 4.62:1 */
+  --chart-trend-grid:   #616e88;   /* 3.26:1 */
 }

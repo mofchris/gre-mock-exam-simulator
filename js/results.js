@@ -5,7 +5,7 @@
   const R = {};
   GRE.results = R;
 
-  const V_COLOR = "#2f63c6", Q_COLOR = "#c47b2a";
+  const V_COLOR = "var(--verbal)", Q_COLOR = "var(--quant)";
   const LAG = 75; // an area below this is called out as the weak one
 
   function sv(tag, attrs, text) {
@@ -56,18 +56,18 @@
 
     for (let v = lo; v <= hi; v += 10) {
       svg.appendChild(sv("line", {
-        x1: L, y1: yAt(v), x2: W - Rm, y2: yAt(v),
-        stroke: v === lo ? "#8a94a2" : "#e3e7ec", "stroke-width": 1
+        x1: L, y1: yAt(v), x2: W - Rm, y2: yAt(v), "stroke-width": 1,
+        style: `stroke:${v === lo ? "var(--chart-trend-axis)" : "var(--chart-trend-grid)"}`
       }));
       svg.appendChild(sv("text", {
         x: L - 8, y: yAt(v) + 4, "text-anchor": "end", "font-size": 11,
-        "font-family": "IBM Plex Mono, monospace", fill: "#5c6674"
+        "font-family": "IBM Plex Mono, monospace", style: "fill:var(--muted)"
       }, String(v)));
     }
     attempts.forEach((a, i) => {
       svg.appendChild(sv("text", {
         x: xAt(i), y: H - 8, "text-anchor": "middle", "font-size": 11,
-        "font-family": "IBM Plex Mono, monospace", fill: "#5c6674"
+        "font-family": "IBM Plex Mono, monospace", style: "fill:var(--muted)"
       }, String(i + 1)));
     });
 
@@ -78,16 +78,16 @@
     series.forEach(s => {
       svg.appendChild(sv("polyline", {
         points: s.vals.map((v, i) => `${xAt(i)},${yAt(v)}`).join(" "),
-        fill: "none", stroke: s.color, "stroke-width": 2
+        fill: "none", "stroke-width": 2, style: `stroke:${s.color}`
       }));
       s.vals.forEach((v, i) => svg.appendChild(sv("circle", {
-        cx: xAt(i), cy: yAt(v), r: 4, fill: s.color, stroke: "#fff", "stroke-width": 2
+        cx: xAt(i), cy: yAt(v), r: 4, "stroke-width": 2, style: `fill:${s.color};stroke:var(--paper)`
       })));
       // direct label at the line end, so no legend lookup is needed
       svg.appendChild(sv("text", {
         x: xAt(s.vals.length - 1) + 10, y: yAt(s.vals[s.vals.length - 1]) + 4,
         "font-size": 12, "font-family": "IBM Plex Mono, monospace",
-        fill: s.color, "font-weight": "700"
+        "font-weight": "700", style: `fill:${s.color}`
       }, `${s.name[0]} ${s.vals[s.vals.length - 1]}`));
     });
 

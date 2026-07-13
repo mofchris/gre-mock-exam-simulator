@@ -84,7 +84,7 @@
 
   /* ================= DI / figure display rendering (ETS-style grayscale) ============ */
 
-  const GRAYS = ["#ffffff", "#9aa4b0", "#3d4854"]; // lightness-separated series fills
+  const GRAYS = ["var(--chart-fill-1)", "var(--chart-fill-3)", "var(--chart-fill-5)"]; // lightness-separated series fills
 
   function niceMax(v) {
     if (v <= 0) return 1;
@@ -112,7 +112,7 @@
     series.forEach((s, i) => {
       const item = document.createElement("span");
       const sw = document.createElement("span");
-      sw.style.cssText = `display:inline-block;width:14px;height:14px;border:1px solid #333;background:${GRAYS[i % GRAYS.length]};margin-right:5px;vertical-align:-2px`;
+      sw.style.cssText = `display:inline-block;width:14px;height:14px;border:1px solid var(--chart-axis);background:${GRAYS[i % GRAYS.length]};margin-right:5px;vertical-align:-2px`;
       item.appendChild(sw);
       item.appendChild(document.createTextNode(s.name));
       d.appendChild(item);
@@ -129,8 +129,8 @@
     const ticks = 5;
     for (let i = 0; i <= ticks; i++) {
       const val = ymax * i / ticks, y = T + ph - ph * i / ticks;
-      svg.appendChild(sv("line", { x1: L, y1: y, x2: W - R, y2: y, stroke: i === 0 ? "#333" : "#ddd", "stroke-width": 1 }));
-      svg.appendChild(sv("text", { x: L - 7, y: y + 4, "text-anchor": "end", "font-size": 11, fill: "#333" },
+      svg.appendChild(sv("line", { x1: L, y1: y, x2: W - R, y2: y, "stroke-width": 1, style: `stroke:${i === 0 ? "var(--chart-axis)" : "var(--chart-grid)"}` }));
+      svg.appendChild(sv("text", { x: L - 7, y: y + 4, "text-anchor": "end", "font-size": 11, style: "fill:var(--chart-label)" },
         String(+(val.toFixed(2)))));
     }
     const nc = spec.cats.length, ns = spec.series.length;
@@ -142,13 +142,13 @@
         const x = L + slot * ci + slot / 2 - (barW * ns + 2 * (ns - 1)) / 2 + si * (barW + 2);
         svg.appendChild(sv("rect", {
           x, y: T + ph - bh, width: barW, height: Math.max(0.5, bh),
-          fill: GRAYS[si % GRAYS.length], stroke: "#333", "stroke-width": 1
+          "stroke-width": 1, style: `fill:${GRAYS[si % GRAYS.length]};stroke:var(--chart-axis)`
         }));
       });
-      svg.appendChild(sv("text", { x: L + slot * ci + slot / 2, y: H - B + 16, "text-anchor": "middle", "font-size": 11.5, fill: "#333" }, cat));
+      svg.appendChild(sv("text", { x: L + slot * ci + slot / 2, y: H - B + 16, "text-anchor": "middle", "font-size": 11.5, style: "fill:var(--chart-label)" }, cat));
     });
-    svg.appendChild(sv("line", { x1: L, y1: T, x2: L, y2: T + ph, stroke: "#333", "stroke-width": 1 }));
-    if (spec.unit) svg.appendChild(sv("text", { x: 4, y: 9, "font-size": 10.5, fill: "#555" }, "(" + spec.unit + ")"));
+    svg.appendChild(sv("line", { x1: L, y1: T, x2: L, y2: T + ph, "stroke-width": 1, style: "stroke:var(--chart-axis)" }));
+    if (spec.unit) svg.appendChild(sv("text", { x: 4, y: 9, "font-size": 10.5, style: "fill:var(--chart-label-muted)" }, "(" + spec.unit + ")"));
     return svg;
   }
 
@@ -160,25 +160,25 @@
     const pw = W - L - R, ph = H - T - B, ticks = 5;
     for (let i = 0; i <= ticks; i++) {
       const y = T + ph - ph * i / ticks;
-      svg.appendChild(sv("line", { x1: L, y1: y, x2: W - R, y2: y, stroke: i === 0 ? "#333" : "#ddd", "stroke-width": 1 }));
-      svg.appendChild(sv("text", { x: L - 7, y: y + 4, "text-anchor": "end", "font-size": 11, fill: "#333" },
+      svg.appendChild(sv("line", { x1: L, y1: y, x2: W - R, y2: y, "stroke-width": 1, style: `stroke:${i === 0 ? "var(--chart-axis)" : "var(--chart-grid)"}` }));
+      svg.appendChild(sv("text", { x: L - 7, y: y + 4, "text-anchor": "end", "font-size": 11, style: "fill:var(--chart-label)" },
         String(+((ymax * i / ticks).toFixed(2)))));
     }
     const nx = spec.cats.length;
     const xAt = i => L + (nx === 1 ? pw / 2 : pw * i / (nx - 1));
     spec.cats.forEach((c, i) => {
-      svg.appendChild(sv("text", { x: xAt(i), y: H - B + 16, "text-anchor": "middle", "font-size": 11.5, fill: "#333" }, c));
+      svg.appendChild(sv("text", { x: xAt(i), y: H - B + 16, "text-anchor": "middle", "font-size": 11.5, style: "fill:var(--chart-label)" }, c));
     });
     const dashes = ["", "6,4", "2,3"];
     spec.series.forEach((s, si) => {
       const pts = s.values.map((v, i) => `${xAt(i)},${T + ph - ph * v / ymax}`).join(" ");
-      svg.appendChild(sv("polyline", { points: pts, fill: "none", stroke: "#222", "stroke-width": 2, "stroke-dasharray": dashes[si % dashes.length] }));
+      svg.appendChild(sv("polyline", { points: pts, fill: "none", "stroke-width": 2, "stroke-dasharray": dashes[si % dashes.length], style: "stroke:var(--chart-stroke)" }));
       s.values.forEach((v, i) => {
-        svg.appendChild(sv("circle", { cx: xAt(i), cy: T + ph - ph * v / ymax, r: 3.5, fill: si === 0 ? "#222" : "#fff", stroke: "#222", "stroke-width": 1.5 }));
+        svg.appendChild(sv("circle", { cx: xAt(i), cy: T + ph - ph * v / ymax, r: 3.5, "stroke-width": 1.5, style: `fill:${si === 0 ? "var(--chart-stroke)" : "var(--paper)"};stroke:var(--chart-stroke)` }));
       });
     });
-    svg.appendChild(sv("line", { x1: L, y1: T, x2: L, y2: T + ph, stroke: "#333", "stroke-width": 1 }));
-    if (spec.unit) svg.appendChild(sv("text", { x: 4, y: 9, "font-size": 10.5, fill: "#555" }, "(" + spec.unit + ")"));
+    svg.appendChild(sv("line", { x1: L, y1: T, x2: L, y2: T + ph, "stroke-width": 1, style: "stroke:var(--chart-axis)" }));
+    if (spec.unit) svg.appendChild(sv("text", { x: 4, y: 9, "font-size": 10.5, style: "fill:var(--chart-label-muted)" }, "(" + spec.unit + ")"));
     return svg;
   }
 
@@ -187,7 +187,7 @@
     const svg = svgEl(W, H);
     const total = spec.slices.reduce((s, x) => s + x.value, 0);
     let ang = -Math.PI / 2;
-    const fills = ["#ffffff", "#c8ced6", "#9aa4b0", "#6b7684", "#3d4854", "#e8ebef"];
+    const fills = ["var(--chart-fill-1)", "var(--chart-fill-2)", "var(--chart-fill-3)", "var(--chart-fill-4)", "var(--chart-fill-5)", "var(--chart-fill-6)"];
     spec.slices.forEach((sl, i) => {
       const frac = sl.value / total, a2 = ang + frac * 2 * Math.PI;
       const x1 = cx + r * Math.cos(ang), y1 = cy + r * Math.sin(ang);
@@ -195,19 +195,19 @@
       const large = frac > 0.5 ? 1 : 0;
       svg.appendChild(sv("path", {
         d: `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z`,
-        fill: fills[i % fills.length], stroke: "#333", "stroke-width": 1
+        "stroke-width": 1, style: `fill:${fills[i % fills.length]};stroke:var(--chart-axis)`
       }));
       ang = a2;
     });
     let ly = 40;
     spec.slices.forEach((sl, i) => {
-      svg.appendChild(sv("rect", { x: 330, y: ly - 11, width: 13, height: 13, fill: fills[i % fills.length], stroke: "#333", "stroke-width": 1 }));
+      svg.appendChild(sv("rect", { x: 330, y: ly - 11, width: 13, height: 13, "stroke-width": 1, style: `fill:${fills[i % fills.length]};stroke:var(--chart-axis)` }));
       const pct = Math.round(1000 * sl.value / total) / 10;
-      svg.appendChild(sv("text", { x: 350, y: ly, "font-size": 12.5, fill: "#222" },
+      svg.appendChild(sv("text", { x: 350, y: ly, "font-size": 12.5, style: "fill:var(--chart-label-strong)" },
         `${sl.label}: ${sl.value}${spec.unit ? " " + spec.unit : ""} (${pct}%)`));
       ly += 24;
     });
-    if (spec.totalNote) svg.appendChild(sv("text", { x: 330, y: ly + 4, "font-size": 12, fill: "#555" }, spec.totalNote));
+    if (spec.totalNote) svg.appendChild(sv("text", { x: 330, y: ly + 4, "font-size": 12, style: "fill:var(--chart-label-muted)" }, spec.totalNote));
     return svg;
   }
 
@@ -215,7 +215,7 @@
     const wrap = document.createElement("div");
     if (display.note) {
       const n = document.createElement("p");
-      n.style.cssText = "text-align:center;font-size:13px;color:#555;margin:2px 0 8px";
+      n.style.cssText = "text-align:center;font-size:13px;color:var(--chart-label-muted);margin:2px 0 8px";
       n.textContent = display.note;
       wrap.appendChild(n);
     }
