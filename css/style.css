@@ -431,7 +431,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .btn.danger-outline:hover:not(:disabled) { background: var(--badsoft); }
 .btn.good { background: var(--good); color: var(--on-dark); }
 .btn.good:hover:not(:disabled) { background: var(--good-hover); }
-.btn.white { background: var(--paper); color: var(--headink); }
+.btn.white { background: var(--on-dark); color: var(--headink); }
 .btn.white:hover:not(:disabled) { background: var(--white-hover); }
 .btn.wide { width: 100%; }
 .btn.big { padding: 16px; border-radius: 11px; font-size: 15px; }
@@ -1317,7 +1317,6 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   --sub2:   #1f2836;   /* fills, table headers, pills (L2) */
   --faint:  #273143;   /* faint fills / hairlines */
   --line:   #333d51;   /* visible borders */
-  --line-hover: #3f4a60;
   --tool-line-hover: #3f4a60;
 
   /* ink */
@@ -1380,7 +1379,7 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   --calc-btn-op: #33415a; --calc-btn-op-hover: #3d4d69;
 
   /* generic hovers on light surfaces → one step lighter than the surface */
-  --hover-soft: #202a39;  --white-hover: #202a39;  --essaytool-hover: #293346;
+  --hover-soft: #202a39;  --white-hover: #dde4ee;  --essaytool-hover: #293346;
 
   /* shadows → borders (drop shadows read as dirt on dark) */
   --shadow-card:  0 0 0 1px rgba(0,0,0,.35);

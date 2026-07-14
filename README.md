@@ -35,6 +35,8 @@ way to reset a forgotten PIN (there is no email recovery), so save it somewhere 
   strategy guides for every question format, and a missed-questions deck for re-drilling.
 - **Progress tracking**: attempt history and score trend, stored in your browser
   (localStorage), and synced to the sync server as well when you're signed in.
+- **Dark mode**: follows your device setting automatically, with a header toggle
+  (☀/☾/◐) to override it.
 
 ## Documentation
 
