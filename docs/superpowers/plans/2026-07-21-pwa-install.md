@@ -284,8 +284,10 @@ In `index.html`, replace the existing viewport line and add the PWA block. The h
 
 - [ ] **Step 3: Verify the manifest parses and points at real files**
 
+`require()` cannot load a `.webmanifest` — Node does not map that extension to JSON and tries to parse it as JavaScript. Read and parse it explicitly:
+
 ```bash
-node -e "const m=require('./manifest.webmanifest');const fs=require('fs');for(const i of m.icons){if(!fs.existsSync(i.src))throw new Error('missing '+i.src)};if(!fs.existsSync('icons/apple-touch-icon.png'))throw new Error('missing apple-touch-icon');console.log('manifest ok:',m.short_name,m.display,m.icons.length+' icons')"
+node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('manifest.webmanifest','utf8'));for(const i of m.icons){if(!fs.existsSync(i.src))throw new Error('missing '+i.src)};if(!fs.existsSync('icons/apple-touch-icon.png'))throw new Error('missing apple-touch-icon');if(m.start_url!=='./'||m.scope!=='./')throw new Error('start_url/scope must be \"./\"');console.log('manifest ok:',m.short_name,m.display,m.icons.length+' icons')"
 ```
 
 Expected: `manifest ok: GRE standalone 2 icons`
