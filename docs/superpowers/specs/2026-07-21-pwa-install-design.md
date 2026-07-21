@@ -7,7 +7,10 @@
 ## 1. Decisions (user-approved)
 
 - **Full offline, not just standalone:** manifest *and* a precache service worker. Launching from the home screen with no signal opens a working app. A manifest alone would give a home-screen icon that fails on the subway, which is a bookmark wearing an app costume.
-- **Monogram icons, split hues:** white IBM Plex Sans 700 on a solid field — GRE on `#2f63c6` (`--accent`), N+ on `#c47b2a` (`--quant`). Same construction so they read as siblings; different field colors so two blue tiles never sit side by side on a home screen. Both hues already exist in the palettes; nothing new is invented.
+- **A designed mark per app, used in two places.** Reviewed as three rendered directions at true 60px (Field / Signal / Rule); the user chose **Field for GRE** and **Signal for Network+**. Each mark replaces both the home-screen icon *and* the in-app header logo, which today is `M5 6h14M5 11h9M5 16h11` — three descending rules that read as a hamburger menu.
+  - **GRE — "Field":** a Newsreader `G` knocked out of an inset navy block on `#2f63c6` (`--accent`), so the blue reads through the letterform. Two planes, not one flat surface.
+  - **Network+ — "Signal":** a routing fan-out — one run splitting into two, terminating at two navy nodes — in white on `#c47b2a` (`--quant`). No letter; it says what the app does. The `+` was explored and dropped with the rest of the direction.
+  - Both hues already exist in the palettes. The two marks deliberately do **not** share a construction: this was raised with the user and accepted, on the grounds that the tile hues and the shared navy already carry the family.
 - **Edge-to-edge status bar:** the navy header runs under the iOS status bar (`black-translucent` + `viewport-fit=cover` + safe-area padding) rather than sitting below a black strip. One uninterrupted navy field from the top edge.
 - **Generator + freshness test:** `sw.js` is generated and committed; a test fails the build if it is stale. The no-build deploy story is preserved.
 - **Commit the icon generator**, not just the PNGs — the marks stay reproducible from a hex value.
@@ -56,11 +59,20 @@ Deploy is unchanged: Pages still serves `main` at root, and a forker who never e
 
 ### 2.5 Icons
 
-Three PNGs per app: `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` (180×180).
+**Four** PNGs per app: `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` (180×180), and `icon-512-maskable.png`.
 
-The monogram is **inset to the maskable safe zone** — the center 80%, a 410px circle at 512px. "GRE" set at ~340px wide with a ~120px cap height measures ~360px on the diagonal and clears it; "N+" clears easily. Because the mark is genuinely inset, `purpose: "any maskable"` is honest with only three files rather than a separate maskable variant. The field is fully opaque, which iOS requires of `apple-touch-icon` (transparency composites to black).
+The fourth file exists because the earlier three-file plan was wrong. It assumed the mark could be inset into the maskable safe zone (the center 80% — a 410px circle at 512) and then honestly declared `purpose: "any maskable"`. Both chosen marks defeat that. Field's navy block spans 64–448 with `rx="84"`, putting its rounded corners ~237px from center against a 205px safe radius, so Android's circular mask would shave them; Signal's ink box (`l=87 t=138 r=416 b=374`) has a half-diagonal of 202px, which only just clears. So the icons are drawn **edge to edge** — which is what makes them look designed rather than timid — and Android gets its own inset copy at `purpose: "maskable"` while 192/512 stay `purpose: "any"`. iOS ignores maskable entirely and uses `apple-touch-icon`.
 
-`tools/make-icons.mjs` + `tools/icon.html` render the 512 via the gstack browse daemon (headless Chrome, already configured in both repos) using the repo's own bundled `.woff2`, then downsample to 192 and 180. Chrome is used rather than Pillow directly because Pillow cannot read woff2 and `fontTools` is not installed; this also gets real kerning and hinting from the actual brand font.
+All four are square, full-bleed and **opaque with no rounded corners baked in** — iOS applies its own squircle, and transparency in an `apple-touch-icon` composites to black.
+
+**Geometry is measured, not eyeballed.** Both marks are centered on their *ink* box rather than their em box, established by rendering each at 1024 and reading the non-background bounding box off the pixels:
+
+| Mark | Measured ink box | Correction applied |
+| --- | --- | --- |
+| GRE `G` (Newsreader 500, 384px, anchored 0,384) | `l=17 t=112 r=283 b=389` | anchor → `x=106, y=389.5` (was 12px right, 3.5px high) |
+| Net+ fan-out | `l=87 t=138 r=416 b=374` | `translate(4.5 0)`; vertically already true |
+
+`tools/make-icons.mjs` + `tools/icon.html` render each mark at 1024 via headless Chrome using the repo's own bundled `.woff2`, then Pillow downsamples (LANCZOS) to 512/192/180 and composites the maskable variant at 80% on the field color. Chrome rather than Pillow alone because Pillow cannot read woff2 and `fontTools` is absent; this also gets real hinting from the actual brand font.
 
 ### 2.6 Safe-area CSS
 
@@ -84,10 +96,11 @@ Both `env()` values are `0px` off-iOS and in browser tabs, making this a no-op e
 4. `sw.js`: new, generated, committed
 5. `tools/build-sw.mjs`, `tools/make-icons.mjs`, `tools/icon.html`: new
 6. `test/sw-fresh.test.mjs`: new, byte-identical
-7. `icons/`: three PNGs
-8. `css/style.css`: the two safe-area rules above
+7. `icons/`: four PNGs
+8. `css/style.css`: the two safe-area rules above, plus whatever `.logo` needs to host a two-tone mark instead of a single stroked path
+9. `js/app.js`: replace the `logo` entry in the icon table (`js/app.js:81`) and its `GRE.icon("logo", 19)` call site in `chrome()`. The existing helper renders a **single stroked path in a 24 viewBox**; both new marks are two-tone filled compositions in a 512 viewBox, one of which needs a `<mask>`. They cannot be expressed through that helper, so the header mark becomes an inline SVG emitted alongside it rather than another row in the table. The helper itself stays untouched for the other 20-odd icons.
 
-`sync.js`, `theme.js`, `app.js`, `exam.js` and all data files are untouched.
+`sync.js`, `theme.js`, `exam.js` and all data files are untouched.
 
 ## 4. Docs
 
@@ -109,6 +122,8 @@ Both `env()` values are `0px` off-iOS and in browser tabs, making this a no-op e
 - **Local (over `localhost:8420` via `start.bat`, where workers are permitted):** DevTools → Application shows a valid manifest with no icon warnings and an activated worker; DevTools offline + reload serves the full app; a second offline reload still works after a hard navigation.
 - **`file://` regression:** double-clicking `index.html` still runs the app with no console errors from `pwa.js`.
 - **Visual, both themes, both apps:** the safe-area rule is a no-op in a normal browser tab at 375×812 — no stray navy strip, no shifted header.
+- **The header mark:** the new logo renders correctly in `.tophead` at desktop and in the two-row mobile header, in both themes, with the navy block reading against `--headink` rather than disappearing into it. The other icons from the `GRE.icon()` table are unchanged.
+- **Icon rendering:** re-running `tools/make-icons.mjs` reproduces all four PNGs visually, so the marks are regenerable rather than one-off artifacts. Deliberately *not* asserted byte-for-byte and **not** wired into `node --test`: PNG output depends on the installed Chrome's rasterizer and would churn across browser updates. The icons are committed build products, regenerated only on purpose.
 - **Device (the real check):** add both to an iPhone home screen; confirm distinct icons and correct titles; launch each and confirm no Safari chrome and the navy header running under the status bar; enable airplane mode, cold-launch both, and take an exam end to end; confirm the sync pill reads "Offline — will retry when reconnected." rather than erroring.
 - **Update propagation:** edit a file, regenerate, deploy, and confirm an installed instance picks up the change within two launches.
 - **Drift check:** `git diff --no-index` empty for `js/pwa.js`, `tools/build-sw.mjs`, and `test/sw-fresh.test.mjs` across the two repos.
