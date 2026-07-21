@@ -14,7 +14,15 @@
 - **Test command is bare `node --test`** run from the repo root. `node --test test/` fails on Node 24 — it tries to load `test/` as a module. Baseline before any change: **10 passing**.
 - **No package.json, no npm dependencies, no build step** in either repo. Deploy stays "GitHub Pages serves `main` at root".
 - **Every path is relative.** `start_url`/`scope` are `"./"`, `href="manifest.webmanifest"`, `register("sw.js")`, `new URL("./", self.location)`. Never hardcode `/gre-mock-exam-simulator/` or `/network-plus-mock-exam/`.
-- **These three files are byte-identical across both repos:** `js/pwa.js`, `tools/build-sw.mjs` (except the one-line `CACHE_PREFIX`), `test/sw-fresh.test.mjs`. Same portability rule as `sync.js` and `theme.js`.
+- **These three files are shared across both repos, differing by exactly one line each.** Same portability rule as `sync.js` and `theme.js` — these are two separate git repositories with no shared module system, so cross-repo copying is the established convention here, not accidental duplication.
+
+  | File | The only permitted difference |
+  | --- | --- |
+  | `tools/build-sw.mjs` | `CACHE_PREFIX` — `"gre"` vs `"netplus"` |
+  | `js/pwa.js` | the `console.error` prefix — `"GRE:"` vs `"NP:"` |
+  | `test/sw-fresh.test.mjs` | the bundled-font count — `9` (GRE) vs `7` (Network+) |
+
+  `tools/make-icons.mjs` is also near-duplicated across the two repos for the same reason; GRE's copy additionally inlines a webfont, which Network+ does not need.
 - **Colours come from existing tokens only.** Navy `#101827` (`--headink`), GRE blue `#2f63c6` (`--accent`), Network+ amber `#c47b2a` (`--quant`). Invent nothing.
 - **Icons are square, full-bleed, opaque, with no rounded corners baked in.** iOS applies its own squircle; transparency in an `apple-touch-icon` composites to black.
 - **`purpose: "any"`** in the manifest — not `"any maskable"`.
