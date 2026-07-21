@@ -338,7 +338,11 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 test("committed sw.js matches generator output", () => {
   const expected = build(ROOT).source;
-  const actual = readFileSync(join(ROOT, "sw.js"), "utf8");
+  // Normalise the same way build() hashes text: git's core.autocrlf smudges
+  // sw.js to CRLF on clone, checkout and restore, so a raw string compare
+  // reports "stale" on a tree git itself calls clean. Line endings in a
+  // service worker are semantically inert, so normalising loses nothing.
+  const actual = readFileSync(join(ROOT, "sw.js"), "utf8").replace(/\r\n/g, "\n");
   assert.equal(actual, expected, "sw.js is stale — run: node tools/build-sw.mjs");
 });
 
@@ -360,14 +364,22 @@ test("precache includes every bundled font", () => {
   assert.equal(fonts.length, 9, "all nine bundled woff2 files must be precached");
 });
 
-test("precache excludes docs, tests and tooling", () => {
+// Asserted as a positive allowlist, not a blocklist of known-bad prefixes. A
+// blocklist that only rejects docs|test|tools passes happily when README.md or
+// start.bat is added to the precache, and passes a deploy-specific prefix like
+// "gre-mock-exam-simulator/css/..." that would break cache.addAll on any fork.
+test("precache contains only allowlisted directories", () => {
+  const ALLOWED = /^(css|js|data|fonts|icons)\//;
   for (const u of build(ROOT).urls) {
-    assert.ok(!/^(docs|test|tools)\//.test(u), `${u} must never be precached`);
+    if (u === "./" || u === "manifest.webmanifest") continue;
+    assert.ok(ALLOWED.test(u), `${u} is outside the allowlisted directories`);
   }
 });
 
-test("precache contains no absolute or deploy-specific paths", () => {
-  for (const u of build(ROOT).urls) {
+test("precache paths are relative and the shell is scope-relative", () => {
+  const { urls } = build(ROOT);
+  assert.equal(urls[0], "./", "the shell must be './' so it resolves against the worker scope");
+  for (const u of urls) {
     assert.ok(!u.startsWith("/"), `${u} must be relative so forks keep working`);
   }
 });
