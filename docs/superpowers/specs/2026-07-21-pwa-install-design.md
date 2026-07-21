@@ -59,9 +59,9 @@ Deploy is unchanged: Pages still serves `main` at root, and a forker who never e
 
 ### 2.5 Icons
 
-**Four** PNGs per app: `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` (180×180), and `icon-512-maskable.png`.
+Three PNGs per app, matching Metal's set exactly: `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` (180×180).
 
-The fourth file exists because the earlier three-file plan was wrong. It assumed the mark could be inset into the maskable safe zone (the center 80% — a 410px circle at 512) and then honestly declared `purpose: "any maskable"`. Both chosen marks defeat that. Field's navy block spans 64–448 with `rx="84"`, putting its rounded corners ~237px from center against a 205px safe radius, so Android's circular mask would shave them; Signal's ink box (`l=87 t=138 r=416 b=374`) has a half-diagonal of 202px, which only just clears. So the icons are drawn **edge to edge** — which is what makes them look designed rather than timid — and Android gets its own inset copy at `purpose: "maskable"` while 192/512 stay `purpose: "any"`. iOS ignores maskable entirely and uses `apple-touch-icon`.
+Both are declared **`purpose: "any"`** — deliberately not Metal's `"any maskable"`. Maskable promises the mark survives Android cropping to the center 80% (a 410px circle at 512), and both marks are drawn edge to edge, which is what stops them looking timid. Field's navy block spans 64–448 with `rx="84"`, putting its rounded corners ~237px from center against a 205px safe radius; Signal's ink box (`l=87 t=138 r=416 b=374`) has a half-diagonal of 202px and only just clears. Declaring `"any"` is the honest call: Android letterboxes the icon onto its own background instead of shaving the block's corners, and iOS ignores maskable entirely in favour of `apple-touch-icon`. An inset `icon-512-maskable.png` is a one-line addition if Android ever becomes a target; it is not one today.
 
 All four are square, full-bleed and **opaque with no rounded corners baked in** — iOS applies its own squircle, and transparency in an `apple-touch-icon` composites to black.
 
@@ -72,7 +72,7 @@ All four are square, full-bleed and **opaque with no rounded corners baked in** 
 | GRE `G` (Newsreader 500, 384px, anchored 0,384) | `l=17 t=112 r=283 b=389` | anchor → `x=106, y=389.5` (was 12px right, 3.5px high) |
 | Net+ fan-out | `l=87 t=138 r=416 b=374` | `translate(4.5 0)`; vertically already true |
 
-`tools/make-icons.mjs` + `tools/icon.html` render each mark at 1024 via headless Chrome using the repo's own bundled `.woff2`, then Pillow downsamples (LANCZOS) to 512/192/180 and composites the maskable variant at 80% on the field color. Chrome rather than Pillow alone because Pillow cannot read woff2 and `fontTools` is absent; this also gets real hinting from the actual brand font.
+`tools/make-icons.mjs` + `tools/icon.html` render each mark at 1024 via headless Chrome using the repo's own bundled `.woff2`, then Pillow downsamples (LANCZOS) to 512/192/180. Chrome rather than Pillow alone because Pillow cannot read woff2 and `fontTools` is absent; this also gets real hinting from the actual brand font.
 
 ### 2.6 Safe-area CSS
 
@@ -92,11 +92,11 @@ Both `env()` values are `0px` off-iOS and in browser tabs, making this a no-op e
 
 1. `index.html`: `viewport-fit=cover` on the viewport meta; manifest link; `apple-touch-icon` link; `apple-mobile-web-app-capable`; `-title` (`GRE` / `Network+`); `-status-bar-style: black-translucent`; `theme-color: #101827`; `<script src="js/pwa.js">`
 2. `manifest.webmanifest`: new — `display: standalone`, relative `start_url`/`scope`, `background_color` and `theme_color` both `#101827` (matches the header, so the iOS launch splash is navy with the mark centered)
-3. `js/pwa.js`: new, byte-identical — registers `sw.js`, **no-ops on `file://`** (workers are unsupported there and both READMEs document double-clicking `index.html`) and where `navigator.serviceWorker` is absent
+3. `js/pwa.js`: new, byte-identical — a direct port of Metal's `src/main.tsx:19-30`: register inside a `load` listener, guard on `"serviceWorker" in navigator`, and `console.error` on failure with **no UI**, because the app works identically without the worker and only loses offline. Metal's `import.meta.env.PROD` guard becomes a `file:` protocol guard — the equivalent "don't register where it can't work", since workers are unsupported over `file://` and both READMEs document double-clicking `index.html`
 4. `sw.js`: new, generated, committed
 5. `tools/build-sw.mjs`, `tools/make-icons.mjs`, `tools/icon.html`: new
 6. `test/sw-fresh.test.mjs`: new, byte-identical
-7. `icons/`: four PNGs
+7. `icons/`: three PNGs
 8. `css/style.css`: the two safe-area rules above, plus whatever `.logo` needs to host a two-tone mark instead of a single stroked path
 9. `js/app.js`: replace the `logo` entry in the icon table (`js/app.js:81`) and its `GRE.icon("logo", 19)` call site in `chrome()`. The existing helper renders a **single stroked path in a 24 viewBox**; both new marks are two-tone filled compositions in a 512 viewBox, one of which needs a `<mask>`. They cannot be expressed through that helper, so the header mark becomes an inline SVG emitted alongside it rather than another row in the table. The helper itself stays untouched for the other 20-odd icons.
 
