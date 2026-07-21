@@ -29,7 +29,7 @@ Everything resolves relatively instead:
 | `start_url`, `scope` | `"./"` | manifest URL |
 | manifest `icons[].src` | `icons/icon-192.png` | manifest URL |
 | `register()` | `"sw.js"` | document URL |
-| `BASE` inside `sw.js` | `new URL("./", self.location)` | worker URL |
+| `PRECACHE` entries and `SHELL` in `sw.js` | `"./"`, `"css/style.css"`, … | worker URL |
 
 Consequences: a fork under any repo name works with no edits (both READMEs promise this), the app still opens over `file://`, and there is no deploy-path constant to keep in sync across files.
 
@@ -53,7 +53,7 @@ No changes. `sync.js` already treats a failed request as `status: "offline"` and
 
 `tools/build-sw.mjs` (byte-identical in both repos) walks an **allowlist** — `css/`, `js/`, `data/`, `fonts/`, `icons/`, plus `index.html` and `manifest.webmanifest`. An allowlist, not a blocklist: `docs/`, `test/`, `tools/`, `.claude/`, `.gstack/`, `README.md`, `start.bat` can never leak into the precache, and a future directory cannot silently join it. Version is the first 16 hex of a sha256 over every path and its content.
 
-`test/sw-fresh.test.mjs` (byte-identical) regenerates in memory and asserts the committed `sw.js` matches byte-for-byte, failing with *"sw.js is stale — run: node tools/build-sw.mjs"*. This folds into the existing `node --test test/` convention, so a stale cache — the nastiest failure mode in PWAs — cannot ship silently.
+`test/sw-fresh.test.mjs` (byte-identical) regenerates in memory and asserts the committed `sw.js` matches byte-for-byte, failing with *"sw.js is stale — run: node tools/build-sw.mjs"*. This folds into the existing `node --test` convention, so a stale cache — the nastiest failure mode in PWAs — cannot ship silently.
 
 Deploy is unchanged: Pages still serves `main` at root, and a forker who never edits app files never runs anything.
 
@@ -63,7 +63,7 @@ Three PNGs per app, matching Metal's set exactly: `icon-192.png`, `icon-512.png`
 
 Both are declared **`purpose: "any"`** — deliberately not Metal's `"any maskable"`. Maskable promises the mark survives Android cropping to the center 80% (a 410px circle at 512), and both marks are drawn edge to edge, which is what stops them looking timid. Field's navy block spans 64–448 with `rx="84"`, putting its rounded corners ~237px from center against a 205px safe radius; Signal's ink box (`l=87 t=138 r=416 b=374`) has a half-diagonal of 202px and only just clears. Declaring `"any"` is the honest call: Android letterboxes the icon onto its own background instead of shaving the block's corners, and iOS ignores maskable entirely in favour of `apple-touch-icon`. An inset `icon-512-maskable.png` is a one-line addition if Android ever becomes a target; it is not one today.
 
-All four are square, full-bleed and **opaque with no rounded corners baked in** — iOS applies its own squircle, and transparency in an `apple-touch-icon` composites to black.
+All three are square, full-bleed and **opaque with no rounded corners baked in** — iOS applies its own squircle, and transparency in an `apple-touch-icon` composites to black.
 
 **Geometry is measured, not eyeballed.** Both marks are centered on their *ink* box rather than their em box, established by rendering each at 1024 and reading the non-background bounding box off the pixels:
 
@@ -72,7 +72,9 @@ All four are square, full-bleed and **opaque with no rounded corners baked in** 
 | GRE `G` (Newsreader 500, 384px, anchored 0,384) | `l=17 t=112 r=283 b=389` | anchor → `x=106, y=389.5` (was 12px right, 3.5px high) |
 | Net+ fan-out | `l=87 t=138 r=416 b=374` | `translate(4.5 0)`; vertically already true |
 
-`tools/make-icons.mjs` + `tools/icon.html` render each mark at 1024 via headless Chrome using the repo's own bundled `.woff2`, then Pillow downsamples (LANCZOS) to 512/192/180. Chrome rather than Pillow alone because Pillow cannot read woff2 and `fontTools` is absent; this also gets real hinting from the actual brand font.
+`tools/make-icons.mjs` + `tools/icon.html` render each mark via headless Chrome at **each target size natively** — 512, 192, 180 — rather than downsampling one large raster. These are vector marks, so native rasterization is crisp at every size and the tool needs no image library at all: no Pillow, no `fontTools`, no npm dependency. GRE's `make-icons.mjs` inlines `fonts/newsreader-500.woff2` as a base64 data URI before rendering, because Chrome refuses to load a `file://` webfont from a `file://` page and would silently fall back to a system serif. Network+ needs no such step — its mark is pure geometry.
+
+The marks are drawn as **a navy block with the mark painted on top**, not as a `<mask>` knockout. The two are pixel-identical — only two colors are involved either way — and painting directly avoids element IDs entirely, which matters because the same geometry is reused in a header that re-renders.
 
 ### 2.6 Safe-area CSS
 
@@ -98,13 +100,13 @@ Both `env()` values are `0px` off-iOS and in browser tabs, making this a no-op e
 6. `test/sw-fresh.test.mjs`: new, byte-identical
 7. `icons/`: three PNGs
 8. `css/style.css`: the two safe-area rules above, plus whatever `.logo` needs to host a two-tone mark instead of a single stroked path
-9. `js/app.js`: replace the `logo` entry in the icon table (`js/app.js:81`) and its `GRE.icon("logo", 19)` call site in `chrome()`. The existing helper renders a **single stroked path in a 24 viewBox**; both new marks are two-tone filled compositions in a 512 viewBox, one of which needs a `<mask>`. They cannot be expressed through that helper, so the header mark becomes an inline SVG emitted alongside it rather than another row in the table. The helper itself stays untouched for the other 20-odd icons.
+9. `js/app.js`: delete the `logo` entry from the icon table (`js/app.js:81`) and change its `GRE.icon("logo", 19)` call site in `chrome()`. The existing helper renders a **single stroked path in a 24 viewBox**; both new marks are two-tone filled compositions in a 512 viewBox, so neither can be expressed through it. Rather than duplicating the geometry as an inline SVG, the header renders **`icons/icon-192.png`** — the icon file is then the single source of truth for the mark, and it is precached, so it works offline. The helper itself stays untouched for the other 20-odd icons.
 
 `sync.js`, `theme.js`, `exam.js` and all data files are untouched.
 
 ## 4. Docs
 
-- `docs/howto-run-and-deploy.md` (GRE): add an "Install on your phone" section; document that editing app files requires `node tools/build-sw.mjs` and that `node --test test/` enforces it. Correct the now-false claim that the app has *"no `fetch()` calls"* — untrue since `sync.js` landed.
+- `docs/howto-run-and-deploy.md` (GRE): add an "Install on your phone" section; document that editing app files requires `node tools/build-sw.mjs` and that `node --test` enforces it. Correct the now-false claim that the app has *"no `fetch()` calls"* — untrue since `sync.js` landed.
 - `README.md` (both): one line on home-screen install and offline launch.
 
 ## 5. Out of scope
@@ -117,7 +119,7 @@ Both `env()` values are `0px` off-iOS and in browser tabs, making this a no-op e
 
 ## 6. Testing
 
-- **Freshness:** `node --test test/` green in both repos; then touch a `data/*.js` file and confirm `sw-fresh` fails, and that `node tools/build-sw.mjs` makes it pass again — the guard must be proven, not assumed.
+- **Freshness:** `node --test` green in both repos; then touch a `data/*.js` file and confirm `sw-fresh` fails, and that `node tools/build-sw.mjs` makes it pass again — the guard must be proven, not assumed.
 - **Allowlist:** the generated `PRECACHE_URLS` contains every `<script src>` and `<link href>` in `index.html` plus all nine fonts, and contains nothing from `docs/`, `test/`, `tools/`, or the dotfile dirs.
 - **Local (over `localhost:8420` via `start.bat`, where workers are permitted):** DevTools → Application shows a valid manifest with no icon warnings and an activated worker; DevTools offline + reload serves the full app; a second offline reload still works after a hard navigation.
 - **`file://` regression:** double-clicking `index.html` still runs the app with no console errors from `pwa.js`.
