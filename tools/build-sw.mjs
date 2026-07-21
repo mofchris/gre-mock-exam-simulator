@@ -35,11 +35,23 @@ function walk(root, rel) {
   return out;
 }
 
+// Text files are hashed with CRLF normalised to LF. Git's core.autocrlf (on by
+// default on Windows) rewrites line endings in the working tree on clone,
+// checkout, branch switch and restore. Hashing raw bytes would then move the
+// version hash without one byte of real content changing, so the freshness test
+// would fail on a clean tree — and a guard that cries wolf gets ignored, which
+// is exactly how a genuinely stale sw.js ships. Binaries are hashed as-is.
+const TEXT = /\.(html|css|js|mjs|json|webmanifest|txt|svg)$/;
+
 export function build(root = ROOT) {
   const files = collect(root);
   const hash = createHash("sha256");
   for (const f of files) {
-    hash.update(f).update("\0").update(readFileSync(join(root, f)));
+    const buf = readFileSync(join(root, f));
+    hash
+      .update(f)
+      .update("\0")
+      .update(TEXT.test(f) ? buf.toString("utf8").replace(/\r\n/g, "\n") : buf);
   }
   const version = hash.digest("hex").slice(0, 16);
   // "./" is the app shell: that is what a navigation to the directory actually
