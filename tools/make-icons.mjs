@@ -46,15 +46,25 @@ writeFileSync(
     .replace("%FONT%", `data:font/woff2;base64,${font}`),
 );
 
+// Chrome refuses to open a window narrower than ~500px and silently clamps to
+// that width, while still writing the PNG at the size you asked for — so
+// --window-size=192,192 yields a 192px image containing a CROPPED corner of a
+// 500px render, with no error. Always render at a 512 window (above the clamp)
+// and let the device scale factor produce the final size. Chrome rasterises
+// the vector at deviceScaleFactor x CSS pixels, so this is still a true render
+// at each size, not a downsample of a bitmap.
+const RENDER_PX = 512;
+
 try {
   for (const [out, size] of TARGETS) {
     execFileSync(
       chrome,
       [
         "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars",
-        "--force-device-scale-factor=1", "--virtual-time-budget=5000",
+        `--force-device-scale-factor=${size / RENDER_PX}`,
+        "--virtual-time-budget=5000",
         `--screenshot=${join(ROOT, out)}`,
-        `--window-size=${size},${size}`,
+        `--window-size=${RENDER_PX},${RENDER_PX}`,
         pathToFileURL(tmp).href,
       ],
       { stdio: "ignore" },
