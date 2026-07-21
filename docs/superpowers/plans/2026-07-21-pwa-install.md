@@ -133,15 +133,25 @@ writeFileSync(
     .replace("%FONT%", `data:font/woff2;base64,${font}`),
 );
 
+// Chrome refuses to open a window narrower than ~500px and silently clamps to
+// that width, while still writing the PNG at the size you asked for — so
+// --window-size=192,192 yields a 192px image containing a CROPPED corner of a
+// 500px render, with no error. Always render at a 512 window (above the clamp)
+// and let the device scale factor produce the final size. Chrome rasterises
+// the vector at deviceScaleFactor x CSS pixels, so this is still a true render
+// at each size, not a downsample of a bitmap.
+const RENDER_PX = 512;
+
 try {
   for (const [out, size] of TARGETS) {
     execFileSync(
       chrome,
       [
         "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars",
-        "--force-device-scale-factor=1", "--virtual-time-budget=5000",
+        `--force-device-scale-factor=${size / RENDER_PX}`,
+        "--virtual-time-budget=5000",
         `--screenshot=${join(ROOT, out)}`,
-        `--window-size=${size},${size}`,
+        `--window-size=${RENDER_PX},${RENDER_PX}`,
         pathToFileURL(tmp).href,
       ],
       { stdio: "ignore" },
@@ -171,13 +181,42 @@ icons/apple-touch-icon.png  180x180
 
 - [ ] **Step 4: Verify the output**
 
+Check dimensions and opacity on all three:
+
 ```bash
-node -e "const b=require('fs').readFileSync('icons/icon-512.png');console.log('PNG',b.readUInt32BE(16)+'x'+b.readUInt32BE(20),'colorType',b[25])"
+for f in icons/icon-512.png icons/icon-192.png icons/apple-touch-icon.png; do
+  node -e "const b=require('fs').readFileSync('$f');console.log('$f',b.readUInt32BE(16)+'x'+b.readUInt32BE(20),'colorType',b[25])"
+done
 ```
 
-Expected: `PNG 512x512 colorType 2`. Color type 2 is RGB with **no alpha** — required for `apple-touch-icon`.
+Expected exactly:
 
-Then open `icons/icon-512.png` and confirm by eye: a blue tile, a navy rounded block inset from the edges, and a serif `G` in blue sitting visually centred in the block. If the `G` renders in a generic serif (flat, low contrast strokes) the font inlining failed — do not proceed.
+```
+icons/icon-512.png 512x512 colorType 2
+icons/icon-192.png 192x192 colorType 2
+icons/apple-touch-icon.png 180x180 colorType 2
+```
+
+Color type 2 is RGB with **no alpha** — required for `apple-touch-icon`.
+
+Now prove no image is cropped. The mark's block is inset 12.5% on every side, so on a correct render all four corners are pure field blue `#2f63c6` = `(47, 99, 198)`. On a clamped/cropped render they are not. Python with Pillow is available on this machine — this is a one-off check, not a repo dependency:
+
+```bash
+python -c "
+from PIL import Image
+for f in ['icons/icon-512.png','icons/icon-192.png','icons/apple-touch-icon.png']:
+    im = Image.open(f).convert('RGB'); w, h = im.size
+    corners = [im.getpixel(p) for p in [(0,0),(w-1,0),(0,h-1),(w-1,h-1)]]
+    ok = all(c == (47,99,198) for c in corners)
+    print(f, im.size, 'corners', 'OK' if ok else 'CROPPED -> ' + str(corners))
+    assert ok, f + ' is cropped'
+print('all three uncropped')
+"
+```
+
+Expected: three `corners OK` lines then `all three uncropped`. **If any reports CROPPED, stop** — the device-scale-factor render is not working and the icons are wrong.
+
+Finally open `icons/icon-512.png` and confirm by eye: a blue tile, a navy rounded block inset from the edges, and a serif `G` in blue sitting visually centred in the block. If the `G` renders in a generic serif (flat strokes, little thick/thin contrast) the font inlining failed — do not proceed.
 
 - [ ] **Step 5: Commit**
 
@@ -812,14 +851,24 @@ if (!chrome) {
 
 const src = pathToFileURL(join(ROOT, "tools/icon.html")).href;
 
+// Chrome refuses to open a window narrower than ~500px and silently clamps to
+// that width, while still writing the PNG at the size you asked for — so
+// --window-size=192,192 yields a 192px image containing a CROPPED corner of a
+// 500px render, with no error. Always render at a 512 window (above the clamp)
+// and let the device scale factor produce the final size. Chrome rasterises
+// the vector at deviceScaleFactor x CSS pixels, so this is still a true render
+// at each size, not a downsample of a bitmap.
+const RENDER_PX = 512;
+
 for (const [out, size] of TARGETS) {
   execFileSync(
     chrome,
     [
       "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars",
-      "--force-device-scale-factor=1", "--virtual-time-budget=5000",
+      `--force-device-scale-factor=${size / RENDER_PX}`,
+      "--virtual-time-budget=5000",
       `--screenshot=${join(ROOT, out)}`,
-      `--window-size=${size},${size}`,
+      `--window-size=${RENDER_PX},${RENDER_PX}`,
       src,
     ],
     { stdio: "ignore" },
@@ -834,10 +883,27 @@ for (const [out, size] of TARGETS) {
 cd "C:/Users/mofch/OneDrive/Desktop/Projects/network-plus-mock-exam"
 mkdir -p icons
 node tools/make-icons.mjs
-node -e "const b=require('fs').readFileSync('icons/icon-512.png');console.log('PNG',b.readUInt32BE(16)+'x'+b.readUInt32BE(20),'colorType',b[25])"
 ```
 
-Expected: three render lines, then `PNG 512x512 colorType 2`.
+Then verify all three, exactly as GRE's Task 1 Step 4 did — dimensions, no alpha, and no crop. The field colour here is amber `#c47b2a` = `(196, 123, 42)`:
+
+```bash
+for f in icons/icon-512.png icons/icon-192.png icons/apple-touch-icon.png; do
+  node -e "const b=require('fs').readFileSync('$f');console.log('$f',b.readUInt32BE(16)+'x'+b.readUInt32BE(20),'colorType',b[25])"
+done
+python -c "
+from PIL import Image
+for f in ['icons/icon-512.png','icons/icon-192.png','icons/apple-touch-icon.png']:
+    im = Image.open(f).convert('RGB'); w, h = im.size
+    corners = [im.getpixel(p) for p in [(0,0),(w-1,0),(0,h-1),(w-1,h-1)]]
+    ok = all(c == (196,123,42) for c in corners)
+    print(f, im.size, 'corners', 'OK' if ok else 'CROPPED -> ' + str(corners))
+    assert ok, f + ' is cropped'
+print('all three uncropped')
+"
+```
+
+Expected: `512x512`/`192x192`/`180x180`, all `colorType 2`, then three `corners OK` lines and `all three uncropped`.
 
 Open `icons/icon-512.png` and confirm: an amber tile, a white run entering from the left and splitting into two, each arm ending in a navy dot.
 
