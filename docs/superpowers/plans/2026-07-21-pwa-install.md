@@ -728,12 +728,16 @@ with:
   /* Standalone on iOS the navy header runs under the status bar. Because
      box-sizing is border-box and height is 100%, this padding is drawn inside
      the height, so the column shrinks by exactly the inset and --headink shows
-     through the strip. All three possible top headers (.tophead, .examhead,
-     .crumb) are already --headink, so the seam is invisible in both themes.
+     through the strip.
      env() is 0px off-iOS, making this a no-op in a browser tab. */
   padding-top: env(safe-area-inset-top);
   background: var(--headink);
 }
+/* .tophead and .crumb are --headink, but .examhead is --exam-head: a
+   deliberately elevated tier, and a different value in BOTH themes. Without
+   this the strip would seam against the exam toolbar mid-test — on device, in
+   the app's primary use case. Browsers without :has() simply get that seam. */
+#app:has(> .examhead) { background: var(--exam-head); }
 ```
 
 Then replace `.stage-inner` (line 389):
@@ -745,11 +749,16 @@ Then replace `.stage-inner` (line 389):
 with:
 
 ```css
-/* Bottom inset keeps scrolled content clear of the iPhone home indicator. */
+/* Bottom inset keeps scrolled content clear of the iPhone home indicator.
+   The variant rules below redeclare the padding shorthand at higher
+   specificity, so they must carry the env() term too or the inset silently
+   vanishes on exactly the most scroll-heavy screens in the app. */
 .stage-inner {
   max-width: 980px; margin: 0 auto;
   padding: 26px 30px calc(40px + env(safe-area-inset-bottom));
 }
+.stage-inner.reader { max-width: 800px; padding: 34px 30px calc(40px + env(safe-area-inset-bottom)); }
+.stage-inner.exam { max-width: 1020px; padding: 22px 30px calc(34px + env(safe-area-inset-bottom)); }
 ```
 
 - [ ] **Step 5: Regenerate and test**
@@ -1152,16 +1161,25 @@ Replace `#app` (line 145):
   padding-top: env(safe-area-inset-top);
   background: var(--headink);
 }
+/* .tophead and .crumb are --headink, but .examhead is --exam-head: a
+   deliberately elevated tier, and a different value in BOTH themes. Without
+   this the strip would seam against the exam toolbar mid-test — on device, in
+   the app's primary use case. Browsers without :has() simply get that seam. */
+#app:has(> .examhead) { background: var(--exam-head); }
 ```
 
 Replace `.stage-inner` (line 329):
 
 ```css
-/* Bottom inset keeps scrolled content clear of the iPhone home indicator. */
+/* Bottom inset keeps scrolled content clear of the iPhone home indicator.
+   The variant rules below redeclare the padding shorthand at higher
+   specificity, so they must carry the env() term too or the inset silently
+   vanishes on exactly the most scroll-heavy screens in the app. */
 .stage-inner {
   max-width: 980px; margin: 0 auto;
   padding: 26px 30px calc(40px + env(safe-area-inset-bottom));
 }
+.stage-inner.reader { max-width: 800px; padding: 34px 30px calc(40px + env(safe-area-inset-bottom)); }
 ```
 
 - [ ] **Step 5: Regenerate, test, verify**
