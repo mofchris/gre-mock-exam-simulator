@@ -170,7 +170,17 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-#app { height: 100%; display: flex; flex-direction: column; }
+#app {
+  height: 100%; display: flex; flex-direction: column;
+  /* Standalone on iOS the navy header runs under the status bar. Because
+     box-sizing is border-box and height is 100%, this padding is drawn inside
+     the height, so the column shrinks by exactly the inset and --headink shows
+     through the strip. All three possible top headers (.tophead, .examhead,
+     .crumb) are already --headink, so the seam is invisible in both themes.
+     env() is 0px off-iOS, making this a no-op in a browser tab. */
+  padding-top: env(safe-area-inset-top);
+  background: var(--headink);
+}
 
 button { font-family: inherit; cursor: pointer; }
 input, select, textarea { font-family: inherit; }
@@ -191,11 +201,12 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   background: var(--headink); color: var(--on-dark);
 }
 .tophead .brandwrap { display: flex; align-items: center; gap: 13px; min-width: 0; }
+/* The mark supplies its own field and rounding, so the box is just a clip. */
 .tophead .logo {
   width: 34px; height: 34px; flex: 0 0 auto; border-radius: 9px;
-  background: linear-gradient(150deg, var(--accent), var(--accent-lite));
-  display: flex; align-items: center; justify-content: center; color: var(--on-dark);
+  overflow: hidden; display: block;
 }
+.tophead .logo img { display: block; width: 100%; height: 100%; }
 .tophead .names { line-height: 1.15; min-width: 0; }
 .tophead .pname { font-size: 14.5px; font-weight: 600; white-space: nowrap; }
 .tophead .psub { font-family: var(--font-mono); font-size: 11px; opacity: .6; white-space: nowrap; }
@@ -386,7 +397,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 /* ================= stage ================= */
 
 .stage { flex: 1; overflow: auto; background: var(--sub); }
-.stage-inner { max-width: 980px; margin: 0 auto; padding: 26px 30px 40px; }
+/* Bottom inset keeps scrolled content clear of the iPhone home indicator. */
+.stage-inner {
+  max-width: 980px; margin: 0 auto;
+  padding: 26px 30px calc(40px + env(safe-area-inset-bottom));
+}
 .stage-inner.wide { max-width: 1240px; }
 .stage-inner.reader { max-width: 800px; padding: 34px 30px 40px; }
 .stage-inner.exam { max-width: 1020px; padding: 22px 30px 34px; }

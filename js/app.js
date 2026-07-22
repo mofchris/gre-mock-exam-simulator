@@ -78,7 +78,6 @@
     quiz:    { d: "M9 11l3 3 8-8M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9" },
     alert:   { d: "M12 3l9 16H3zM12 9v4M12 17h.01" },
     tutor:   { d: "M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z" },
-    logo:    { d: "M5 6h14M5 11h9M5 16h11" },
     /* exam toolbar */
     exit:    { d: "M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4M9 16l4-4-4-4M13 12H4", w: 1.9 },
     list:    { d: "M4 6h16M4 12h16M4 18h16", w: 1.9 },
@@ -278,7 +277,9 @@
 
     const head = el("div", { class: "tophead" },
       el("div", { class: "brandwrap" },
-        el("span", { class: "logo" }, GRE.icon("logo", 19)),
+        // The header mark is the app icon itself — one source of truth for the
+        // geometry, and it is precached, so it is available offline.
+        el("span", { class: "logo", html: '<img src="icons/icon-192.png" alt="">' }),
         el("div", { class: "names" },
           el("div", { class: "pname" }, "GRE Mock Simulator"),
           el("div", { class: "psub" }, "shorter format · independent study tool"))),
