@@ -761,6 +761,18 @@ with:
 .stage-inner.exam { max-width: 1020px; padding: 22px 30px calc(34px + env(safe-area-inset-bottom)); }
 ```
 
+
+Finally, amend the **pre-existing mobile media query**. It redeclares the same shorthand again, and this is the instance that actually matters: every iPhone viewport is ≤720px, so on the target device this rule always wins and would discard the inset. Amend these lines in place inside `@media (max-width: 720px)`:
+
+```css
+@media (max-width: 720px) {
+  /* Every iPhone viewport is <= 720px, so this block always applies on the
+     device this feature exists for. Without the env() term here the home
+     indicator overlaps scrolled content. */
+  .stage-inner { padding: 20px 16px calc(32px + env(safe-area-inset-bottom)); }
+  .stage-inner.exam { padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); }
+```
+
 - [ ] **Step 5: Regenerate and test**
 
 ```bash
@@ -771,6 +783,8 @@ node --test
 Expected: `pass 15`, `fail 0`.
 
 - [ ] **Step 6: Verify visually**
+
+**Verify at a width between 500 and 720px — 600px is ideal.** This is not arbitrary: below 720px the mobile media query applies, and above ~500px Chrome does not clamp the window and crop the render. Checking only at desktop widths misses every mobile-only rule, which is exactly how the media-query defect above reached review.
 
 Serve with `python -m http.server 8420` and check at 1280px and at 375×812 (DevTools device toolbar), in **both** light and dark:
 
@@ -1182,7 +1196,20 @@ Replace `.stage-inner` (line 329):
 .stage-inner.reader { max-width: 800px; padding: 34px 30px calc(40px + env(safe-area-inset-bottom)); }
 ```
 
+
+Finally, amend the **pre-existing mobile media query**. It redeclares the same shorthand again, and this is the instance that actually matters: every iPhone viewport is ≤720px, so on the target device this rule always wins and would discard the inset. Amend these lines in place inside `@media (max-width: 720px)`:
+
+```css
+@media (max-width: 720px) {
+  /* Every iPhone viewport is <= 720px, so this block always applies on the
+     device this feature exists for. Without the env() term here the home
+     indicator overlaps scrolled content. */
+  .stage-inner { padding: 20px 16px calc(32px + env(safe-area-inset-bottom)); }
+```
+
 - [ ] **Step 5: Regenerate, test, verify**
+
+**Verify at a width between 500 and 720px — 600px is ideal.** This is not arbitrary: below 720px the mobile media query applies, and above ~500px Chrome does not clamp the window and crop the render. Checking only at desktop widths misses every mobile-only rule, which is exactly how the media-query defect above reached review.
 
 ```bash
 node tools/build-sw.mjs
