@@ -1278,8 +1278,11 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
 /* ================= responsive ================= */
 
 @media (max-width: 720px) {
-  .stage-inner { padding: 20px 16px 32px; }
-  .stage-inner.exam { padding: 16px; }
+  /* Every iPhone viewport is <= 720px, so this block always applies on the
+     device this feature exists for. Without the env() term here the home
+     indicator overlaps scrolled content. */
+  .stage-inner { padding: 20px 16px calc(32px + env(safe-area-inset-bottom)); }
+  .stage-inner.exam { padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); }
   .tophead, .crumb { padding: 0 16px; }
   .tophead { height: auto; min-height: 60px; padding: 10px 16px; flex-wrap: wrap; }
 
