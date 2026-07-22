@@ -87,7 +87,9 @@ The marks are drawn as **a navy block with the mark painted on top**, not as a `
 
 The padding is drawn inside the 100% height, so the flex column shrinks by exactly the inset and `--headink` shows through the top strip. All three possible top headers are already `--headink` (`#101827` light, `#141c2b` dark), so the seam is invisible in both themes and no per-screen knowledge is required. White status-bar glyphs read correctly on navy either way.
 
-Second rule: `.stage-inner`'s bottom padding becomes `calc(40px + env(safe-area-inset-bottom))` so scrolled content clears the home indicator. Nothing is pinned to the bottom edge — the exam's controls live in `.examhead` at the top — so no other bottom work is needed.
+Second rule: `.stage-inner`'s bottom padding gains `env(safe-area-inset-bottom)` so scrolled content clears the home indicator. Note this must be applied to **every** rule that redeclares that `padding` shorthand — the `.reader` and `.exam` variants and the `@media (max-width: 720px)` block — because a shorthand at equal-or-higher specificity silently discards the term, and the media query is the one that always wins on an actual iPhone.
+
+The two apps differ at the bottom edge. **GRE** pins nothing there: its exam controls live in `.examhead` at the top, so the scroll padding is all that is needed. **Network+** has `.examfoot` — a `position: sticky; bottom: 0` button bar during exams — which already carried its own `env(safe-area-inset-bottom)` before this work began, inside the same 720px media query. It is left untouched.
 
 Both `env()` values are `0px` off-iOS and in browser tabs, making this a no-op everywhere else.
 
