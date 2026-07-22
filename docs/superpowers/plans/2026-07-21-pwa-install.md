@@ -23,7 +23,8 @@
   | `test/sw-fresh.test.mjs` | the bundled-font count — `9` (GRE) vs `7` (Network+) |
 
   `tools/make-icons.mjs` is also near-duplicated across the two repos for the same reason; GRE's copy additionally inlines a webfont, which Network+ does not need.
-- **Colours come from existing tokens only.** Navy `#101827` (`--headink`), GRE blue `#2f63c6` (`--accent`), Network+ amber `#c47b2a` (`--quant`). Invent nothing.
+- **Colours come from the existing design system only.** Navy `#101827` (`--headink`), GRE blue `#2f63c6` (`--accent`), and `#c47b2a` for the Network+ mark. Invent nothing.
+  Note on that last one: `#c47b2a` is GRE's `--quant` token. The two apps share one design system, but **Network+'s own stylesheet does not define `--quant`** — its nearest token is `--amber: #b0710a`, a different and darker value that the mark deliberately does not use. The Network+ mark is `#c47b2a` because the two apps' accent blues are identical, so the icons need a hue split to be distinguishable on a home screen, and that specific amber is the one reviewed and approved at true 60px. Both icon sources hardcode literal hex rather than reading CSS variables, so no token lookup is involved at render time.
 - **Icons are square, full-bleed, opaque, with no rounded corners baked in.** iOS applies its own squircle; transparency in an `apple-touch-icon` composites to black.
 - **`purpose: "any"`** in the manifest — not `"any maskable"`.
 - Commit after every task. Never use `--no-verify`.
