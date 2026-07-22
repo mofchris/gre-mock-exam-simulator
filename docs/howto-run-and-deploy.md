@@ -13,8 +13,9 @@ End result: the app running at a URL you control.
 
 Three options, pick one:
 
-1. **Zero setup**: double-click `index.html`. The app is pure static files with no
-   `fetch()` calls, so it works over `file://`.
+1. **Zero setup**: double-click `index.html`. The app runs straight from the file
+   system. Account sync and offline caching both need a real server, so over
+   `file://` you get the anonymous, online-only experience.
 
 2. **Windows launcher**: double-click `start.bat`. It starts a local server on
    port 8420 and opens your browser at `http://localhost:8420` (falls back to opening
@@ -70,6 +71,35 @@ curl -s -o /dev/null -w "%{http_code}\n" https://<your-username>.github.io/gre-m
 ```
 
 `200` means live. Load the page and confirm the bank counts in the footer.
+
+## Install it on your phone
+
+1. **Sign in first, in Safari.** iOS gives a home-screen web app its own storage,
+   separate from Safari's — an installed app does not inherit your browser
+   history or progress. Signing in before you install means your progress syncs
+   across instead of being stranded.
+2. Open the Pages URL in Safari, tap **Share → Add to Home Screen**.
+3. Launch it from the home screen. It opens without Safari's chrome, and the
+   header runs under the status bar.
+4. Sign in again inside the installed app to pull your progress across.
+
+The first launch must be online — that is when the service worker installs and
+precaches the app. After that it opens and runs with no network at all.
+
+## When you change app files
+
+`sw.js` pins installed users to a fixed list of files. Regenerate it after
+editing anything under `css/`, `js/`, `data/`, `fonts/` or `icons/`, or
+`index.html`:
+
+    node tools/build-sw.mjs
+
+Forgetting leaves installed users on the old version. `node --test` fails with
+"sw.js is stale" if you do, so run the tests before pushing.
+
+Regenerate the icons only when the brand mark changes:
+
+    node tools/make-icons.mjs
 
 ## Troubleshooting
 

@@ -23,7 +23,8 @@
   | `test/sw-fresh.test.mjs` | the bundled-font count — `9` (GRE) vs `7` (Network+) |
 
   `tools/make-icons.mjs` is also near-duplicated across the two repos for the same reason; GRE's copy additionally inlines a webfont, which Network+ does not need.
-- **Colours come from existing tokens only.** Navy `#101827` (`--headink`), GRE blue `#2f63c6` (`--accent`), Network+ amber `#c47b2a` (`--quant`). Invent nothing.
+- **Colours come from the existing design system only.** Navy `#101827` (`--headink`), GRE blue `#2f63c6` (`--accent`), and `#c47b2a` for the Network+ mark. Invent nothing.
+  Note on that last one: `#c47b2a` is GRE's `--quant` token. The two apps share one design system, but **Network+'s own stylesheet does not define `--quant`** — its nearest token is `--amber: #b0710a`, a different and darker value that the mark deliberately does not use. The Network+ mark is `#c47b2a` because the two apps' accent blues are identical, so the icons need a hue split to be distinguishable on a home screen, and that specific amber is the one reviewed and approved at true 60px. Both icon sources hardcode literal hex rather than reading CSS variables, so no token lookup is involved at render time.
 - **Icons are square, full-bleed, opaque, with no rounded corners baked in.** iOS applies its own squircle; transparency in an `apple-touch-icon` composites to black.
 - **`purpose: "any"`** in the manifest — not `"any maskable"`.
 - Commit after every task. Never use `--no-verify`.
@@ -133,15 +134,25 @@ writeFileSync(
     .replace("%FONT%", `data:font/woff2;base64,${font}`),
 );
 
+// Chrome refuses to open a window narrower than ~500px and silently clamps to
+// that width, while still writing the PNG at the size you asked for — so
+// --window-size=192,192 yields a 192px image containing a CROPPED corner of a
+// 500px render, with no error. Always render at a 512 window (above the clamp)
+// and let the device scale factor produce the final size. Chrome rasterises
+// the vector at deviceScaleFactor x CSS pixels, so this is still a true render
+// at each size, not a downsample of a bitmap.
+const RENDER_PX = 512;
+
 try {
   for (const [out, size] of TARGETS) {
     execFileSync(
       chrome,
       [
         "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars",
-        "--force-device-scale-factor=1", "--virtual-time-budget=5000",
+        `--force-device-scale-factor=${size / RENDER_PX}`,
+        "--virtual-time-budget=5000",
         `--screenshot=${join(ROOT, out)}`,
-        `--window-size=${size},${size}`,
+        `--window-size=${RENDER_PX},${RENDER_PX}`,
         pathToFileURL(tmp).href,
       ],
       { stdio: "ignore" },
@@ -171,13 +182,42 @@ icons/apple-touch-icon.png  180x180
 
 - [ ] **Step 4: Verify the output**
 
+Check dimensions and opacity on all three:
+
 ```bash
-node -e "const b=require('fs').readFileSync('icons/icon-512.png');console.log('PNG',b.readUInt32BE(16)+'x'+b.readUInt32BE(20),'colorType',b[25])"
+for f in icons/icon-512.png icons/icon-192.png icons/apple-touch-icon.png; do
+  node -e "const b=require('fs').readFileSync('$f');console.log('$f',b.readUInt32BE(16)+'x'+b.readUInt32BE(20),'colorType',b[25])"
+done
 ```
 
-Expected: `PNG 512x512 colorType 2`. Color type 2 is RGB with **no alpha** — required for `apple-touch-icon`.
+Expected exactly:
 
-Then open `icons/icon-512.png` and confirm by eye: a blue tile, a navy rounded block inset from the edges, and a serif `G` in blue sitting visually centred in the block. If the `G` renders in a generic serif (flat, low contrast strokes) the font inlining failed — do not proceed.
+```
+icons/icon-512.png 512x512 colorType 2
+icons/icon-192.png 192x192 colorType 2
+icons/apple-touch-icon.png 180x180 colorType 2
+```
+
+Color type 2 is RGB with **no alpha** — required for `apple-touch-icon`.
+
+Now prove no image is cropped. The mark's block is inset 12.5% on every side, so on a correct render all four corners are pure field blue `#2f63c6` = `(47, 99, 198)`. On a clamped/cropped render they are not. Python with Pillow is available on this machine — this is a one-off check, not a repo dependency:
+
+```bash
+python -c "
+from PIL import Image
+for f in ['icons/icon-512.png','icons/icon-192.png','icons/apple-touch-icon.png']:
+    im = Image.open(f).convert('RGB'); w, h = im.size
+    corners = [im.getpixel(p) for p in [(0,0),(w-1,0),(0,h-1),(w-1,h-1)]]
+    ok = all(c == (47,99,198) for c in corners)
+    print(f, im.size, 'corners', 'OK' if ok else 'CROPPED -> ' + str(corners))
+    assert ok, f + ' is cropped'
+print('all three uncropped')
+"
+```
+
+Expected: three `corners OK` lines then `all three uncropped`. **If any reports CROPPED, stop** — the device-scale-factor render is not working and the icons are wrong.
+
+Finally open `icons/icon-512.png` and confirm by eye: a blue tile, a navy rounded block inset from the edges, and a serif `G` in blue sitting visually centred in the block. If the `G` renders in a generic serif (flat strokes, little thick/thin contrast) the font inlining failed — do not proceed.
 
 - [ ] **Step 5: Commit**
 
@@ -245,8 +285,10 @@ In `index.html`, replace the existing viewport line and add the PWA block. The h
 
 - [ ] **Step 3: Verify the manifest parses and points at real files**
 
+`require()` cannot load a `.webmanifest` — Node does not map that extension to JSON and tries to parse it as JavaScript. Read and parse it explicitly:
+
 ```bash
-node -e "const m=require('./manifest.webmanifest');const fs=require('fs');for(const i of m.icons){if(!fs.existsSync(i.src))throw new Error('missing '+i.src)};if(!fs.existsSync('icons/apple-touch-icon.png'))throw new Error('missing apple-touch-icon');console.log('manifest ok:',m.short_name,m.display,m.icons.length+' icons')"
+node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('manifest.webmanifest','utf8'));for(const i of m.icons){if(!fs.existsSync(i.src))throw new Error('missing '+i.src)};if(!fs.existsSync('icons/apple-touch-icon.png'))throw new Error('missing apple-touch-icon');if(m.start_url!=='./'||m.scope!=='./')throw new Error('start_url/scope must be \"./\"');console.log('manifest ok:',m.short_name,m.display,m.icons.length+' icons')"
 ```
 
 Expected: `manifest ok: GRE standalone 2 icons`
@@ -297,7 +339,11 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 test("committed sw.js matches generator output", () => {
   const expected = build(ROOT).source;
-  const actual = readFileSync(join(ROOT, "sw.js"), "utf8");
+  // Normalise the same way build() hashes text: git's core.autocrlf smudges
+  // sw.js to CRLF on clone, checkout and restore, so a raw string compare
+  // reports "stale" on a tree git itself calls clean. Line endings in a
+  // service worker are semantically inert, so normalising loses nothing.
+  const actual = readFileSync(join(ROOT, "sw.js"), "utf8").replace(/\r\n/g, "\n");
   assert.equal(actual, expected, "sw.js is stale — run: node tools/build-sw.mjs");
 });
 
@@ -319,14 +365,22 @@ test("precache includes every bundled font", () => {
   assert.equal(fonts.length, 9, "all nine bundled woff2 files must be precached");
 });
 
-test("precache excludes docs, tests and tooling", () => {
+// Asserted as a positive allowlist, not a blocklist of known-bad prefixes. A
+// blocklist that only rejects docs|test|tools passes happily when README.md or
+// start.bat is added to the precache, and passes a deploy-specific prefix like
+// "gre-mock-exam-simulator/css/..." that would break cache.addAll on any fork.
+test("precache contains only allowlisted directories", () => {
+  const ALLOWED = /^(css|js|data|fonts|icons)\//;
   for (const u of build(ROOT).urls) {
-    assert.ok(!/^(docs|test|tools)\//.test(u), `${u} must never be precached`);
+    if (u === "./" || u === "manifest.webmanifest") continue;
+    assert.ok(ALLOWED.test(u), `${u} is outside the allowlisted directories`);
   }
 });
 
-test("precache contains no absolute or deploy-specific paths", () => {
-  for (const u of build(ROOT).urls) {
+test("precache paths are relative and the shell is scope-relative", () => {
+  const { urls } = build(ROOT);
+  assert.equal(urls[0], "./", "the shell must be './' so it resolves against the worker scope");
+  for (const u of urls) {
     assert.ok(!u.startsWith("/"), `${u} must be relative so forks keep working`);
   }
 });
@@ -382,11 +436,23 @@ function walk(root, rel) {
   return out;
 }
 
+// Text files are hashed with CRLF normalised to LF. Git's core.autocrlf (on by
+// default on Windows) rewrites line endings in the working tree on clone,
+// checkout, branch switch and restore. Hashing raw bytes would then move the
+// version hash without one byte of real content changing, so the freshness test
+// would fail on a clean tree — and a guard that cries wolf gets ignored, which
+// is exactly how a genuinely stale sw.js ships. Binaries are hashed as-is.
+const TEXT = /\.(html|css|js|mjs|json|webmanifest|txt|svg)$/;
+
 export function build(root = ROOT) {
   const files = collect(root);
   const hash = createHash("sha256");
   for (const f of files) {
-    hash.update(f).update("\0").update(readFileSync(join(root, f)));
+    const buf = readFileSync(join(root, f));
+    hash
+      .update(f)
+      .update("\0")
+      .update(TEXT.test(f) ? buf.toString("utf8").replace(/\r\n/g, "\n") : buf);
   }
   const version = hash.digest("hex").slice(0, 16);
   // "./" is the app shell: that is what a navigation to the directory actually
@@ -462,7 +528,7 @@ node tools/build-sw.mjs
 node --test
 ```
 
-Expected from the generator: `sw.js: 36 URLs precached, cache gre-<16 hex chars>` (exact count may differ; it must be over 30).
+Expected from the generator: `sw.js: 38 URLs precached, cache gre-<16 hex chars>`. The 38 includes `fonts/IBM-Plex-OFL.txt` and `fonts/Newsreader-OFL.txt` — the allowlist is directory-granular, and shipping a bundled font's licence alongside it is correct anyway.
 Expected from the tests: `pass 15`, `fail 0` — the original 10 plus 5 new.
 
 - [ ] **Step 5: Prove the staleness guard actually fires**
@@ -663,12 +729,16 @@ with:
   /* Standalone on iOS the navy header runs under the status bar. Because
      box-sizing is border-box and height is 100%, this padding is drawn inside
      the height, so the column shrinks by exactly the inset and --headink shows
-     through the strip. All three possible top headers (.tophead, .examhead,
-     .crumb) are already --headink, so the seam is invisible in both themes.
+     through the strip.
      env() is 0px off-iOS, making this a no-op in a browser tab. */
   padding-top: env(safe-area-inset-top);
   background: var(--headink);
 }
+/* .tophead and .crumb are --headink, but .examhead is --exam-head: a
+   deliberately elevated tier, and a different value in BOTH themes. Without
+   this the strip would seam against the exam toolbar mid-test — on device, in
+   the app's primary use case. Browsers without :has() simply get that seam. */
+#app:has(> .examhead) { background: var(--exam-head); }
 ```
 
 Then replace `.stage-inner` (line 389):
@@ -680,11 +750,28 @@ Then replace `.stage-inner` (line 389):
 with:
 
 ```css
-/* Bottom inset keeps scrolled content clear of the iPhone home indicator. */
+/* Bottom inset keeps scrolled content clear of the iPhone home indicator.
+   The variant rules below redeclare the padding shorthand at higher
+   specificity, so they must carry the env() term too or the inset silently
+   vanishes on exactly the most scroll-heavy screens in the app. */
 .stage-inner {
   max-width: 980px; margin: 0 auto;
   padding: 26px 30px calc(40px + env(safe-area-inset-bottom));
 }
+.stage-inner.reader { max-width: 800px; padding: 34px 30px calc(40px + env(safe-area-inset-bottom)); }
+.stage-inner.exam { max-width: 1020px; padding: 22px 30px calc(34px + env(safe-area-inset-bottom)); }
+```
+
+
+Finally, amend the **pre-existing mobile media query**. It redeclares the same shorthand again, and this is the instance that actually matters: every iPhone viewport is ≤720px, so on the target device this rule always wins and would discard the inset. Amend these lines in place inside `@media (max-width: 720px)`:
+
+```css
+@media (max-width: 720px) {
+  /* Every iPhone viewport is <= 720px, so this block always applies on the
+     device this feature exists for. Without the env() term here the home
+     indicator overlaps scrolled content. */
+  .stage-inner { padding: 20px 16px calc(32px + env(safe-area-inset-bottom)); }
+  .stage-inner.exam { padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); }
 ```
 
 - [ ] **Step 5: Regenerate and test**
@@ -697,6 +784,8 @@ node --test
 Expected: `pass 15`, `fail 0`.
 
 - [ ] **Step 6: Verify visually**
+
+**Verify at a width between 500 and 720px — 600px is ideal.** This is not arbitrary: below 720px the mobile media query applies, and above ~500px Chrome does not clamp the window and crop the render. Checking only at desktop widths misses every mobile-only rule, which is exactly how the media-query defect above reached review.
 
 Serve with `python -m http.server 8420` and check at 1280px and at 375×812 (DevTools device toolbar), in **both** light and dark:
 
@@ -812,14 +901,24 @@ if (!chrome) {
 
 const src = pathToFileURL(join(ROOT, "tools/icon.html")).href;
 
+// Chrome refuses to open a window narrower than ~500px and silently clamps to
+// that width, while still writing the PNG at the size you asked for — so
+// --window-size=192,192 yields a 192px image containing a CROPPED corner of a
+// 500px render, with no error. Always render at a 512 window (above the clamp)
+// and let the device scale factor produce the final size. Chrome rasterises
+// the vector at deviceScaleFactor x CSS pixels, so this is still a true render
+// at each size, not a downsample of a bitmap.
+const RENDER_PX = 512;
+
 for (const [out, size] of TARGETS) {
   execFileSync(
     chrome,
     [
       "--headless=new", "--disable-gpu", "--no-sandbox", "--hide-scrollbars",
-      "--force-device-scale-factor=1", "--virtual-time-budget=5000",
+      `--force-device-scale-factor=${size / RENDER_PX}`,
+      "--virtual-time-budget=5000",
       `--screenshot=${join(ROOT, out)}`,
-      `--window-size=${size},${size}`,
+      `--window-size=${RENDER_PX},${RENDER_PX}`,
       src,
     ],
     { stdio: "ignore" },
@@ -834,10 +933,27 @@ for (const [out, size] of TARGETS) {
 cd "C:/Users/mofch/OneDrive/Desktop/Projects/network-plus-mock-exam"
 mkdir -p icons
 node tools/make-icons.mjs
-node -e "const b=require('fs').readFileSync('icons/icon-512.png');console.log('PNG',b.readUInt32BE(16)+'x'+b.readUInt32BE(20),'colorType',b[25])"
 ```
 
-Expected: three render lines, then `PNG 512x512 colorType 2`.
+Then verify all three, exactly as GRE's Task 1 Step 4 did — dimensions, no alpha, and no crop. The field colour here is amber `#c47b2a` = `(196, 123, 42)`:
+
+```bash
+for f in icons/icon-512.png icons/icon-192.png icons/apple-touch-icon.png; do
+  node -e "const b=require('fs').readFileSync('$f');console.log('$f',b.readUInt32BE(16)+'x'+b.readUInt32BE(20),'colorType',b[25])"
+done
+python -c "
+from PIL import Image
+for f in ['icons/icon-512.png','icons/icon-192.png','icons/apple-touch-icon.png']:
+    im = Image.open(f).convert('RGB'); w, h = im.size
+    corners = [im.getpixel(p) for p in [(0,0),(w-1,0),(0,h-1),(w-1,h-1)]]
+    ok = all(c == (196,123,42) for c in corners)
+    print(f, im.size, 'corners', 'OK' if ok else 'CROPPED -> ' + str(corners))
+    assert ok, f + ' is cropped'
+print('all three uncropped')
+"
+```
+
+Expected: `512x512`/`192x192`/`180x180`, all `colorType 2`, then three `corners OK` lines and `all three uncropped`.
 
 Open `icons/icon-512.png` and confirm: an amber tile, a white run entering from the left and splitting into two, each arm ending in a navy dot.
 
@@ -1060,19 +1176,41 @@ Replace `#app` (line 145):
   padding-top: env(safe-area-inset-top);
   background: var(--headink);
 }
+/* .tophead and .crumb are --headink, but .examhead is --exam-head: a
+   deliberately elevated tier, and a different value in BOTH themes. Without
+   this the strip would seam against the exam toolbar mid-test — on device, in
+   the app's primary use case. Browsers without :has() simply get that seam. */
+#app:has(> .examhead) { background: var(--exam-head); }
 ```
 
 Replace `.stage-inner` (line 329):
 
 ```css
-/* Bottom inset keeps scrolled content clear of the iPhone home indicator. */
+/* Bottom inset keeps scrolled content clear of the iPhone home indicator.
+   The variant rules below redeclare the padding shorthand at higher
+   specificity, so they must carry the env() term too or the inset silently
+   vanishes on exactly the most scroll-heavy screens in the app. */
 .stage-inner {
   max-width: 980px; margin: 0 auto;
   padding: 26px 30px calc(40px + env(safe-area-inset-bottom));
 }
+.stage-inner.reader { max-width: 800px; padding: 34px 30px calc(40px + env(safe-area-inset-bottom)); }
+```
+
+
+Finally, amend the **pre-existing mobile media query**. It redeclares the same shorthand again, and this is the instance that actually matters: every iPhone viewport is ≤720px, so on the target device this rule always wins and would discard the inset. Amend these lines in place inside `@media (max-width: 720px)`:
+
+```css
+@media (max-width: 720px) {
+  /* Every iPhone viewport is <= 720px, so this block always applies on the
+     device this feature exists for. Without the env() term here the home
+     indicator overlaps scrolled content. */
+  .stage-inner { padding: 20px 16px calc(32px + env(safe-area-inset-bottom)); }
 ```
 
 - [ ] **Step 5: Regenerate, test, verify**
+
+**Verify at a width between 500 and 720px — 600px is ideal.** This is not arbitrary: below 720px the mobile media query applies, and above ~500px Chrome does not clamp the window and crop the render. Checking only at desktop widths misses every mobile-only rule, which is exactly how the media-query defect above reached review.
 
 ```bash
 node tools/build-sw.mjs
@@ -1246,15 +1384,23 @@ If every check passes, the feature is done. If any fails, capture what you saw a
 A bad `sw.js` is the one change here that is genuinely hard to undo, because installed clients keep serving from their cache. To retract it, deploy a worker that unregisters itself and clears its caches rather than simply deleting `sw.js` — a 404 leaves the old worker installed and in control:
 
 ```js
+// Delete ONLY this app's caches. CacheStorage is origin-scoped and three PWAs
+// share mofchris.github.io, so an unfiltered sweep would wipe the other two
+// apps' precaches while rolling this one back. Use "netplus-" in that repo.
+const OWNED = /^gre-/;
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
-      .then(() => self.registration.unregister())
-      .then(() => self.clients.claim()),
+      .then((keys) => Promise.all(keys.filter((k) => OWNED.test(k)).map((k) => caches.delete(k))))
+      .then(() => self.registration.unregister()),
   );
 });
 ```
+
+Two things to expect while doing this, so nobody stops to "fix" them mid-incident:
+
+- **`node --test` will go red.** `sw-fresh.test.mjs` compares `sw.js` against generator output, and this file is hand-written. That failure is correct during a kill-switch deploy. Nothing blocks the commit — there are no git hooks.
+- **No `clients.claim()`.** There is no `fetch` handler here to claim clients for, and calling it after `unregister()` is at best a no-op.
 
 Everything else — manifest, meta tags, icons, CSS, the header mark — is a plain `git revert`.

@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>GRE icon source</title>
+<style>
+  @font-face {
+    font-family: "Newsreader"; font-style: normal; font-weight: 500;
+    font-display: block; src: url(%FONT%) format("woff2");
+  }
+  html, body { margin: 0; padding: 0; background: #2f63c6; }
+  svg { display: block; width: 100vw; height: 100vw; }
+</style>
+<!--
+  GRE brand mark. Single source of truth for both the home-screen icon and the
+  in-app header logo (js/app.js renders icons/icon-192.png rather than repeating
+  this geometry).
+
+  x/y centre the G on its MEASURED INK box, not its em box. Rendered at size 384
+  anchored (0,384) the ink runs l=17 t=112 r=283 b=389, so the anchor is
+  (106, 389.5). Anything else leaves the G visibly off-centre.
+-->
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#2f63c6"/>
+  <rect x="64" y="64" width="384" height="384" rx="84" fill="#101827"/>
+  <text x="106" y="389.5" font-family="Newsreader" font-weight="500"
+        font-size="384" fill="#2f63c6">G</text>
+</svg>
