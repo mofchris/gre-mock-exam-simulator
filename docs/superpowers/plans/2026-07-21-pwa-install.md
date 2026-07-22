@@ -1384,15 +1384,23 @@ If every check passes, the feature is done. If any fails, capture what you saw a
 A bad `sw.js` is the one change here that is genuinely hard to undo, because installed clients keep serving from their cache. To retract it, deploy a worker that unregisters itself and clears its caches rather than simply deleting `sw.js` — a 404 leaves the old worker installed and in control:
 
 ```js
+// Delete ONLY this app's caches. CacheStorage is origin-scoped and three PWAs
+// share mofchris.github.io, so an unfiltered sweep would wipe the other two
+// apps' precaches while rolling this one back. Use "netplus-" in that repo.
+const OWNED = /^gre-/;
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
-      .then(() => self.registration.unregister())
-      .then(() => self.clients.claim()),
+      .then((keys) => Promise.all(keys.filter((k) => OWNED.test(k)).map((k) => caches.delete(k))))
+      .then(() => self.registration.unregister()),
   );
 });
 ```
+
+Two things to expect while doing this, so nobody stops to "fix" them mid-incident:
+
+- **`node --test` will go red.** `sw-fresh.test.mjs` compares `sw.js` against generator output, and this file is hand-written. That failure is correct during a kill-switch deploy. Nothing blocks the commit — there are no git hooks.
+- **No `clients.claim()`.** There is no `fetch` handler here to claim clients for, and calling it after `unregister()` is at best a no-op.
 
 Everything else — manifest, meta tags, icons, CSS, the header mark — is a plain `git revert`.

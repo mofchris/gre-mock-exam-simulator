@@ -7,7 +7,7 @@
 ## 1. Decisions (user-approved)
 
 - **Full offline, not just standalone:** manifest *and* a precache service worker. Launching from the home screen with no signal opens a working app. A manifest alone would give a home-screen icon that fails on the subway, which is a bookmark wearing an app costume.
-- **A designed mark per app, used in two places.** Reviewed as three rendered directions at true 60px (Field / Signal / Rule); the user chose **Field for GRE** and **Signal for Network+**. Each mark replaces both the home-screen icon *and* the in-app header logo, which today is `M5 6h14M5 11h9M5 16h11` — three descending rules that read as a hamburger menu.
+- **A designed mark per app, used in two places.** Reviewed as three rendered directions at true 60px (Field / Signal / Rule); the user chose **Field for GRE** and **Signal for Network+**. Each mark replaces both the home-screen icon *and* the in-app header logo. GRE's was `M5 6h14M5 11h9M5 16h11` — three descending rules that read as a hamburger menu; Network+'s was a small three-node router glyph.
   - **GRE — "Field":** a Newsreader `G` knocked out of an inset navy block on `#2f63c6` (`--accent`), so the blue reads through the letterform. Two planes, not one flat surface.
   - **Network+ — "Signal":** a routing fan-out — one run splitting into two, terminating at two navy nodes — in white on amber `#c47b2a`. No letter; it says what the app *does*. The `+` was explored and dropped along with the rest of that direction.
   - **On that amber:** `#c47b2a` is GRE's `--quant`. Network+'s own stylesheet does **not** define it — its nearest token is `--amber: #b0710a`, a darker value the mark deliberately avoids. The hue split exists because both apps use the *identical* accent blue (`#2f63c6`), so without it the two icons would be near-indistinguishable on a home screen. Both icon sources hardcode literal hex rather than reading CSS variables, so nothing resolves a token at render time.
@@ -52,9 +52,9 @@ No changes. `sync.js` already treats a failed request as `status: "offline"` and
 
 ### 2.4 Freshness enforcement
 
-`tools/build-sw.mjs` (byte-identical in both repos) walks an **allowlist** — `css/`, `js/`, `data/`, `fonts/`, `icons/`, plus `index.html` and `manifest.webmanifest`. An allowlist, not a blocklist: `docs/`, `test/`, `tools/`, `.claude/`, `.gstack/`, `README.md`, `start.bat` can never leak into the precache, and a future directory cannot silently join it. Version is the first 16 hex of a sha256 over every path and its content.
+`tools/build-sw.mjs` (shared across both repos, differing only in the one-line `CACHE_PREFIX`) walks an **allowlist** — `css/`, `js/`, `data/`, `fonts/`, `icons/`, plus `index.html` and `manifest.webmanifest`. An allowlist, not a blocklist: `docs/`, `test/`, `tools/`, `.claude/`, `.gstack/`, `README.md`, `start.bat` can never leak into the precache, and a future directory cannot silently join it. Version is the first 16 hex of a sha256 over every path and its content.
 
-`test/sw-fresh.test.mjs` (byte-identical) regenerates in memory and asserts the committed `sw.js` matches byte-for-byte, failing with *"sw.js is stale — run: node tools/build-sw.mjs"*. This folds into the existing `node --test` convention, so a stale cache — the nastiest failure mode in PWAs — cannot ship silently.
+`test/sw-fresh.test.mjs` (shared, differing only in the bundled-font count — 9 for GRE, 7 for Network+) regenerates in memory and asserts the committed `sw.js` matches byte-for-byte, failing with *"sw.js is stale — run: node tools/build-sw.mjs"*. This folds into the existing `node --test` convention. Note precisely what that buys: neither repo has CI or git hooks, so **nothing runs the test automatically** — the guard turns a silent failure into a loud one for anyone who runs the suite, which is a convention, not an enforcement. Adding CI was considered and rejected, because it would change the deploy model from "Pages serves `main` at root" and break the fork-and-it-just-works property both READMEs advertise.
 
 Deploy is unchanged: Pages still serves `main` at root, and a forker who never edits app files never runs anything.
 
@@ -79,13 +79,16 @@ The marks are drawn as **a navy block with the mark painted on top**, not as a `
 
 ### 2.6 Safe-area CSS
 
-`* { box-sizing: border-box }` is global and `#app { height: 100% }`, so the edge-to-edge treatment is **one rule**, not three patches to `.tophead` / `.examhead` / `.crumb`:
+`* { box-sizing: border-box }` is global and `#app { height: 100% }`, so the strip is painted by the shell rather than by each header:
 
 ```css
 #app { padding-top: env(safe-area-inset-top); background: var(--headink); }
+#app:has(> .examhead) { background: var(--exam-head); }
 ```
 
-The padding is drawn inside the 100% height, so the flex column shrinks by exactly the inset and `--headink` shows through the top strip. All three possible top headers are already `--headink` (`#101827` light, `#141c2b` dark), so the seam is invisible in both themes and no per-screen knowledge is required. White status-bar glyphs read correctly on navy either way.
+The padding is drawn inside the 100% height, so the flex column shrinks by exactly the inset and the strip shows through. White status-bar glyphs read correctly on either ground.
+
+The second rule is not optional. An earlier draft of this spec claimed all three possible top headers (`.tophead`, `.examhead`, `.crumb`) were `--headink`, so one rule would do. That was false: `.examhead` is `--exam-head`, a deliberately elevated tier differing in **both** themes (`#0d1420` vs `#101827` light; `#1a2432` vs `#141c2b` dark). `.examhead` mounts as a direct child of `#app`, so without the override the strip seams against the exam toolbar — on device, mid-exam. It is invisible in a browser tab, where `env()` is `0px`, so no desktop check can catch it.
 
 Second rule: `.stage-inner`'s bottom padding gains `env(safe-area-inset-bottom)` so scrolled content clears the home indicator. Note this must be applied to **every** rule that redeclares that `padding` shorthand — the `.reader` and `.exam` variants and the `@media (max-width: 720px)` block — because a shorthand at equal-or-higher specificity silently discards the term, and the media query is the one that always wins on an actual iPhone.
 
@@ -97,10 +100,10 @@ Both `env()` values are `0px` off-iOS and in browser tabs, making this a no-op e
 
 1. `index.html`: `viewport-fit=cover` on the viewport meta; manifest link; `apple-touch-icon` link; `apple-mobile-web-app-capable`; `-title` (`GRE` / `Network+`); `-status-bar-style: black-translucent`; `theme-color: #101827`; `<script src="js/pwa.js">`
 2. `manifest.webmanifest`: new — `display: standalone`, relative `start_url`/`scope`, `background_color` and `theme_color` both `#101827` (matches the header, so the iOS launch splash is navy with the mark centered)
-3. `js/pwa.js`: new, byte-identical — a direct port of Metal's `src/main.tsx:19-30`: register inside a `load` listener, guard on `"serviceWorker" in navigator`, and `console.error` on failure with **no UI**, because the app works identically without the worker and only loses offline. Metal's `import.meta.env.PROD` guard becomes a `file:` protocol guard — the equivalent "don't register where it can't work", since workers are unsupported over `file://` and both READMEs document double-clicking `index.html`
+3. `js/pwa.js`: new, shared across both repos except the one-line `console.error` prefix (`GRE:` / `NP:`) — a direct port of Metal's `src/main.tsx:19-30`: register inside a `load` listener, guard on `"serviceWorker" in navigator`, and `console.error` on failure with **no UI**, because the app works identically without the worker and only loses offline. Metal's `import.meta.env.PROD` guard becomes a `file:` protocol guard — the equivalent "don't register where it can't work", since workers are unsupported over `file://` and both READMEs document double-clicking `index.html`
 4. `sw.js`: new, generated, committed
 5. `tools/build-sw.mjs`, `tools/make-icons.mjs`, `tools/icon.html`: new
-6. `test/sw-fresh.test.mjs`: new, byte-identical
+6. `test/sw-fresh.test.mjs`: new, shared except the bundled-font count (9 / 7)
 7. `icons/`: three PNGs
 8. `css/style.css`: the two safe-area rules above, plus whatever `.logo` needs to host a two-tone mark instead of a single stroked path
 9. `js/app.js`: delete the `logo` entry from the icon table (`js/app.js:81`) and change its `GRE.icon("logo", 19)` call site in `chrome()`. The existing helper renders a **single stroked path in a 24 viewBox**; both new marks are two-tone filled compositions in a 512 viewBox, so neither can be expressed through it. Rather than duplicating the geometry as an inline SVG, the header renders **`icons/icon-192.png`** — the icon file is then the single source of truth for the mark, and it is precached, so it works offline. The helper itself stays untouched for the other 20-odd icons.
@@ -128,10 +131,10 @@ Both `env()` values are `0px` off-iOS and in browser tabs, making this a no-op e
 - **`file://` regression:** double-clicking `index.html` still runs the app with no console errors from `pwa.js`.
 - **Visual, both themes, both apps:** the safe-area rule is a no-op in a normal browser tab at 375×812 — no stray navy strip, no shifted header.
 - **The header mark:** the new logo renders correctly in `.tophead` at desktop and in the two-row mobile header, in both themes, with the navy block reading against `--headink` rather than disappearing into it. The other icons from the `GRE.icon()` table are unchanged.
-- **Icon rendering:** re-running `tools/make-icons.mjs` reproduces all four PNGs visually, so the marks are regenerable rather than one-off artifacts. Deliberately *not* asserted byte-for-byte and **not** wired into `node --test`: PNG output depends on the installed Chrome's rasterizer and would churn across browser updates. The icons are committed build products, regenerated only on purpose.
+- **Icon rendering:** re-running `tools/make-icons.mjs` reproduces all three PNGs visually, so the marks are regenerable rather than one-off artifacts. Deliberately *not* asserted byte-for-byte and **not** wired into `node --test`: PNG output depends on the installed Chrome's rasterizer and would churn across browser updates. The icons are committed build products, regenerated only on purpose.
 - **Device (the real check):** add both to an iPhone home screen; confirm distinct icons and correct titles; launch each and confirm no Safari chrome and the navy header running under the status bar; enable airplane mode, cold-launch both, and take an exam end to end; confirm the sync pill reads "Offline — will retry when reconnected." rather than erroring.
 - **Update propagation:** edit a file, regenerate, deploy, and confirm an installed instance picks up the change within two launches.
-- **Drift check:** `git diff --no-index` empty for `js/pwa.js`, `tools/build-sw.mjs`, and `test/sw-fresh.test.mjs` across the two repos.
+- **Drift check:** `git diff --no-index` across the two repos shows **exactly one changed line** in each of `js/pwa.js` (log prefix), `tools/build-sw.mjs` (`CACHE_PREFIX`) and `test/sw-fresh.test.mjs` (font count). An empty diff would mean a per-app value was not applied; more than one line is drift.
 
 ## 7. Rollout
 

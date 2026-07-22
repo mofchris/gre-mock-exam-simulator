@@ -1,7 +1,9 @@
 # Reference: Architecture and Modules
 
-The simulator is a zero-dependency static web app: no framework, no build step, no
-network calls after page load. `index.html` loads the data files (which populate a global
+The simulator is a zero-dependency static web app: no framework and no build step.
+It makes no network calls while you study — question banks, fonts and course content
+are all local — but it is not network-free: signing in syncs progress to an account
+server, and a service worker precaches the app so it runs with no connection at all. `index.html` loads the data files (which populate a global
 question bank), then the app modules (which populate a global `GRE` namespace), then boots
 to the home screen.
 
@@ -121,7 +123,9 @@ Single key: **`gre-sim-v1`**.
 }
 ```
 
-Data never leaves the browser; there are no network writes anywhere in the app.
+Used anonymously, data never leaves the browser. Signing in is opt-in and is the only
+thing that writes off-device: progress syncs to the account server. The service worker
+never touches that traffic — cross-origin requests pass straight through, uncached.
 
 ## Related
 
