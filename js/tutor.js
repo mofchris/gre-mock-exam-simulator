@@ -158,7 +158,9 @@
       if (topic !== "any" && q.topic !== topic && !(entry.di && topic === "data")) return false;
       return true;
     });
-    return GRE.shuffle(items).slice(0, n);
+    // Questions whose answers were recently revealed (failed in tutor/course,
+    // or reviewed after a mock) go to the back of the line.
+    return GRE.freshFirst(items, id => id).slice(0, n);
   }
 
   /* ---------------- practice session ---------------- */
@@ -168,7 +170,7 @@
   };
 
   function startSession(ids, opts) {
-    let i = 0, correct = 0, graduated = 0;
+    let i = 0, correct = 0, graduated = 0, logged = false;
     let ans = null, submitted = false;
 
     GRE.show(root => {
@@ -190,6 +192,16 @@
         inner.innerHTML = "";
         const answered = i + (submitted ? 1 : 0);
         fill.style.width = "100%";
+
+        if (answered > 0 && !logged) {
+          logged = true;
+          GRE.logPractice({
+            kind: opts.deck ? "deck" : "tutor",
+            label: opts.deck ? "Missed-questions drill" : "Tutor practice",
+            n: answered, correct: correct,
+            pct: Math.round(100 * correct / answered)
+          });
+        }
 
         inner.appendChild(el("h1", { class: "screen-title" }, "Session complete"));
         const card = el("div", { class: "card" });
@@ -227,8 +239,11 @@
         inner.innerHTML = "";
         fill.style.width = (100 * (i + 1) / ids.length) + "%";
 
-        const entry = GRE.byId[ids[i]];
-        if (!entry) { i++; paint(); return; }
+        const raw = GRE.byId[ids[i]];
+        if (!raw) { i++; paint(); return; }
+        // Fresh choice order on every presentation; answers/grading live in
+        // the presented space via the permuted clone.
+        const entry = GRE.presentQ(raw, GRE.permForQ(raw.q)) || raw;
         const q = entry.q;
 
         inner.classList.toggle("splitwide", !!entry.passage);
@@ -268,6 +283,7 @@
             submitted = true;
             const ok = GRE.gradeQ(q, ans);
             if (ok) correct++;
+            GRE.markSeen(q.id); // the answer is about to be revealed
 
             const D = GRE.store.data;
             if (ok) {

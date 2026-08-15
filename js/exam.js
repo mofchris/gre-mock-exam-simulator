@@ -69,6 +69,43 @@
     }
   };
 
+  /* ---- presentation-order shuffling ----
+     Choices are shown in a fresh random order every time a question is drawn,
+     so answer-position patterns in the authored bank can never be learned.
+     QC is exempt (its four choices are fixed by the format); Numeric Entry has
+     no choices. A "perm" maps presented index → authored index. permuteQ()
+     bakes a perm into a question clone whose answer indices are in presented
+     space, so rendering, grading, and review all work unchanged on the clone.
+     Perms are plain arrays, so they serialize with exam state and attempts:
+     review always shows the order the user actually saw. */
+
+  GRE.permForQ = function (q) {
+    const one = n => GRE.shuffle(Array.from({ length: n }, (_, i) => i));
+    if (!q || q.type === "qc" || q.type === "num" || !q.choices) return null;
+    if (q.type === "tc" && (q.blanks || 1) > 1) return q.choices.map(c => one(c.length));
+    return one(q.choices.length);
+  };
+
+  GRE.permuteQ = function (q, perm) {
+    if (!perm) return q;
+    if (q.type === "tc" && (q.blanks || 1) > 1) {
+      return Object.assign({}, q, {
+        choices: q.choices.map((col, b) => perm[b].map(oi => col[oi])),
+        answer: q.answer.map((a, b) => perm[b].indexOf(a))
+      });
+    }
+    return Object.assign({}, q, {
+      choices: perm.map(oi => q.choices[oi]),
+      answer: Array.isArray(q.answer) ? q.answer.map(a => perm.indexOf(a)) : perm.indexOf(q.answer)
+    });
+  };
+
+  // Wrap a bank entry ({q, passage?, di?}) as the same shape with a permuted q.
+  GRE.presentQ = function (entry, perm) {
+    if (!entry || !perm) return entry;
+    return { q: GRE.permuteQ(entry.q, perm), passage: entry.passage, di: entry.di };
+  };
+
   GRE.isAnswered = function (q, ans) {
     if (ans == null) return false;
     if (q.type === "tc" && (q.blanks || 1) > 1)
@@ -686,8 +723,20 @@
     // Section 1s draw from the medium pool (average difficulty, like the real S1)
     X.sections[1].items = buildVerbal("medium", false, usedIds());
     X.sections[2].items = buildQuant("medium", false, usedIds());
+    attachPerms(X.sections[1]);
+    attachPerms(X.sections[2]);
     save();
   }
+
+  // One presentation-order perm per drawn item, fixed for the exam's lifetime
+  // (and saved with it) so navigation and review keep a stable choice order.
+  function attachPerms(sec) {
+    sec.perms = (sec.items || []).map(id => {
+      const entry = GRE.byId[id];
+      return entry ? GRE.permForQ(entry.q) : null;
+    });
+  }
+  function secPerm(sec, j) { return (sec.perms && sec.perms[j]) || null; }
 
   function ensureSectionBuilt(i) {
     const sec = X.sections[i];
@@ -695,10 +744,12 @@
     if (i === 3) { // Verbal 2: route on Verbal 1 raw
       X.vPath = GRE.routeFor(X.sections[1].raw || 0);
       sec.items = buildVerbal(X.vPath, true, usedIds());
+      attachPerms(sec);
     }
     if (i === 4) { // Quant 2
       X.qPath = GRE.routeFor(X.sections[2].raw || 0);
       sec.items = buildQuant(X.qPath, true, usedIds());
+      attachPerms(sec);
     }
     sec.answers = new Array(sec.items.length).fill(null);
     sec.marked = new Array(sec.items.length).fill(false);
@@ -996,8 +1047,9 @@
         backBtn.disabled = cur === 0;
 
         const id = sec.items[cur];
-        const item = GRE.byId[id];
+        let item = GRE.byId[id];
         if (!item) { inner.textContent = "Question unavailable."; return; }
+        item = GRE.presentQ(item, secPerm(sec, cur));
 
         // reading/data questions get a wider stage for the split layout
         inner.classList.toggle("splitwide", !!item.passage);
@@ -1229,8 +1281,9 @@
     const sec = X.sections[i];
     sec.done = true;
     if (sec.kind !== "awa") {
+      // answers live in presented (shuffled) space, so grade the permuted view
       sec.raw = sec.items.reduce((s, id, j) =>
-        s + (GRE.gradeQ(GRE.byId[id].q, sec.answers[j]) ? 1 : 0), 0);
+        s + (GRE.gradeQ(GRE.permuteQ(GRE.byId[id].q, secPerm(sec, j)), sec.answers[j]) ? 1 : 0), 0);
     }
     GRE.calc.hide();
     GRE.calc.reset();
@@ -1272,10 +1325,12 @@
 
     const detail = sec => sec.items.map((id, j) => {
       const entry = GRE.byId[id];
+      const perm = secPerm(sec, j);
       return {
         qid: id,
         ans: sec.answers[j],
-        ok: GRE.gradeQ(entry.q, sec.answers[j]),
+        perm: perm, // review must re-show the choice order the user saw
+        ok: GRE.gradeQ(GRE.permuteQ(entry.q, perm), sec.answers[j]),
         time: sec.time[j] || 0
       };
     });
@@ -1305,6 +1360,7 @@
     const ids = [];
     X.sections.slice(1).forEach(s => (s.items || []).forEach(id => ids.push(id)));
     D.recent = (D.recent || []).concat(ids).slice(-170);
+    GRE.markSeen(ids); // answers are revealed in the score-report review
     D.inprogress = null;
     GRE.store.save();
     X = null;

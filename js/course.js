@@ -9,6 +9,8 @@
 
    Quiz questions are rendered through GRE.renderQBody by wrapping them as
    {type: "mcq"|"mcma", ...} so they get the same choice UI as the real exam.
+   The wrapper also carries a stable id so a missed course question can go into
+   the same missed-questions deck as mock and tutor misses (see asQ/indexInto).
 */
 (function () {
   "use strict";
@@ -29,16 +31,33 @@
   }
   C.progress = prog;
 
-  // Wrap a course quiz question in the shape GRE.renderQBody/gradeQ expect.
-  function asQ(q) {
-    return {
-      id: "course-q",
-      type: Array.isArray(q.answer) ? "mcma" : "mcq",
-      text: q.text,
-      choices: q.choices,
-      answer: q.answer
-    };
-  }
+  /* The wrapped shape GRE.renderQBody/gradeQ expect. Quiz items in the data files
+     are anonymous, so the wrapper is built once per question by indexInto below and
+     cached on the raw item: the quiz runner and GRE.byId then share one object. */
+  function asQ(q) { return q._q; }
+
+  /* Registers every course quiz question in the shared id → {q} index that the
+     missed deck resolves against. Ids are derived from the owning module or
+     checkpoint id plus the question's position in that owner's list, so they stay
+     stable across sessions even though the runner shuffles the list. Called from
+     GRE.buildIndex, since app.js loads after this file. */
+  C.indexInto = function (ix) {
+    const own = (owner, list) => (list || []).forEach((q, i) => {
+      q._q = q._q || {
+        id: owner.id + "-q" + i,
+        type: Array.isArray(q.answer) ? "mcma" : "mcq",
+        text: q.text,
+        choices: q.choices,
+        answer: q.answer,
+        expl: q.expl
+      };
+      ix[q._q.id] = { q: q._q, course: owner.title };
+    });
+    (window.GRECOURSE.units || []).forEach(u => {
+      u.modules.forEach(m => own(m, m.quiz));
+      if (u.checkpoint) own(u.checkpoint, u.checkpoint.questions);
+    });
+  };
 
   function steps() {
     const out = [];
@@ -154,7 +173,7 @@
         else {
           meta.push(step.item.level);
           meta.push(step.item.minutes + " min");
-          meta.push(step.item.quiz.length + "-question quiz");
+          meta.push(quizSize(step.item) + "-question quiz");
         }
         if (rec && rec.best != null) meta.push("best " + rec.best + "%");
         else if (locked) meta.push("locked");
@@ -185,9 +204,21 @@
       "completed modules stay open for review."));
   };
 
+  /* How many questions a module quiz shows on screen. Pools can be larger than
+     the on-screen quiz (data/course-extra.js records the original size in
+     quizN before growing the pool), so retakes draw a varied subset. */
+  function quizSize(m) { return Math.min(m.quizN || m.quiz.length, m.quiz.length); }
+  C.quizSize = quizSize;
+
+  // Draw a quiz set: never-seen questions first, then least-recently-seen,
+  // so a question whose answer was just revealed doesn't come straight back.
+  function drawSet(pool, n) {
+    return GRE.freshFirst(pool.slice(), q => asQ(q).id).slice(0, n);
+  }
+
   function open(step) {
     if (step.kind === "module") readModule(step.item);
-    else runQuiz(step.item, GRE.shuffle(step.item.questions.slice()).slice(0, step.item.n), true);
+    else runQuiz(step.item, drawSet(step.item.questions, step.item.n), true);
   }
 
   /* ---------------- module reader ---------------- */
@@ -239,8 +270,8 @@
         onclick: () => { if (canPrev) readModule(prevStep.item); }
       }, GRE.icon("chevL", 16), "Previous"));
       foot.appendChild(el("button", {
-        class: "btn grow", onclick: () => runQuiz(m, GRE.shuffle(m.quiz.slice()), false)
-      }, `Take the module quiz (${m.quiz.length} questions)`, GRE.icon("arrow", 17)));
+        class: "btn grow", onclick: () => runQuiz(m, drawSet(m.quiz, quizSize(m)), false)
+      }, `Take the module quiz (${quizSize(m)} questions)`, GRE.icon("arrow", 17)));
       inner.appendChild(foot);
     });
   }
@@ -250,6 +281,10 @@
   function runQuiz(owner, qs, isCheckpoint) {
     const el = GRE.el;
     const answers = new Array(qs.length).fill(null);
+    // One presentation-order perm per question, fixed for this run so Back/Next
+    // and the results review keep a stable choice order; fresh on every retake.
+    const perms = qs.map(q => GRE.permForQ(asQ(q)));
+    const shown = j => GRE.permuteQ(asQ(qs[j]), perms[j]);
     let i = 0, submitted = false;
 
     GRE.show(root => {
@@ -278,7 +313,7 @@
           inner.appendChild(el("div", { class: "directions" },
             `Select ${q.answer.length} answers. Every one must be right for credit.`));
         }
-        GRE.renderQBody(inner, { q: asQ(q) }, () => answers[i], v => { answers[i] = v; },
+        GRE.renderQBody(inner, { q: shown(i) }, () => answers[i], v => { answers[i] = v; },
           { hideDirections: true });
 
         const row = el("div", { class: "btnrow", style: "justify-content:space-between" });
@@ -310,7 +345,7 @@
       }
 
       function results() {
-        const correct = qs.reduce((s, q, j) => s + (GRE.gradeQ(asQ(q), answers[j]) ? 1 : 0), 0);
+        const correct = qs.reduce((s, q, j) => s + (GRE.gradeQ(shown(j), answers[j]) ? 1 : 0), 0);
         const pct = Math.round(100 * correct / qs.length);
         const passed = pct >= PASS;
 
@@ -320,6 +355,21 @@
         rec.best = Math.max(rec.best || 0, pct);
         rec.passed = rec.passed || passed;
         bucket[owner.id] = rec;
+
+        // Wrong answers feed the same missed-questions deck as mocks and tutor mode.
+        const D = GRE.store.data;
+        qs.forEach((q, j) => {
+          if (GRE.gradeQ(shown(j), answers[j])) return;
+          const id = asQ(q).id;
+          if (!D.missed.includes(id)) D.missed.push(id);
+        });
+        // Answers are about to be revealed in the review below.
+        GRE.markSeen(qs.map(q => asQ(q).id));
+        GRE.logPractice({
+          kind: isCheckpoint ? "checkpoint" : "quiz",
+          label: owner.title,
+          n: qs.length, correct: correct, pct: pct, passed: passed
+        });
         GRE.store.save();
 
         counter.textContent = "Result";
@@ -343,14 +393,14 @@
         inner.appendChild(banner);
 
         qs.forEach((q, j) => {
-          const ok = GRE.gradeQ(asQ(q), answers[j]);
+          const ok = GRE.gradeQ(shown(j), answers[j]);
           const box = el("div", { class: "rev-item", style: "margin-top:16px" });
           const vd = el("span", { class: "vd " + (ok ? "ok" : "no") });
           vd.appendChild(GRE.icon(ok ? "check" : "x", 13, ok ? 3 : 2.6));
           vd.appendChild(document.createTextNode(ok ? "Correct" : "Incorrect"));
           box.appendChild(el("div", { class: "rhead" },
             el("span", { class: "qn" }, `Question ${j + 1}`), vd));
-          GRE.renderQBody(box, { q: asQ(q) }, () => answers[j], () => {},
+          GRE.renderQBody(box, { q: shown(j) }, () => answers[j], () => {},
             { review: true, disabled: true, hideDirections: true });
           const ex = el("div", { class: "expl" });
           ex.innerHTML = "<strong>Explanation.</strong> " + q.expl;
@@ -367,8 +417,8 @@
           row.appendChild(el("button", {
             class: "btn", onclick: () => {
               const fresh = isCheckpoint
-                ? GRE.shuffle(owner.questions.slice()).slice(0, owner.n)
-                : GRE.shuffle(owner.quiz.slice());
+                ? drawSet(owner.questions, owner.n)
+                : drawSet(owner.quiz, quizSize(owner));
               runQuiz(owner, fresh, isCheckpoint);
             }
           }, "Retake quiz"));

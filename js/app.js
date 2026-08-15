@@ -180,6 +180,45 @@
     return a;
   };
 
+  /* ---- exposure tracking (anti-repeat) ----
+     tutorSeen maps question id → last time its ANSWER was shown to the user
+     (tutor feedback, course-quiz review, or mock review). Selection paths use
+     freshFirst() so a question you just failed — and therefore just saw the
+     answer to — goes to the back of the line instead of coming straight back.
+     The map is capped and syncs across devices (key-union merge in sync.js). */
+
+  GRE.markSeen = function (ids) {
+    const d = Store.data;
+    d.tutorSeen = d.tutorSeen || {};
+    (Array.isArray(ids) ? ids : [ids]).forEach(id => { if (id) d.tutorSeen[id] = Date.now(); });
+    const keys = Object.keys(d.tutorSeen);
+    if (keys.length > 800) {
+      keys.sort((a, b) => d.tutorSeen[a] - d.tutorSeen[b])
+        .slice(0, keys.length - 800)
+        .forEach(k => { delete d.tutorSeen[k]; });
+    }
+  };
+
+  // Shuffles list, then orders: never-seen first, then seen oldest-first.
+  // idOf maps a list element to its question id.
+  GRE.freshFirst = function (list, idOf) {
+    const seen = Store.data.tutorSeen || {};
+    const fresh = [], old = [];
+    GRE.shuffle(list).forEach(x => (seen[idOf(x)] ? old : fresh).push(x));
+    old.sort((a, b) => seen[idOf(a)] - seen[idOf(b)]);
+    return fresh.concat(old);
+  };
+
+  /* ---- practice-score log (course quizzes, checkpoints, tutor sessions) ---- */
+
+  GRE.logPractice = function (entry) {
+    const d = Store.data;
+    d.practice = d.practice || [];
+    d.practice.push(Object.assign({ date: Date.now() }, entry));
+    if (d.practice.length > 300) d.practice = d.practice.slice(-300);
+    Store.save();
+  };
+
   GRE.fmtTime = function (sec) {
     sec = Math.max(0, Math.round(sec));
     const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
@@ -203,6 +242,10 @@
     (B.disets || []).forEach(p => {
       p.questions.forEach(q => { ix[q.id] = { q, passage: p, di: true }; });
     });
+    // Course quiz questions live in GRECOURSE, not the bank; course.js folds them
+    // in here so course misses resolve for the deck. Selection code reads GREBANK
+    // directly, so nothing pulls course questions into a mock or a tutor set.
+    if (GRE.course && GRE.course.indexInto) GRE.course.indexInto(ix);
     GRE.byId = ix;
   };
 
@@ -252,6 +295,10 @@
     dark: THEME_SVG_HEAD +
       '<path d="M20.4 14.2A8.2 8.2 0 1 1 9.8 3.6a6.6 6.6 0 0 0 10.6 10.6z"/>' +
       '</svg>',
+    // night (true black): the same crescent, filled solid
+    night: THEME_SVG_HEAD +
+      '<path d="M20.4 14.2A8.2 8.2 0 1 1 9.8 3.6a6.6 6.6 0 0 0 10.6 10.6z" fill="currentColor"/>' +
+      '</svg>',
     // auto: stroked circle with the left half filled (the ◐ semantic)
     auto: THEME_SVG_HEAD +
       '<circle cx="12" cy="12" r="8.2"/>' +
@@ -268,7 +315,8 @@
       onclick: function () { StudyTheme.cycle(); }
     });
     const paintTheme = function (mode, res) {
-      const label = mode === "auto" ? "Theme: auto (" + res + ")" : "Theme: " + mode;
+      const label = mode === "auto" ? "Theme: auto (" + res + ")"
+        : mode === "night" ? "Theme: night (true black)" : "Theme: " + mode;
       themeBtn.innerHTML = THEME_ICONS[mode] || THEME_ICONS.light;
       themeBtn.setAttribute("aria-label", label);
       themeBtn.setAttribute("title", label);
@@ -432,7 +480,7 @@
       if (next.kind === "module") {
         meta.appendChild(el("span", null, GRE.icon("clock", 15), next.item.minutes + " min read"));
         meta.appendChild(el("span", null, GRE.icon("quiz", 15),
-          `${next.item.quiz.length}-question quiz · 75% to pass`));
+          `${GRE.course.quizSize(next.item)}-question quiz · 75% to pass`));
       } else {
         meta.appendChild(el("span", null, GRE.icon("flag", 15), "cumulative checkpoint"));
         meta.appendChild(el("span", null, GRE.icon("quiz", 15), `${next.item.n} questions · 75% to pass`));
@@ -670,9 +718,11 @@
 
     inner.appendChild(el("h1", { class: "screen-title" }, "Score History"));
     const at = Store.data.attempts;
+    const pr = Store.data.practice || [];
 
     if (!at.length) {
-      inner.appendChild(el("p", { class: "screen-sub" }, "Every completed mock lands here."));
+      inner.appendChild(el("p", { class: "screen-sub" },
+        "Every completed mock lands here, along with your quiz and practice scores."));
       const card = el("div", { class: "card" });
       const e = el("div", { class: "empty" });
       e.appendChild(el("div", { class: "tile muted" }, GRE.icon("chart", 24)));
@@ -684,28 +734,59 @@
       }, "Go to the course"));
       card.appendChild(e);
       inner.appendChild(card);
-      return;
+    } else {
+      inner.appendChild(el("p", { class: "screen-sub" },
+        `${at.length} completed ${at.length === 1 ? "attempt" : "attempts"}. ` +
+        "Scores are estimates from an approximate raw-to-scale concordance."));
+      inner.appendChild(GRE.results.trendChart(at));
+
+      at.slice().reverse().forEach((a, ri) => {
+        const i = at.length - 1 - ri;
+        const row = el("div", { class: "attempt-row" });
+        row.appendChild(el("div", null,
+          el("strong", null, `Attempt ${i + 1}`),
+          el("span", { class: "date" }, " · " + new Date(a.date).toLocaleString())));
+        row.appendChild(el("div", { class: "right" },
+          el("span", { class: "sc" },
+            el("span", { class: "v" }, "V " + a.verbal.scaled), "  ",
+            el("span", { class: "q" }, "Q " + a.quant.scaled), "  ",
+            el("span", null, "Total " + (a.verbal.scaled + a.quant.scaled))),
+          el("button", { class: "linkish", onclick: () => GRE.results.showSaved(i) }, "View report")));
+        inner.appendChild(row);
+      });
     }
 
-    inner.appendChild(el("p", { class: "screen-sub" },
-      `${at.length} completed ${at.length === 1 ? "attempt" : "attempts"}. ` +
-      "Scores are estimates from an approximate raw-to-scale concordance."));
-    inner.appendChild(GRE.results.trendChart(at));
-
-    at.slice().reverse().forEach((a, ri) => {
-      const i = at.length - 1 - ri;
-      const row = el("div", { class: "attempt-row" });
-      row.appendChild(el("div", null,
-        el("strong", null, `Attempt ${i + 1}`),
-        el("span", { class: "date" }, " · " + new Date(a.date).toLocaleString())));
-      row.appendChild(el("div", { class: "right" },
-        el("span", { class: "sc" },
-          el("span", { class: "v" }, "V " + a.verbal.scaled), "  ",
-          el("span", { class: "q" }, "Q " + a.quant.scaled), "  ",
-          el("span", null, "Total " + (a.verbal.scaled + a.quant.scaled))),
-        el("button", { class: "linkish", onclick: () => GRE.results.showSaved(i) }, "View report")));
-      inner.appendChild(row);
-    });
+    /* ---- practice history: course quizzes, checkpoints, tutor sessions ---- */
+    inner.appendChild(el("h2", {
+      class: "screen-title", style: "margin-top:30px;font-size:20px"
+    }, "Practice history"));
+    if (!pr.length) {
+      inner.appendChild(el("p", { class: "screen-sub" },
+        "Module quizzes, checkpoints, tutor sessions, and missed-deck drills are recorded here."));
+    } else {
+      const KINDS = { quiz: "Module quiz", checkpoint: "Checkpoint", tutor: "Tutor", deck: "Re-drill" };
+      const recent = pr.slice(-60).reverse();
+      const totN = recent.reduce((s, p) => s + p.n, 0);
+      const totOk = recent.reduce((s, p) => s + p.correct, 0);
+      inner.appendChild(el("p", { class: "screen-sub" },
+        `${pr.length} session${pr.length === 1 ? "" : "s"} recorded · ` +
+        `${Math.round(100 * totOk / Math.max(1, totN))}% accuracy over the last ${recent.length}.`));
+      recent.forEach(p => {
+        const row = el("div", { class: "attempt-row" });
+        row.appendChild(el("div", null,
+          el("span", { class: "pill" }, KINDS[p.kind] || p.kind),
+          el("strong", { style: "margin-left:8px" }, p.label || ""),
+          el("span", { class: "date" }, " · " + new Date(p.date).toLocaleString())));
+        const scoreTxt = `${p.correct}/${p.n} · ${p.pct}%`;
+        row.appendChild(el("div", { class: "right" },
+          el("span", { class: "sc" },
+            p.passed != null
+              ? el("span", { class: p.passed ? "v" : "q" }, p.passed ? "PASS " : "RETRY ")
+              : null,
+            el("span", null, scoreTxt))));
+        inner.appendChild(row);
+      });
+    }
   };
 
   /* ============ missed deck ============ */

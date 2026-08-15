@@ -309,7 +309,9 @@
         GRE.fmtTime(d.time) + (d.time > 150 ? " — slow" : "")));
     box.appendChild(head);
 
-    GRE.renderQBody(box, entry, () => d.ans, () => {}, { review: true, disabled: true });
+    // Re-present the choices in the order the user saw them during the exam.
+    GRE.renderQBody(box, GRE.presentQ(entry, d.perm), () => d.ans, () => {},
+      { review: true, disabled: true });
 
     const ex = el("div", { class: "expl" });
     ex.innerHTML = "<strong>Explanation.</strong> " + q.expl +
