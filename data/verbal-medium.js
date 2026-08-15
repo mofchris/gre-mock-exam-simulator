@@ -170,8 +170,8 @@
       choices: [
         "People with demanding, high-stress jobs are both less able to nap and independently more prone to heart disease.",
         "Some of the nappers in the study napped in the afternoon rather than the morning.",
-        "The study was conducted over a period of ten years.",
-        "Heart disease is among the leading causes of death worldwide.",
+        "The study defined regular napping as at least four naps per week.",
+        "The study tracked its participants over a period of ten years.",
         "A few participants who napped daily still developed heart disease."
       ],
       answer: 0,
@@ -183,7 +183,7 @@
       choices: [
         "A significant number of rush-hour commuters have the flexibility to shift their travel to off-peak times.",
         "The toll increase will generate more revenue than it costs to administer.",
-        "Downtown businesses support the toll increase.",
+        "Most downtown businesses believe the toll increase will reduce congestion.",
         "Most commuters currently use the bridge rather than alternate routes.",
         "The bridge is the only route into the downtown area."
       ],
@@ -198,7 +198,7 @@
         "The reading area occupies space that was previously used to display bestsellers.",
         "Some customers use the armchairs without ever purchasing a book.",
         "The store also began selling coffee at the same time it added the armchairs.",
-        "The armchairs were expensive to purchase and maintain."
+        "Customer visits increased even among shoppers who never use the reading area."
       ],
       answer: 0,
       expl: "If a comparable store without the change saw no sales rise in the same period, seasonal or market-wide explanations are ruled out, strengthening the claim that the armchairs caused the increase. The choice noting that coffee sales began at the same time would <em>weaken</em> it.",
@@ -209,7 +209,7 @@
       choices: [
         "Online subscribers tend to be younger readers who are, in general, more likely to renew any subscription they hold.",
         "Print subscribers pay slightly more per year than online subscribers.",
-        "The magazine has published continuously for over fifty years.",
+        "Renewal rates for both formats are higher than the industry average.",
         "Producing the print edition is more expensive than maintaining the website.",
         "Some readers subscribe to both the print and online editions."
       ],
@@ -229,13 +229,13 @@
         text: "The primary purpose of the passage is to",
         choices: [
           "argue that photography ultimately benefited painting by redirecting its aims",
-          "trace the technical development of the camera",
-          "demonstrate that Impressionism was superior to earlier painting",
+          "trace how photography gradually replaced painting as the dominant visual art",
+          "demonstrate that the Impressionists were directly inspired by photographs",
           "explain why portrait painting disappeared entirely",
           "warn artists against adopting new technologies"
         ],
         answer: 0,
-        expl: "The passage argues photography's long-term effect was \"liberating rather than destructive,\" redirecting painting. It doesn't cover camera engineering, rank movements, claim portraiture vanished, or warn against technology.",
+        expl: "The passage argues photography's long-term effect was \"liberating rather than destructive,\" redirecting painting. The replacement choice reverses that thesis; the Impressionist choice hardens the hedged \"arguably owe their existence in part\" into direct inspiration; portraiture lost commissions but didn't vanish; and the closing lesson is the opposite of a warning.",
         tip: "The main purpose ties the whole passage together, including the general lesson in paragraph 3." },
       { id: "vm_p1q2", type: "mcma", diff: d,
         text: "The passage suggests that painters, freed from the need to document reality, pursued which of the following? Consider each choice separately and select all that apply.",
@@ -253,8 +253,8 @@
           "generalize the specific case of painting into a broader principle",
           "introduce a counterexample to the earlier argument",
           "cast doubt on the claims made in the second paragraph",
-          "provide technical detail about photography",
-          "predict the disappearance of photography"
+          "qualify the claim that photography liberated painting",
+          "predict which of today's art forms will survive new technologies"
         ],
         answer: 0,
         expl: "The last paragraph says \"this pattern… recurs throughout cultural history,\" turning the painting example into a general principle about art forms and technology.",
@@ -283,13 +283,13 @@
         text: "The passage as a whole is primarily concerned with",
         choices: [
           "qualifying the common view of coral reefs as simply fragile",
-          "proving that coral reefs are in no real danger",
+          "arguing that coral reefs can withstand any foreseeable degree of warming",
           "explaining exactly how bleaching kills coral",
-          "comparing coral reefs with other marine ecosystems",
+          "evaluating competing explanations of acquired heat tolerance",
           "advocating a specific conservation policy"
         ],
         answer: 0,
-        expl: "The passage grants that reefs are fragile but then \"complicates the picture\" with evidence of acquired tolerance, qualifying, not overturning, the fragile label.",
+        expl: "The passage grants that reefs are fragile but then \"complicates the picture\" with evidence of acquired tolerance, qualifying, not overturning, the fragile label. Evaluating the competing explanations is only paragraph 2's business, not the passage's; \"any foreseeable degree of warming\" is far stronger than anything the passage claims.",
         tip: "'In one sense apt… yet recent fieldwork complicates' signals a qualification, not a reversal." },
       { id: "vm_p2q2", type: "mcq", diff: d,
         text: "According to the passage, which of the following is NOT in dispute among researchers?",
@@ -308,7 +308,7 @@
         choices: [
           "give one proposed explanation for acquired heat tolerance",
           "prove that gene expression plays no role",
-          "argue that all algae are equally vulnerable to heat",
+          "identify the mechanism that most researchers now accept",
           "show that coral cannot survive any bleaching",
           "dismiss the idea of acquired tolerance"
         ],
@@ -339,7 +339,7 @@
         choices: [
           "too narrow because it recognized only monetary incentives",
           "correct in every respect",
-          "irrelevant to the study of labor",
+          "refuted for software development but sound for other kinds of labor",
           "based on a study of open-source software",
           "concerned mainly with reputation"
         ],

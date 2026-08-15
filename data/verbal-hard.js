@@ -135,7 +135,7 @@
       text: "Which of the following, if true, most seriously calls the journalist's advice into question?",
       choices: [
         "The most difficult and highest-risk cases are systematically referred to high-volume hospitals because of their greater expertise.",
-        "Some low-volume hospitals are located in rural areas.",
+        "High-volume hospitals typically charge more for heart surgery than low-volume hospitals do.",
         "Heart surgery mortality has declined nationwide over the past decade.",
         "High-volume hospitals also perform many surgeries other than heart surgery.",
         "Patients at high-volume hospitals tend to have shorter stays after surgery."
@@ -194,13 +194,13 @@
         text: "The primary purpose of the passage is to",
         choices: [
           "propose a more nuanced account of what scientific consensus is and what makes dissent valuable",
-          "argue that scientific consensus is usually wrong",
+          "argue that the strength of a consensus is inversely related to the amount of dissent it attracts",
           "defend the public's understanding of science against historians",
           "show that dissent in science is always heroic",
-          "recount the history of a particular scientific controversy"
+          "explain why marginal dissent should be excluded from scientific journals"
         ],
         answer: 0,
-        expl: "The passage replaces the monolith view with consensus-as-confidence-distribution and gives criteria for when dissent matters, a nuanced reframing, not an attack on consensus or a case study.",
+        expl: "The passage replaces the monolith view with consensus-as-confidence-distribution and gives criteria for when dissent matters — a nuanced reframing. The inverse-relation choice distorts paragraph 2, which measures health by whether the exchange stays evidence-bound, not by the quantity of dissent; and the passage grades marginal dissent as weak, without proposing to exclude it from anywhere.",
         tip: "Both paragraphs serve one project: redefining consensus and grading dissent by evidence-engagement." },
       { id: "vh_p1q2", type: "mcq", diff: d,
         text: "According to the passage, a claim commands scientific consensus when",
@@ -250,8 +250,8 @@
           "skeptical of its completeness while conceding its partial truth",
           "wholehearted endorsement",
           "outright dismissal as entirely false",
-          "indifference to the question",
-          "confusion about its meaning"
+          "regret that the loss it describes cannot be avoided",
+          "qualified acceptance limited to poems in ancient languages"
         ],
         answer: 0,
         expl: "\"The commonplace deserves skepticism, not because loss is unreal, but because the ledger is incomplete\", the author accepts real loss while rejecting the one-sided accounting.",
@@ -261,12 +261,12 @@
         choices: [
           "the immediacy it once had for its original audience",
           "its dictionary meaning",
-          "its length and structure",
-          "its claim to be literature",
-          "nothing at all"
+          "its interest for the specialist readers who can still decipher it",
+          "the nuance that translation would have preserved",
+          "its standing as a work of literature"
         ],
         answer: 0,
-        expl: "The passage says translation can restore \"the immediacy it possessed for its first audience, an immediacy the original… has lost.\"",
+        expl: "The passage says translation can restore \"the immediacy it possessed for its first audience, an immediacy the original… has lost.\" The specialist choice reverses the text — specialists are exactly who can still read it; the nuance choice garbles the trade-off (the passage says the source forfeits nuance <em>in translation</em>, not over time).",
         tip: "The appositive clause ('an immediacy the original has lost') answers the question directly." }
     ]
   });

@@ -123,14 +123,14 @@
       text: "Which of the following, if true, most weakens the officials' conclusion?",
       choices: [
         "During the same year, the city also reduced the downtown speed limit and added several new pedestrian crossings.",
-        "The brighter streetlights consumed more electricity than the old ones.",
-        "Residents in nearby neighborhoods requested brighter lights as well.",
-        "Nighttime accidents are generally more severe than daytime accidents.",
-        "The new streetlights were more expensive to install than expected."
+        "Several drivers reported that the new lights made the roadway noticeably easier to see at night.",
+        "The decline was measured using the same accident-reporting methods as in previous years.",
+        "Downtown business owners had lobbied for brighter streetlights for several years.",
+        "Nighttime accidents remain more common downtown than in the city's residential districts."
       ],
       answer: 0,
-      expl: "The conclusion is causal (lights → fewer accidents). The correct choice supplies an <strong>alternative cause</strong> (lower speed limits and new crossings) that could explain the drop, undermining the claim that the lights were responsible.",
-      tip: "To weaken a causal claim, look for an alternative explanation for the same result." },
+      expl: "The conclusion is causal (lights → fewer accidents). The correct choice supplies an <strong>alternative cause</strong> (lower speed limits and new crossings) that could explain the drop, undermining the claim that the lights were responsible. The driver reports and the consistent reporting methods would, if anything, <em>support</em> the officials; the lobbying and the downtown-versus-residential comparison leave the causal question untouched.",
+      tip: "To weaken a causal claim, look for an alternative explanation for the same result — not for statements that merely sound skeptical." },
     { id: "ve_cr2", type: "cr", diff: d,
       passage: "A company found that employees who ate lunch at their desks were, on average, more productive than those who left for lunch. The company plans to encourage all employees to eat at their desks in order to raise overall productivity.",
       text: "The company's plan assumes which of the following?",
@@ -139,7 +139,7 @@
         "All employees prefer to eat lunch at their desks.",
         "Employees who leave for lunch never return late.",
         "Productivity is the only measure of a good employee.",
-        "The company cafeteria serves unhealthy food."
+        "Employees who eat at their desks take shorter lunch breaks than those who leave."
       ],
       answer: 0,
       expl: "The plan treats a <strong>correlation</strong> as if eating at the desk <em>causes</em> productivity. It assumes the behavior is at least partly responsible, otherwise encouraging it wouldn't raise productivity.",
@@ -149,10 +149,10 @@
       text: "Which of the following, if true, most strengthens the manager's conclusion?",
       choices: [
         "On unusually warm winter days, hot chocolate sales drop noticeably even though it is still winter.",
-        "The café also sells iced coffee year-round.",
-        "Hot chocolate is priced the same in summer and winter.",
+        "Sales of all beverages, hot and cold alike, rise during examination weeks.",
+        "Hot chocolate is the café's most profitable beverage.",
         "Many students study at the café regardless of the season.",
-        "The café introduced a new hot chocolate flavor last year."
+        "The café introduced a new hot chocolate flavor at the start of last winter."
       ],
       answer: 0,
       expl: "Strengthening a causal claim: if sales fall specifically when it's <em>warm</em> during winter, temperature (not just the season) tracks sales, supporting the cold-weather cause.",
@@ -169,38 +169,38 @@
         text: "The primary purpose of the passage is to",
         choices: [
           "present the rise of urban beekeeping along with a benefit and a concern",
-          "argue that urban beekeeping should be banned",
-          "explain in detail how to build a rooftop hive",
-          "compare beekeeping in two specific cities",
-          "prove that rural bees are always unhealthy"
+          "argue that cities should stop adding hives until more forage is planted",
+          "explain why urban bees are often healthier than their rural counterparts",
+          "describe how competition among hives harms wild native pollinators",
+          "recommend that cities begin tracking the density of their hives"
         ],
         answer: 0,
-        expl: "The passage describes the trend, gives a benefit (paragraph 1) and a concern (paragraph 2). It doesn't argue for a ban, give instructions, compare specific cities, or make an absolute claim about rural bees.",
-        tip: "The main purpose must cover the whole passage, not one detail." },
+        expl: "The passage describes the trend, gives a benefit (paragraph 1) and a concern (paragraph 2). Each wrong choice inflates one piece into the whole: the healthier-bees claim covers only paragraph 1, the competition harm and density-tracking cover only paragraph 2, and \"stop adding hives\" is stronger than what the researchers actually recommend.",
+        tip: "The main purpose must cover the whole passage; a choice that is true of one paragraph is still wrong." },
       { id: "ve_p1q2", type: "mcq", diff: d,
         text: "According to the passage, one reason urban bees may be healthier than rural bees is that cities",
         choices: [
           "have fewer of the agricultural pesticides that harm bees",
-          "are cooler in temperature year-round",
-          "contain no predators of bees",
-          "always limit the number of hives allowed",
-          "ban all flowering plants"
+          "offer a wider variety of flowering plants, though over a shorter season",
+          "have fewer wild pollinators competing with honeybees for nectar",
+          "monitor the health of their hives more closely than farming regions do",
+          "are entirely free of pesticides of every kind"
         ],
         answer: 0,
-        expl: "Paragraph 1 states cities are \"largely free of the agricultural pesticides that harm bees.\" The other options are unsupported.",
-        tip: "For a detail question, find the exact supporting line in the text." },
+        expl: "Paragraph 1 states cities are \"largely free of the agricultural pesticides that harm bees.\" The flowering-plants choice reverses a detail — the passage says a <em>longer</em> season, not a shorter one; \"entirely free of pesticides of every kind\" overstates \"largely free of agricultural pesticides\"; and paragraph 2 raises competition with wild pollinators as a <em>problem</em>, not an advantage.",
+        tip: "For a detail question, find the exact supporting line — half-right choices reverse or overstate it." },
       { id: "ve_p1q3", type: "mcq", diff: d,
         text: "The concern raised by critics in the second paragraph is best described as",
         choices: [
           "too many hives competing for limited nectar",
-          "the high cost of beekeeping equipment",
-          "the danger bees pose to city residents",
-          "a shortage of trained beekeepers",
-          "pollution from city traffic"
+          "wild pollinators driving managed honeybees out of city gardens",
+          "cities planting vegetation that bees are unable to use",
+          "enthusiasm for beekeeping fading before cities can benefit from it",
+          "agricultural pesticides drifting from farms into urban areas"
         ],
         answer: 0,
-        expl: "Critics warn that when hives outpace forage, colonies \"compete for a limited supply of nectar.\" Cost, danger to residents, trainer shortage, and traffic are never mentioned.",
-        tip: "Paraphrase the critics' point in your own words, then match it." }
+        expl: "Critics warn that when hives outpace forage, colonies \"compete for a limited supply of nectar.\" The wild-pollinator choice reverses the harm (the passage worries hives hurt wild pollinators, not the reverse); \"enthusiasm fading\" reverses \"enthusiasm outpaces the available forage\"; and pesticides belong to paragraph 1's point about farms, not the critics' concern.",
+        tip: "Paraphrase the critics' point in your own words first — reversals of it will then stand out." }
     ]
   });
 
@@ -213,26 +213,26 @@
         text: "The passage suggests that the work of a traditional lighthouse keeper was",
         choices: [
           "demanding and carried out largely alone",
-          "easy but poorly paid",
-          "shared among large teams",
-          "primarily concerned with entertaining visitors",
-          "unnecessary even before automation"
+          "solitary but without much real responsibility",
+          "demanding chiefly because of the volume of passing ships",
+          "less difficult than is commonly believed",
+          "already unnecessary well before automation arrived"
         ],
         answer: 0,
-        expl: "The passage calls the work \"solitary and demanding.\" The other choices contradict or aren't supported by the text.",
-        tip: "Look for the descriptive adjectives the author applies directly." },
+        expl: "The passage calls the work \"solitary and demanding.\" The \"without much real responsibility\" choice keeps the right adjective but reverses the point of \"a single lapse could cost a ship and its crew\"; the ship-volume cause is invented; and the passage dates obsolescence to automation, not before it.",
+        tip: "Half-right answers keep one true adjective and quietly negate the other half — verify both parts." },
       { id: "ve_p2q2", type: "mcq", diff: d,
         text: "According to the passage, human keepers became obsolete mainly because of",
         choices: [
           "automation such as electric lamps and remote monitoring",
-          "a decline in ship traffic",
-          "the closing of most lighthouses",
-          "new laws forbidding people to live on islands",
-          "rising costs of lamp oil"
+          "a decline in the number of ships needing guidance",
+          "the keepers' growing unwillingness to live in isolation",
+          "the closing of most lighthouses in the late twentieth century",
+          "the replacement of lighthouses by shore-based fog signals"
         ],
         answer: 0,
-        expl: "Paragraph 1 attributes obsolescence to \"automation\", electric lamps, timers, remote monitoring. The other reasons are not stated.",
-        tip: "Cause questions want the reason the passage actually gives, not a plausible-sounding one." }
+        expl: "Paragraph 1 attributes obsolescence to automation — electric lamps, timers, remote monitoring. The unwillingness choice reverses the second paragraph (keepers were reluctant to <em>leave</em>), and \"the closing of most lighthouses\" contradicts \"many of which continue to shine.\" Declining traffic is plausible but never stated.",
+        tip: "Cause questions want the reason the passage actually gives — and beware reversals of details from other paragraphs." }
     ]
   });
 })();
