@@ -8,7 +8,7 @@
   function read() {
     try {
       var v = localStorage.getItem(KEY);
-      if (v === "dark" || v === "light") return v;
+      if (v === "dark" || v === "light" || v === "night") return v;
     } catch (e) {}
     return "auto";
   }
@@ -26,6 +26,7 @@
 
   function resolve(mode) {
     if (mode === "dark") return "dark";
+    if (mode === "night") return "night";
     if (mode === "light") return "light";
     return systemDark() ? "dark" : "light";
   }
@@ -64,7 +65,7 @@
     mode: function () { return read(); },
     resolved: function () { return current(); },
     cycle: function () {
-      var order = { auto: "dark", dark: "light", light: "auto" };
+      var order = { auto: "dark", dark: "night", night: "light", light: "auto" };
       var next = order[read()] || "dark";
       write(next);
       apply(resolve(next));

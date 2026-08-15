@@ -146,11 +146,22 @@
 
   --focus-ring: 0 0 0 3px rgba(47, 99, 198, .45);
 
+  /* motion scale: press < micro < state < screen < enter.
+     --mo-press is pointer-down acknowledgement (must feel like the control,
+     not like a transition); --mo-enter is reserved for the two authored
+     arrivals (verdict banners); --mo-step is one beat of sibling stagger. */
+  --mo-press: 80ms;
   --mo-micro: 130ms;
   --mo-state: 220ms;
+  --mo-theme: 200ms;
   --mo-screen: 300ms;
+  --mo-enter: 400ms;
+  --mo-step: 40ms;
+  --mo-pulse: 720ms;   /* one beat of a repeating attention cue */
   --ease-out: cubic-bezier(.2, .7, .3, 1);
   --ease-in: cubic-bezier(.5, 0, .8, .4);
+  /* exponential deceleration — arrivals that settle instead of coasting */
+  --ease-settle: cubic-bezier(.16, 1, .3, 1);
 
   --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, Consolas, "Courier New", monospace;
@@ -192,6 +203,55 @@ input, select, textarea { font-family: inherit; }
 :focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: 6px; }
 button:disabled { opacity: .5; cursor: not-allowed; }
 
+/* Baseline interaction easing for every control that does not declare its own.
+   Scoped to interactive elements on purpose: a `*` transition repaints the
+   whole document on a theme switch. Components below that redeclare
+   `transition` all carry box-shadow so the focus ring still resolves. */
+button, summary, input, select, textarea, [tabindex] {
+  transition: background-color var(--mo-micro) var(--ease-out),
+    border-color var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out),
+    transform var(--mo-press) var(--ease-out);
+}
+
+/* Pointer-down: the control gives by a hair and returns. Grouped here so the
+   press reads identically everywhere instead of drifting per component. */
+.btn:active:not(:disabled),
+.tool:active,
+.mod-row:active:not(.locked),
+.tbtn:active:not(:disabled),
+.themebtn:active,
+.seg button:active,
+.guides button:active,
+.essay-toolbar button:active,
+.calc-grid button:active,
+.calc-transfer:active,
+.linkish:active,
+.syncpill:active {
+  transform: translateY(1px);
+  transition-duration: var(--mo-press);
+}
+
+/* Theme switch smoothing.
+   Deliberately an explicit list of large, static surfaces rather than `*`:
+   transitioning every element repaints the whole document at once, which
+   janks badly on the exam screens and makes every hover feel slow. Text
+   colour is not in the list — inherited colour snaps on children anyway, and
+   a half-faded ink is less readable than an instant one. Interactive
+   controls redeclare `transition` above and simply change a little faster. */
+html, body, #app, .stage,
+.tophead, .crumb, .examhead, .substrip, .hairline, .lowtime,
+.card, .panel, .progcard, .score-card, .rev-item, .attempt-row, .missrow,
+.review-wrap, .stat, .pill, .lockpill, .expl, .rules .rule,
+.modal, .modal .tile, .calc, .calc-display, .essay-prompt, .essay-readback,
+.recovery-code, .empty .tile, .railhead .tile, .mod-ic, .cmap .dot,
+.tbar-track, .progcard .track, .units .useg, .pips i,
+.di-table th, .di-table td, .lesson code, .lesson th, .lesson td,
+.lesson .keybox, .lesson .warnbox, .lesson .exambox, .lesson .worked {
+  transition: background-color var(--mo-theme) var(--ease-out),
+    border-color var(--mo-theme) var(--ease-out);
+}
+
 .icon { flex: 0 0 auto; }
 .mono { font-family: var(--font-mono); }
 .serif { font-family: var(--font-serif); }
@@ -218,7 +278,9 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .topnav button {
   background: none; border: none; color: var(--on-dark-70);
   font-size: 13.5px; padding: 8px 14px; border-radius: 8px;
-  transition: background var(--mo-micro) var(--ease-out), color var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-micro) var(--ease-out),
+    color var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out);
 }
 .topnav button:hover { color: var(--on-dark); background: var(--overlay-08); }
 .topnav button.on { background: var(--overlay-13); color: var(--on-dark); font-weight: 600; }
@@ -236,7 +298,9 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   background: var(--overlay-08); border: 1px solid var(--overlay-14);
   color: var(--on-dark); border-radius: var(--r-pill); padding: 6px 13px 6px 11px;
   font-size: 13px; font-weight: 600; max-width: 190px;
-  transition: background var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out),
+    transform var(--mo-press) var(--ease-out);
 }
 .syncpill:hover { background: var(--overlay-14); }
 .syncpill .u { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -254,10 +318,15 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   background: var(--overlay-08); border: 1px solid var(--overlay-14);
   color: var(--on-dark); border-radius: var(--r-ctl);
   font-size: 16px; line-height: 1;
-  transition: background var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out),
+    transform var(--mo-press) var(--ease-out);
 }
 .themebtn:hover { background: var(--overlay-14); }
-.themebtn svg { display: block; }
+/* The glyph node is replaced on every theme change, so this entrance fires
+   exactly when the theme lands — the mark arrives with the surfaces it names. */
+.themebtn svg { display: block; animation: markin var(--mo-state) var(--ease-settle) both; }
+@keyframes markin { from { opacity: 0; transform: scale(.55) rotate(-25deg); } }
 
 /* auth modal (Task 6) */
 .authtabs { display: flex; gap: 6px; margin-bottom: 16px; }
@@ -350,7 +419,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   display: flex; flex-direction: column; align-items: center; gap: 2px;
   padding: 6px 9px; border: none; border-radius: 7px;
   background: none; color: var(--on-dark-85);
-  transition: background var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-micro) var(--ease-out),
+    color var(--mo-micro) var(--ease-out),
+    opacity var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out),
+    transform var(--mo-press) var(--ease-out);
 }
 .tbtn .lb { font-size: 9.5px; }
 .tbtn:hover:not(:disabled) { background: var(--overlay-10); }
@@ -382,20 +455,29 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   font-family: var(--font-mono); font-weight: 700;
   font-variant-numeric: tabular-nums; min-width: 54px; text-align: right;
 }
-.substrip .timer.low { color: var(--bad); animation: blink 1s steps(2) infinite; }
-@keyframes blink { 50% { opacity: .32; } }
+/* Five-minute warning. Three pulses announce the mark, then the clock settles
+   into a steady red it can hold for the rest of the section — a hard blink
+   running for five straight minutes is a distraction, not a warning. */
+.substrip .timer.low {
+  color: var(--bad);
+  animation: timerwarn var(--mo-pulse) var(--ease-out) 3 both;
+}
+@keyframes timerwarn { 40% { opacity: .34; } }
 
 .lowtime {
   display: flex; align-items: center; gap: 10px; flex: 0 0 auto;
   background: var(--badsoft); border-bottom: 1px solid var(--bad-border);
   color: var(--bad); padding: 11px 20px;
   font-size: 13.5px; font-weight: 600;
+  /* unhidden mid-section: it resolves in place rather than snapping into flow */
+  animation: lowbarin var(--mo-state) var(--ease-settle) both;
 }
+@keyframes lowbarin { from { opacity: 0; transform: translateY(-4px); } }
 
 .hairline { height: 3px; flex: 0 0 auto; background: var(--sub2); }
 .hairline > i {
   display: block; height: 100%; background: var(--accent);
-  transition: width var(--mo-state) var(--ease-out);
+  transition: width var(--mo-state) var(--ease-settle);
 }
 
 /* ================= stage ================= */
@@ -413,8 +495,12 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .stage-inner.reader { max-width: 800px; padding: 34px 30px calc(40px + env(safe-area-inset-bottom)); }
 .stage-inner.exam { max-width: 1020px; padding: 22px 30px calc(34px + env(safe-area-inset-bottom)); }
 .stage-inner.exam.splitwide { max-width: 1180px; }
-.screen-in { animation: dashin var(--mo-screen) var(--ease-out) both; }
-@keyframes dashin { from { opacity: 0; transform: translateY(8px); } }
+.screen-in { animation: dashin var(--mo-screen) var(--ease-settle) both; }
+@keyframes dashin { from { opacity: 0; transform: translateY(7px); } }
+/* Exam screens do not travel. Test-delivery software cuts between questions;
+   anything that slides reads as a website and breaks the PowerPrep illusion. */
+.stage-inner.exam.screen-in { animation: fadein var(--mo-micro) var(--ease-out) both; }
+@keyframes fadein { from { opacity: 0; } }
 
 .screen-title {
   font-family: var(--font-serif);
@@ -437,7 +523,10 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border-radius: var(--r-ctl); border: 1px solid transparent;
   background: var(--headink); color: var(--on-dark);
   font-size: 14.5px; font-weight: 600; line-height: 1;
-  transition: background var(--mo-micro) var(--ease-out), border-color var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-micro) var(--ease-out),
+    border-color var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out),
+    transform var(--mo-press) var(--ease-out);
 }
 .btn:hover:not(:disabled) { background: var(--headink-hover); }
 .btn.exam { background: var(--exam-head); }
@@ -515,6 +604,16 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .dash-main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 .dash-rail { display: flex; flex-direction: column; gap: 16px; }
 @media (max-width: 900px) { .dash { grid-template-columns: 1fr; } }
+
+/* The dashboard is the one editorial surface in the app, so its two columns
+   resolve top-down instead of arriving as a slab. Capped at four beats
+   (160ms) so the whole gesture finishes inside the screen transition. */
+.dash-main > *, .dash-rail > * { animation: cardin var(--mo-state) var(--ease-settle) both; }
+.dash-main > :nth-child(2), .dash-rail > :nth-child(2) { animation-delay: var(--mo-step); }
+.dash-main > :nth-child(3), .dash-rail > :nth-child(3) { animation-delay: calc(var(--mo-step) * 2); }
+.dash-main > :nth-child(4), .dash-rail > :nth-child(4) { animation-delay: calc(var(--mo-step) * 3); }
+.dash-main > :nth-child(n+5), .dash-rail > :nth-child(n+5) { animation-delay: calc(var(--mo-step) * 4); }
+@keyframes cardin { from { opacity: 0; transform: translateY(5px); } }
 
 .hero {
   position: relative; overflow: hidden;
@@ -620,9 +719,15 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
   background: var(--paper); border: 1px solid var(--line);
   border-radius: 12px; padding: 14px 16px;
-  transition: background var(--mo-micro) var(--ease-out), border-color var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-micro) var(--ease-out),
+    border-color var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out),
+    transform var(--mo-press) var(--ease-out);
 }
 .tool:hover { background: var(--hover-soft); border-color: var(--tool-line-hover); }
+/* the chevron leans toward the destination on hover */
+.tool .chev { transition: transform var(--mo-state) var(--ease-settle); }
+.tool:hover .chev { transform: translateX(3px); }
 .tool .tile {
   width: 34px; height: 34px; flex: 0 0 auto; border-radius: 9px;
   background: var(--accentsoft); color: var(--accent2);
@@ -695,10 +800,16 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   width: 100%; min-height: 44px; padding: 10px 12px; text-align: left;
   background: none; border: 1px solid transparent; border-radius: 5px;
   font-family: var(--font-serif); font-size: 16.5px; line-height: 1.5; color: var(--ink);
-  transition: background var(--mo-micro) var(--ease-out), border-color var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-micro) var(--ease-out),
+    border-color var(--mo-micro) var(--ease-out),
+    opacity var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out);
 }
 .choice:hover:not(.ro) { background: var(--hover-soft); }
 .choice.selected { background: var(--pick); border-color: var(--pick-border); }
+/* The pick registers under the finger, before the handler runs. Rows never
+   move — displacing serif text mid-read is worse than no feedback at all. */
+.choice:active:not(.ro) { background-color: var(--pick); transition-duration: var(--mo-press); }
 .choice .ctext { flex: 1; min-width: 0; }
 
 /* markers come from the engine: oval = pick one, square = pick one-or-more / SE two */
@@ -706,11 +817,25 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   flex: 0 0 auto; border: 2px solid var(--marker-border); background: var(--field-bg);
   display: inline-flex; align-items: center; justify-content: center;
   color: transparent;
-  transition: background var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-press) var(--ease-out),
+    border-color var(--mo-press) var(--ease-out),
+    color var(--mo-press) var(--ease-out);
 }
 .choice .oval { width: 30px; height: 20px; border-radius: 50%; }
 .choice .sqr { width: 20px; height: 20px; border-radius: 3px; }
-.choice.selected .oval, .choice.selected .sqr { background: var(--ink); color: var(--on-dark); }
+/* Marked in the paper colour, not --on-dark. The fill is --ink, which inverts
+   with the theme, so a fixed near-white glyph left the tick on a Sentence
+   Equivalence / multi-answer box at ~1.03:1 in dark and night — you could not
+   see which boxes you had ticked. --paper inverts with --ink and stays >13:1
+   in all three themes. */
+.choice.selected .oval, .choice.selected .sqr { background: var(--ink); color: var(--paper); }
+/* The tick lands into the filled box rather than blinking on with it.
+   A transition (not a keyframe) so a re-rendered answered question paints
+   already-ticked instead of replaying the mark on every back-navigation. */
+.choice .sqr .icon { transform: scale(.5); transition: transform var(--mo-state) var(--ease-settle); }
+.choice.selected .sqr .icon,
+.choice.correct .sqr .icon,
+.choice.wrongpick .sqr .icon { transform: scale(1); }
 .choice.dim { opacity: .65; }
 .choice .maxhint {
   margin-left: auto; flex: 0 0 auto;
@@ -825,6 +950,9 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border: 1.5px solid var(--field-border); border-radius: 6px; padding: 14px 16px;
   font-family: var(--font-sans); font-size: 15.5px; line-height: 1.6; color: var(--ink);
   background: var(--paper);
+  transition: background-color var(--mo-theme) var(--ease-out),
+    border-color var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out);
 }
 .essay-box:focus-visible { border-color: var(--accent); box-shadow: var(--focus-ring); }
 
@@ -839,7 +967,10 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .review-table th:last-child { text-align: center; }
 .review-table td { padding: 9px 14px; border-top: 1px solid var(--faint); }
 .review-table td:last-child { text-align: center; }
-.review-table tbody tr { cursor: pointer; }
+.review-table tbody tr {
+  cursor: pointer;
+  transition: background-color var(--mo-micro) var(--ease-out);
+}
 .review-table tbody tr:nth-child(even) { background: var(--sub); }
 .review-table tbody tr:hover { background: var(--accentsoft); }
 .review-table tbody tr.cur { background: var(--pick); }
@@ -938,8 +1069,14 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .tbar-track { height: 16px; border-radius: 6px; background: var(--sub2); overflow: hidden; }
 .tbar-fill {
   height: 100%; border-radius: 6px; background: var(--verbal);
-  transition: width var(--mo-state) var(--ease-out);
+  transition: width var(--mo-state) var(--ease-settle);
+  /* The width arrives inline from JS, so a width transition can never run on
+     first paint. Scaling to the served width is what makes the measurement
+     read as measured rather than merely printed. */
+  transform-origin: left center;
+  animation: fillx var(--mo-enter) var(--ease-settle) both;
 }
+@keyframes fillx { from { transform: scaleX(0); } }
 .tbar-row.q .tbar-fill { background: var(--quant); }
 .tbar-row.lag .tbar-fill { background: var(--amber); }
 .tbar-row.lag .nm { font-weight: 600; }
@@ -976,6 +1113,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   display: flex; align-items: center; justify-content: space-between;
   gap: 20px; flex-wrap: wrap;
   border-radius: var(--r-card); padding: 22px 24px; color: var(--on-dark);
+  /* same verdict language as the tutor banner, one tier larger */
+  animation: verdictin var(--mo-enter) var(--ease-settle) both;
+}
+.banner .tile > .icon {
+  animation: verdictmark var(--mo-state) var(--ease-settle) calc(var(--mo-step) * 2) both;
 }
 .banner.pass { background: linear-gradient(135deg, var(--good), var(--good-grad)); }
 .banner.fail { background: linear-gradient(135deg, var(--bad), var(--bad-grad)); }
@@ -1060,10 +1202,17 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   box-shadow: var(--shadow-modal);
   width: 100%; max-width: 480px; max-height: 84vh; overflow: auto;
   padding: 26px 28px;
-  animation: modalin var(--mo-state) var(--ease-out) both;
+  animation: modalin var(--mo-state) var(--ease-settle) both;
 }
-@keyframes modalin { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+@keyframes modalin { from { opacity: 0; transform: translateY(10px) scale(.985); } }
 .modal.lg { max-width: 660px; }
+/* The dismiss ✕ is built with inline styles in sync.js, so its resting state
+   cannot be reached from here — only the hover, and only with !important.
+   Without this the one control on the card has no hover state at all. */
+.modal-x:hover, .modal-x:focus-visible {
+  background: var(--sub2) !important;
+  color: var(--ink) !important;
+}
 .modal .tile {
   width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px;
   display: inline-flex; align-items: center; justify-content: center;
@@ -1100,7 +1249,9 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
 .progcard .track > i {
   display: block; height: 100%;
   background: linear-gradient(90deg, var(--accent), var(--accent-lite));
-  transition: width var(--mo-state) var(--ease-out);
+  transition: width var(--mo-state) var(--ease-settle);
+  transform-origin: left center;
+  animation: fillx var(--mo-enter) var(--ease-settle) both;
 }
 
 .unitgroup { margin-bottom: 20px; }
@@ -1114,8 +1265,13 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   width: 100%; text-align: left; min-height: 44px; padding: 13px 15px;
   background: var(--paper); border: 1px solid var(--line); border-radius: 11px;
   color: var(--ink);
-  transition: background var(--mo-micro) var(--ease-out), border-color var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-micro) var(--ease-out),
+    border-color var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out),
+    transform var(--mo-press) var(--ease-out);
 }
+/* Border colour is state-bearing here (done = green, next = accent), so hover
+   moves the fill only and leaves the status edge alone. */
 .mod-row:hover:not(.locked) { background: var(--hover-soft); }
 .mod-ic {
   width: 26px; height: 26px; flex: 0 0 auto; border-radius: 50%;
@@ -1247,7 +1403,11 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   flex: 1; min-height: 44px; padding: 12px 0;
   background: var(--paper); border: 1.5px solid var(--line); border-radius: 9px;
   font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--muted);
-  transition: background var(--mo-micro) var(--ease-out), border-color var(--mo-micro) var(--ease-out);
+  transition: background-color var(--mo-micro) var(--ease-out),
+    border-color var(--mo-micro) var(--ease-out),
+    color var(--mo-micro) var(--ease-out),
+    box-shadow var(--mo-micro) var(--ease-out),
+    transform var(--mo-press) var(--ease-out);
 }
 .seg button:hover:not(.on) { background: var(--hover-soft); }
 .seg button.on { background: var(--accentsoft); border-color: var(--accent); color: var(--accent2); }
@@ -1259,11 +1419,28 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
 }
 .guides button:hover { background: var(--hover-soft); border-color: var(--accent-border); }
 
+/* ---- the verdict ----
+   The one authored moment in the app, and it lives only in study mode: the
+   banner drops in, the mark lands into it a beat later, and the reasoning
+   follows. Nothing in the timed exam moves like this. */
 .fb-banner {
   display: flex; align-items: center; gap: 9px;
   border-radius: 9px; padding: 12px 16px; margin-top: 18px;
   font-size: 15px; font-weight: 700;
-  animation: dashin var(--mo-state) var(--ease-out) both;
+  animation: verdictin var(--mo-enter) var(--ease-settle) both;
+}
+@keyframes verdictin {
+  from { opacity: 0; transform: translateY(-7px); }
+  30% { opacity: 1; }
+}
+.fb-banner > .icon {
+  animation: verdictmark var(--mo-state) var(--ease-settle) calc(var(--mo-step) * 2) both;
+}
+@keyframes verdictmark { from { opacity: 0; transform: scale(.4); } }
+/* the explanation arrives after the verdict, never with it */
+.fb-banner ~ .fb-note,
+.fb-banner ~ .expl {
+  animation: cardin var(--mo-state) var(--ease-out) calc(var(--mo-step) * 4) both;
 }
 .fb-banner.good { background: var(--goodsoft); color: var(--good); }
 .fb-banner.bad { background: var(--badsoft); color: var(--bad); }
@@ -1321,19 +1498,12 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   .calc { width: calc(100% - 24px); left: 12px !important; }
 }
 
-/* ================= reduced motion ================= */
+/* ================= dark theme =================
+   The "night" theme inherits every dark token, then re-grounds the surface
+   ladder on true black below (OLED / low-light reading). */
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* ================= dark theme ================= */
-
-[data-theme="dark"] {
+[data-theme="dark"],
+[data-theme="night"] {
   color-scheme: dark;
 
   /* surfaces — deep desaturated blue-gray ladder (L0 page → L2 fill) */
@@ -1437,4 +1607,64 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   --chart-fill-4: #5f6a7d;  --chart-fill-5: #454f63;  --chart-fill-6: #cbd2dd;
   --chart-trend-axis:   #7c879a;   /* 4.62:1 */
   --chart-trend-grid:   #616e88;   /* 3.26:1 */
+}
+
+/* ================= night theme (true black) =================
+   Same ink/accent/semantic system as dark; only the surface ladder and the
+   chrome drop to pure/near black so OLED screens emit as little light as
+   possible. Borders step up slightly to keep card edges legible without
+   elevation fills. */
+
+[data-theme="night"] {
+  /* surfaces — black ladder (L0 page → L2 fill) */
+  --page:   #000000;
+  --sub:    #000000;   /* app / stage background */
+  --paper:  #07090d;   /* cards, modal, elevated surfaces */
+  --sub2:   #0d1117;   /* fills, table headers, pills */
+  --faint:  #12161d;
+  --line:   #262d3a;
+  --tool-line-hover: #333d4e;
+
+  /* chrome — barely above black */
+  --headink:        #05070b;
+  --headink2:       #0c1526;
+  --headink-hover:  #101826;
+  --exam-head:      #0a111a;
+  --exam-head-hover:#121b28;
+
+  /* soft fills sink toward black */
+  --accentsoft:    #101c30;
+  --accentsoft-hover: #172743;
+  --goodsoft: #0c2115;  --good-tint: #091a10;  --good-tint-hover: #0c2115;
+  --badsoft:  #241012;
+  --ambersoft:#1f180b;
+  --quantsoft:#1f1a0e;
+  --pick: #16233a;
+
+  /* fields */
+  --field-bg: #05070b;
+  --calc-body: #10161f;  --calc-btn: #161d29;  --calc-btn-op: #1d2738;
+  --calc-btn-op-hover: #263349;
+  --hover-soft: #10151d; --essaytool-hover: #161d29;
+
+  --shadow-card:  0 0 0 1px rgba(255,255,255,.06);
+  --shadow-frame: 0 0 0 1px rgba(255,255,255,.07);
+  --shadow-modal: 0 24px 60px rgba(0,0,0,.9);
+  --veil: rgba(0,0,0,.82);
+}
+
+/* ================= reduced motion =================
+   Last block in the file on purpose. `!important` already outranks everything
+   above regardless of order, but keeping it last means any rule added later
+   is visibly downstream of the kill switch. Nothing in this stylesheet may
+   depend on an animation running to reach its resting state — every keyframe
+   animates *from* an offset toward the element's own base style, so removing
+   motion leaves the correct static rendering. */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
