@@ -33,9 +33,10 @@ Safari's, so signing in is what carries your progress across.
   on-screen GRE calculator (order of operations, parentheses, memory keys, √, 8-digit
   display, Transfer Display into Numeric Entry).
 - **All real question formats**: 1/2/3-blank Text Completion, Sentence Equivalence (exactly
-  two answers), Reading Comprehension (split-screen passages, select-all-that-apply),
-  Critical Reasoning, Quantitative Comparison, multiple-answer MC, Numeric Entry (including
-  fractions), and Data Interpretation sets with charts.
+  two answers), Reading Comprehension (split-screen passages, select-all-that-apply, and
+  **select-in-passage** — click a sentence in the passage), Critical Reasoning,
+  Quantitative Comparison, multiple-answer MC, Numeric Entry (including fractions), and
+  Data Interpretation sets with charts.
 - **Score report**: scaled scores + percentile estimates, adaptive-path breakdown, accuracy
   by topic, pacing analysis, and question-by-question review with full explanations.
 - **Shuffled answer choices**: every time a question is drawn — in a mock, a course quiz,

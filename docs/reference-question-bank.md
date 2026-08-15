@@ -84,6 +84,19 @@ Passage questions render split-screen (passage left, question right) and stay co
 in the section. Exam blueprints need passages of **exactly 2, 3, and 4 questions** per
 difficulty; longer lists get sliced from the front.
 
+## Verbal: Select-in-passage (`type: "sip"`, inside `vpassages`)
+
+- Lives in a passage's `questions` array like any RC question.
+- `text`: the instruction stem ("Select the sentence in the passage that …").
+- `answer`: the **0-based sentence index**, counted across all paragraphs in reading
+  order. There is no `choices` field — the passage's sentences are the choices, and
+  the renderer makes each one clickable.
+- Sentences are derived by `GRE.splitSentences` (splits `<p>` blocks on
+  sentence-ending punctuation). A passage that carries a sip question must therefore
+  be authored **plain**: no inline tags inside paragraphs, and no mid-sentence
+  periods (abbreviations like "Dr." would split wrongly).
+- Choice-order shuffling does not apply (sentence order is the passage's order).
+
 ## Quant: Quantitative Comparison (`type: "qc"`)
 
 - `qa`, `qb`: Quantity A / Quantity B (HTML ok).
@@ -142,6 +155,7 @@ Prompt selection avoids the prompts used in the last 5 attempts.
 | `se` | exactly 2 selected | set equals `answer` |
 | `mcma` | ≥1 selected | set equals `answer` |
 | `num` | box non-empty (both boxes if fraction) | numeric match ±1e-6, or cross-multiplied fraction equality |
+| `sip` | a sentence clicked | sentence index equals `answer` |
 | others | a choice selected | index equals `answer` |
 
 ## Related

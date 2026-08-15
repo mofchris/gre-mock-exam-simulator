@@ -7,6 +7,7 @@
 
   GRE.describeType = function (q, entry) {
     if (entry && entry.di) return "Data Interpretation";
+    if (q && q.type === "sip") return "Reading Comprehension (select-in-passage)";
     if (entry && entry.passage && !entry.di) return "Reading Comprehension";
     switch (q.type) {
       case "tc": return "Text Completion (" + (q.blanks || 1) + "-blank)";
@@ -37,6 +38,7 @@
       case "se":
         return "Select the two answer choices that, when used to complete the sentence, fit the meaning of the sentence as a whole and produce completed sentences that are alike in meaning.";
       case "cr": return "Select one answer choice.";
+      case "sip": return "This question has a special format: select your answer by clicking on a sentence in the passage. To change your selection, click on a different sentence.";
       case "qc": return "Compare Quantity A and Quantity B, using additional information centered above the two quantities if such information is given. Select one of the four answer choices.";
       case "mcma": return "Select one or more answer choices according to the specific question directions. Indicate all such choices.";
       case "num": return q.frac ? "Enter your answer as a fraction in the boxes." : "Enter your answer in the box.";
@@ -67,6 +69,25 @@
       }
       default: return ans === q.answer; // qc, mcq, cr, tc1, rc single
     }
+  };
+
+  /* ---- select-in-passage sentence segmentation ----
+     Splits a passage's <p> blocks into sentences for the "sip" question type.
+     Answers are graded by global sentence index (counting across paragraphs).
+     Passages that carry sip questions are authored plain (no inline tags, no
+     abbreviations with periods) so this split is exact. */
+  GRE.splitSentences = function (html) {
+    const paras = [];
+    const re = /<p[^>]*>([\s\S]*?)<\/p>/gi;
+    let m;
+    while ((m = re.exec(html))) {
+      const txt = m[1].trim();
+      if (!txt) continue;
+      paras.push(txt.split(/(?<=[.?!][")”]?)\s+(?=[A-Z“"(])/)
+        .map(s => s.trim()).filter(Boolean));
+    }
+    if (!paras.length && String(html).trim()) paras.push([String(html).trim()]);
+    return paras;
   };
 
   /* ---- presentation-order shuffling ----
@@ -330,6 +351,46 @@
         if (item.passage.intro) body.appendChild(el("div", { html: item.passage.intro }));
         body.appendChild(GRE.renderDisplay(item.passage.display || {}));
         pside.appendChild(body);
+      } else if (q.type === "sip") {
+        // Select-in-passage: the passage itself is the answer area.
+        pside.appendChild(el("div", { class: "passage-label" },
+          opts.review ? "The correct sentence is highlighted" : "Click a sentence in the passage to select it"));
+        const body = el("div", { class: "ptext" });
+        const spans = [];
+        let gi = 0;
+        GRE.splitSentences(item.passage.text).forEach(sents => {
+          const p = el("p");
+          sents.forEach(s => {
+            const idx = gi++;
+            const sp = el("span", {
+              class: "sipsent" + (ro ? " ro" : ""),
+              role: ro ? null : "button", tabindex: ro ? null : "0",
+              html: s
+            });
+            if (!ro) {
+              const pick = () => {
+                setAns(getAns() === idx ? null : idx);
+                spans.forEach((x, i2) => x.classList.toggle("selected", getAns() === i2));
+              };
+              sp.addEventListener("click", pick);
+              sp.addEventListener("keydown", e => {
+                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); }
+              });
+            }
+            spans.push(sp);
+            p.appendChild(sp);
+            p.appendChild(document.createTextNode(" "));
+          });
+          body.appendChild(p);
+        });
+        spans.forEach((sp, i2) => sp.classList.toggle("selected", getAns() === i2));
+        if (opts.review) {
+          spans.forEach((sp, i2) => {
+            if (i2 === q.answer) sp.classList.add("correct");
+            if (getAns() === i2 && i2 !== q.answer) sp.classList.add("wrongpick");
+          });
+        }
+        pside.appendChild(body);
       } else {
         pside.appendChild(el("div", { class: "passage-label" }, "Questions are based on this passage"));
         pside.appendChild(el("div", { class: "ptext", html: item.passage.text }));
@@ -343,6 +404,23 @@
 
     if (!opts.hideDirections) {
       qcol.appendChild(el("div", { class: "directions" }, GRE.directionsFor(q)));
+    }
+
+    /* ----- Select-in-passage: the answer lives in the passage pane ----- */
+    if (q.type === "sip") {
+      qcol.appendChild(el("div", { class: "qtext", html: q.text }));
+      if (opts.review) {
+        const okPick = getAns() === q.answer;
+        qcol.appendChild(el("p", { class: "correct-answer" },
+          okPick ? "You selected the correct sentence."
+                 : (getAns() == null
+                    ? "No sentence was selected. The correct sentence is outlined in the passage."
+                    : "Your selection and the correct sentence are marked in the passage.")));
+      } else {
+        qcol.appendChild(el("div", { class: "selcount" },
+          "Answer by clicking a sentence in the passage on the left."));
+      }
+      return;
     }
 
     /* ----- Text Completion ----- */

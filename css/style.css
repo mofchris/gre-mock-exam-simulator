@@ -1653,6 +1653,27 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   --veil: rgba(0,0,0,.82);
 }
 
+/* ================= select-in-passage sentences =================
+   Theme-safe: every color is a token, so light/dark/night all work. Selection
+   uses the same pick tint as exam choices; review pairs color with an outline
+   so state is never conveyed by hue alone. */
+
+.sipsent {
+  cursor: pointer; border-radius: 4px; padding: 1px 2px; margin: -1px -2px;
+  transition: background var(--mo-micro) var(--ease-out);
+}
+.sipsent:hover:not(.ro) { background: var(--accentsoft); }
+.sipsent:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.sipsent.selected { background: var(--pick); box-shadow: inset 0 0 0 1.5px var(--pick-border); }
+.sipsent.ro { cursor: default; }
+.sipsent.correct {
+  background: var(--goodsoft); box-shadow: inset 0 0 0 1.5px var(--good-border);
+}
+.sipsent.wrongpick {
+  background: var(--badsoft); box-shadow: inset 0 0 0 1.5px var(--bad-border);
+  text-decoration: line-through; text-decoration-thickness: 1px;
+}
+
 /* ================= reduced motion =================
    Last block in the file on purpose. `!important` already outranks everything
    above regardless of order, but keeping it last means any rule added later

@@ -239,4 +239,82 @@
         tip: "In select-all questions, the last option often states the opposite of the result — check the outcome sentence." }
     ]
   });
+
+  /* ================= Select-in-passage passages =================
+     These passages carry a "sip" question (click the sentence), so their
+     paragraphs are authored plain: no inline tags, no mid-sentence periods.
+     A sip answer is the 0-based sentence index counted across paragraphs. */
+
+  P.push({
+    id: "p2_s1", diff: "easy", title: "Canals and railroads",
+    text: `<p>In the early nineteenth century, canals were the dominant means of moving heavy freight across the interior of many industrializing countries. Canal boats were slow, but they were cheap, and for bulk goods such as coal and grain, cost mattered far more than speed. Within a few decades, however, railroads had captured most of this traffic. The usual explanation points to speed, yet speed alone cannot account for the shift, since bulk shippers had always tolerated slow delivery. The decisive advantage of railroads was reliability: canals froze in winter, flooded in spring, and ran dry in summer, while trains ran on schedule in nearly any weather. Shippers, it turned out, would pay a premium not to arrive quickly but to know when they would arrive.</p>`,
+    questions: [
+      { id: "p2_s1q1", type: "sip", diff: "easy",
+        text: "Select the sentence that identifies what the author considers the decisive advantage of railroads over canals.",
+        answer: 4,
+        expl: "The fifth sentence names it outright — \"The decisive advantage of railroads was reliability\" — and backs it with the seasonal failures of canals. The sentence about speed is the popular explanation the author rejects, not the author's own answer.",
+        tip: "Match the question's key phrase (\"decisive advantage\") to the sentence that asserts it, not to sentences that merely discuss the topic." },
+      { id: "p2_s1q2", type: "mcq", diff: "easy",
+        text: "The primary purpose of the passage is to",
+        choices: [
+          "correct an incomplete explanation for why railroads displaced canal freight",
+          "argue that canals were superior to railroads for bulk goods",
+          "describe how canal boats were constructed and operated",
+          "show that railroad freight was cheaper than canal freight",
+          "explain why coal and grain no longer travel by rail"
+        ],
+        answer: 0,
+        expl: "The passage grants the shift happened, rejects speed as the full explanation (\"speed alone cannot account for the shift\"), and substitutes reliability. It never claims rail was cheaper — the passage says shippers paid a premium.",
+        tip: "\"The usual explanation… yet…\" signals a correction; the purpose answer should name it." }
+    ]
+  });
+
+  P.push({
+    id: "p2_s2", diff: "medium", title: "The testing effect",
+    text: `<p>Students preparing for an examination overwhelmingly favor rereading their notes, a strategy that feels productive because the material grows steadily more familiar. That familiarity, however, is a poor guide to learning. In controlled comparisons, students who spent the same amount of time taking practice tests recalled substantially more material a week later than students who simply reread. Psychologists call this the testing effect, and its explanation appears to lie in retrieval itself: the act of pulling information from memory strengthens the very pathways used to retrieve it, in a way that passive review does not.</p>
+    <p>The finding carries an uncomfortable corollary for learners. The strategies that feel easiest tend to produce the least durable learning, while the mild struggle of self-testing, precisely because it is effortful, is the better investment. Fluency, in short, is not mastery, and the difference between the two often remains invisible until the examination itself.</p>`,
+    questions: [
+      { id: "p2_s2q1", type: "sip", diff: "medium",
+        text: "Select the sentence that explains the mechanism thought to underlie the testing effect.",
+        answer: 3,
+        expl: "The fourth sentence supplies the mechanism: retrieval \"strengthens the very pathways used to retrieve it.\" The sentence reporting the controlled comparisons gives the EVIDENCE for the effect, not its explanation — the classic near-miss.",
+        tip: "\"Mechanism\" asks how it works, not that it works; evidence sentences are the trap." },
+      { id: "p2_s2q2", type: "mcq", diff: "medium",
+        text: "According to the passage, rereading feels productive to students because",
+        choices: [
+          "the material becomes increasingly familiar as they reread",
+          "practice tests are stressful and effortful",
+          "rereading produces the most durable learning",
+          "psychologists have endorsed it as a study strategy",
+          "familiarity is a reliable measure of mastery"
+        ],
+        answer: 0,
+        expl: "The first sentence says rereading \"feels productive because the material grows steadily more familiar.\" The passage then denies that familiarity measures learning — so the last choice states the opposite of the author's view.",
+        tip: "\"Feels productive because…\" is answered verbatim in the passage; don't upgrade the feeling into a fact." }
+    ]
+  });
+
+  P.push({
+    id: "p2_s3", diff: "hard", title: "The rhetoric of untranslatability",
+    text: `<p>The claim that great poetry is untranslatable has the ring of a truism, and translators themselves have often been its most eloquent proponents. Yet the claim conceals an equivocation. If it means that no translation reproduces every effect of its original, it is true but trivial, since no paraphrase within a single language is perfectly faithful either. If it means that nothing of value survives the crossing, it is refuted by the plain fact that readers have been moved, influenced, and changed by poems they could read only in translation. What the truism actually registers, one suspects, is not a property of poems but a professional anxiety: the translator's sense that fidelity to sound must be purchased with infidelity to sense, and that every choice will be legible to critics as a loss. The interesting question is therefore not whether translation is possible, for it demonstrably occurs, but why the rhetoric of impossibility remains so durable among those who practice it.</p>`,
+    questions: [
+      { id: "p2_s3q1", type: "sip", diff: "hard",
+        text: "Select the sentence in which the author proposes what the claim of untranslatability actually reflects.",
+        answer: 4,
+        expl: "The fifth sentence delivers the author's own diagnosis: the truism registers \"not a property of poems but a professional anxiety.\" The two conditional sentences before it dismantle other readings of the claim; they analyze it without saying what it actually reflects.",
+        tip: "\"What the truism actually registers\" is the author stepping forward — hedged verbs like \"one suspects\" often mark the thesis sentence." },
+      { id: "p2_s3q2", type: "mcq", diff: "hard",
+        text: "The primary purpose of the passage is to",
+        choices: [
+          "distinguish two readings of a familiar claim and propose what the claim really expresses",
+          "demonstrate that poetry cannot be translated without loss",
+          "praise translators for their eloquence in defending their craft",
+          "argue that paraphrase within a single language is impossible",
+          "recount the history of a famous dispute between translators and critics"
+        ],
+        answer: 0,
+        expl: "The structure is: truism → equivocation exposed (two readings, one trivial, one false) → what the claim actually registers → the question worth asking. The untranslatability claim is the passage's target, not its conclusion.",
+        tip: "When a passage calls a claim an \"equivocation,\" its purpose is analysis of the claim, never endorsement." }
+    ]
+  });
 })();
