@@ -38,12 +38,22 @@ Safari's, so signing in is what carries your progress across.
   fractions), and Data Interpretation sets with charts.
 - **Score report**: scaled scores + percentile estimates, adaptive-path breakdown, accuracy
   by topic, pacing analysis, and question-by-question review with full explanations.
+- **Shuffled answer choices**: every time a question is drawn — in a mock, a course quiz,
+  or tutor practice — its choices appear in a fresh random order (Quantitative Comparison's
+  four fixed choices excepted), so answer positions can never be memorized. Review screens
+  re-show the order you actually saw.
+- **Anti-repeat drawing**: once a question's answer has been revealed to you (you missed it,
+  or reviewed it after a mock), it goes to the back of the line — practice sets and quiz
+  retakes draw never-seen questions first.
 - **Tutor mode**: untimed practice by type/topic/difficulty with instant feedback,
   strategy guides for every question format, and a missed-questions deck for re-drilling.
-- **Progress tracking**: attempt history and score trend, stored in your browser
+  Misses from mocks, tutor practice, **and course quizzes** all land in the deck.
+- **Progress tracking**: mock attempt history and score trend, plus a practice history of
+  every module quiz, checkpoint, tutor session, and re-drill — stored in your browser
   (localStorage), and synced to the sync server as well when you're signed in.
-- **Dark mode**: follows your device setting automatically, with a header toggle
-  (☀/☾/◐) to override it.
+- **Dark & night modes**: follows your device setting automatically, with a header toggle
+  cycling auto → dark → night → light. Night is a true-black (OLED-friendly) variant of
+  dark for low-light studying.
 
 ## Documentation
 
@@ -73,9 +83,11 @@ The app includes an **18-module course** that takes you from the basics to the h
 | 5. Writing & Readiness | The Issue essay, pacing and guessing, final review |
 
 Each module ends with a quiz you must pass at **75%** to unlock the next one, and each unit ends
-with a **cumulative checkpoint** that also re-tests earlier units. The full mock exam unlocks when
-the course is complete. Every quiz question has a full explanation; retakes are unlimited and your
-best score is kept.
+with a **cumulative checkpoint** that also re-tests earlier units. Quizzes are **sampled from a
+larger question pool** (roughly half again as many questions as a quiz shows), drawing questions
+you haven't seen before first — so a retake is a genuinely fresh test, not a memory check. The
+full mock exam unlocks when the course is complete. Every quiz question has a full explanation;
+retakes are unlimited and your best score is kept.
 
 ## Running locally
 
@@ -83,12 +95,24 @@ best score is kept.
 - Or serve it: `start.bat` (Windows, uses Python) or `python -m http.server 8420`,
   then open http://localhost:8420.
 
-## Extending the question bank
+## The question bank
+
+Roughly **300 exam-bank questions** (plus 40 essay prompts) across every real format and
+difficulty tier, including full-length reading passages, three-blank Text Completion,
+Critical Reasoning variants (weaken, strengthen, assumption, paradox, evaluate, inference,
+complete-the-passage), and quant coverage of arithmetic, algebra, geometry, coordinate
+geometry, statistics (standard deviation, normal distribution, quartiles), sequences,
+overlapping sets, rates, mixtures, counting, probability, and Data Interpretation sets —
+and a separate **330+-question course-quiz pool**. The hard tier is calibrated to real
+163–170 material.
+
+### Extending it
 
 Questions live in `data/*.js` as plain JS objects pushed into a global bank
 (`GREBANK`). Every question carries its answer, a full explanation, and a strategy tip.
 To add questions, follow the shapes in any existing data file and include your new file
-with a `<script>` tag in `index.html`. IDs must be unique across the whole bank.
+with a `<script>` tag in `index.html`. IDs must be unique across the whole bank. After any
+asset change, regenerate the service worker: `node tools/build-sw.mjs`.
 
 ## Disclaimer
 

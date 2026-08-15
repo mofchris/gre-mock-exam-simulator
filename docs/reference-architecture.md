@@ -114,12 +114,19 @@ Single key: **`gre-sim-v1`**.
     date, essay: { promptId, text, words, selfScore? },
     verbal: { raw, s1, s2, path, scaled, pct },
     quant:  { raw, s1, s2, path, scaled, pct },
-    sections: [ { kind, no, detail: [ { qid, ans, ok, time } ] } ]
+    sections: [ { kind, no, detail: [ { qid, ans, perm, ok, time } ] } ]
+    // perm: the presentation-order permutation the user saw (choices are shuffled
+    // at draw time); ans indices are in that presented space, and review re-applies it
   } ],
-  missed:     [ "qid", … ],         // wrong answers; removed when re-answered correctly in deck drills
+  missed:     [ "qid", … ],         // wrong answers (mock, tutor, AND course quiz);
+                                    // removed when re-answered correctly in deck drills
   recent:     [ "qid", … ],         // recency list for assembly (last ~170 used ids)
-  inprogress: { … } | null,         // autosaved exam state
-  tutorSeen:  { }                   // reserved
+  inprogress: { … } | null,         // autosaved exam state (sections carry perms too)
+  tutorSeen:  { "qid": ts, … },     // when each question's ANSWER was last shown; selection
+                                    // paths draw never-seen / least-recently-seen first
+  practice:   [ {                   // one per course quiz, checkpoint, tutor session, drill
+    date, kind: "quiz"|"checkpoint"|"tutor"|"deck", label, n, correct, pct, passed?
+  } ]
 }
 ```
 
