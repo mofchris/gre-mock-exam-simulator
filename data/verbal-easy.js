@@ -129,7 +129,7 @@
         "The new streetlights were more expensive to install than expected."
       ],
       answer: 0,
-      expl: "The conclusion is causal (lights → fewer accidents). Choice A supplies an <strong>alternative cause</strong> (lower speed limits and new crossings) that could explain the drop, undermining the claim that the lights were responsible.",
+      expl: "The conclusion is causal (lights → fewer accidents). The correct choice supplies an <strong>alternative cause</strong> (lower speed limits and new crossings) that could explain the drop, undermining the claim that the lights were responsible.",
       tip: "To weaken a causal claim, look for an alternative explanation for the same result." },
     { id: "ve_cr2", type: "cr", diff: d,
       passage: "A company found that employees who ate lunch at their desks were, on average, more productive than those who left for lunch. The company plans to encourage all employees to eat at their desks in order to raise overall productivity.",

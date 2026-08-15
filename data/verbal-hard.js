@@ -167,7 +167,7 @@
         "The settlers grew no crops other than those known to archaeologists."
       ],
       answer: 0,
-      expl: "The pollen shows grassland (low rain) <em>at founding</em>. If rainfall increased afterward (during the actual farming) no irrigation would be needed. The argument silently assumes conditions stayed dry. Choice C is too strong: the argument needs 'typically,' not 'never.'",
+      expl: "The pollen shows grassland (low rain) <em>at founding</em>. If rainfall increased afterward (during the actual farming) no irrigation would be needed. The argument silently assumes conditions stayed dry. The choice claiming grasslands can <em>never</em> receive substantial rainfall is too strong: the argument needs 'typically,' not 'never.'",
       tip: "Watch time gaps: evidence about one period, conclusion about another, assumes nothing changed between." },
     { id: "vh_cr4", type: "cr", diff: d,
       passage: "Critic: Defenders of the proposed dam say it will generate clean electricity and reduce the region's reliance on coal. But the reservoir behind the dam will flood a forest, and rotting vegetation in reservoirs releases methane, a potent greenhouse gas. Therefore the dam will actually worsen the region's total greenhouse emissions.",
@@ -180,7 +180,7 @@
         "Coal mining in the region employs thousands of workers."
       ],
       answer: 0,
-      expl: "The critic's conclusion is about <em>net</em> emissions. If reservoir methane is far smaller than the coal emissions displaced, the dam's net effect is a reduction: directly contradicting the conclusion. Choices B, D, E are off-topic; C alone doesn't quantify the comparison.",
+      expl: "The critic's conclusion is about <em>net</em> emissions. If reservoir methane is far smaller than the coal emissions displaced, the dam's net effect is a reduction: directly contradicting the conclusion. Rare species, water storage, and mining jobs are off-topic; methane's shorter atmospheric lifetime alone doesn't quantify the comparison.",
       tip: "Net-effect conclusions are weakened by comparing magnitudes, not by side issues." }
   );
 

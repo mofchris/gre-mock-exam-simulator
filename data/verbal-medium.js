@@ -201,7 +201,7 @@
         "The armchairs were expensive to purchase and maintain."
       ],
       answer: 0,
-      expl: "If a comparable store without the change saw no sales rise in the same period, seasonal or market-wide explanations are ruled out, strengthening the claim that the armchairs caused the increase. Choice D (coffee added simultaneously) would <em>weaken</em> it.",
+      expl: "If a comparable store without the change saw no sales rise in the same period, seasonal or market-wide explanations are ruled out, strengthening the claim that the armchairs caused the increase. The choice noting that coffee sales began at the same time would <em>weaken</em> it.",
       tip: "A control case that lacks the cause and lacks the effect strengthens a causal claim." },
     { id: "vm_cr4", type: "cr", diff: d,
       passage: "A magazine reported that its online subscribers renew at a higher rate than its print subscribers. The publisher concluded that the online format itself inspires greater loyalty and decided to phase out the print edition entirely.",

@@ -87,7 +87,7 @@
       answer: 1,
       expl: "5 letters with L twice and E twice: 5!/(2!·2!) = 120/4 = 30.",
       tip: "Divide n! by k! for every letter repeated k times." },
-    { id: "qh_mc2", type: "mcq", topic: "data", diff: d,
+    { id: "qh_mc2", type: "mcq", topic: "data", diff: "medium", /* recalibrated: real-GRE medium */
       text: "Two fair six-sided dice are rolled. What is the probability that the sum of the two results is 8?",
       choices: ["1/6", "5/36", "1/8", "7/36", "1/9"],
       answer: 1,
@@ -111,13 +111,13 @@
       answer: 2,
       expl: "Square the given: (x + 1/x)² = x² + 2 + 1/x² = 16, so x² + 1/x² = 14.",
       tip: "Squaring x + 1/x always produces the +2 cross term, subtract it." },
-    { id: "qh_mc6", type: "mcq", topic: "geometry", diff: d,
+    { id: "qh_mc6", type: "mcq", topic: "geometry", diff: "medium", /* recalibrated: real-GRE medium */
       text: "A square has a diagonal of length 10. What is the area of the square?",
       choices: ["25", "40", "50", "100", "100√2"],
       answer: 2,
       expl: "For a square, area = d²/2 = 100/2 = 50. (Side = 10/√2, area = 100/2.)",
       tip: "Memorize area = diagonal²/2 for squares, no need to find the side." },
-    { id: "qh_mc7", type: "mcq", topic: "algebra", diff: d,
+    { id: "qh_mc7", type: "mcq", topic: "algebra", diff: "medium", /* recalibrated: real-GRE medium */
       text: "If f(x) = x² − 3x, what is the value of f(f(2))?",
       choices: ["−2", "0", "4", "10", "18"],
       answer: 3,
@@ -135,7 +135,7 @@
       answer: 1,
       expl: "⌊100/3⌋ = 33, ⌊100/5⌋ = 20, ⌊100/15⌋ = 6 counted twice. 33 + 20 − 6 = 47.",
       tip: "Inclusion–exclusion: add the two counts, subtract the overlap (multiples of 15)." },
-    { id: "qh_mc10", type: "mcq", topic: "data", diff: d,
+    { id: "qh_mc10", type: "mcq", topic: "data", diff: "medium", /* recalibrated: real-GRE medium */
       text: "The average age of a group of 5 friends is 24. After one friend leaves, the average age of the remaining 4 is 22. How old is the friend who left?",
       choices: ["26", "28", "30", "32", "34"],
       answer: 3,
@@ -147,7 +147,7 @@
       answer: 2,
       expl: "Inscribed circle of radius 3 → square side 6. Area = 36 − 9π ≈ 7.7.",
       tip: "Inscribed circle: diameter = side. Sanity-check the result is positive." },
-    { id: "qh_mc12", type: "mcq", topic: "algebra", diff: d,
+    { id: "qh_mc12", type: "mcq", topic: "algebra", diff: "medium", /* recalibrated: real-GRE medium */
       text: "If 3 − 2x < 7, which of the following describes all possible values of x?",
       choices: ["x < −2", "x > −2", "x < 2", "x > 2", "x > 5"],
       answer: 1,
@@ -184,7 +184,7 @@
       answer: 2,
       expl: "Powers of 3 mod 5 cycle 3, 4, 2, 1 (period 4). 47 = 4(11) + 3 → third in cycle → remainder 2.",
       tip: "Compute the first few remainders until the cycle appears, then reduce the exponent." },
-    { id: "qh_ne2", type: "num", topic: "arithmetic", diff: d,
+    { id: "qh_ne2", type: "num", topic: "arithmetic", diff: "medium", /* recalibrated: real-GRE medium */
       text: "$10,000 is invested at 10 percent annual interest, compounded annually. What is the value of the investment, in dollars, after exactly 2 years?",
       answer: 12100,
       expl: "10000 × 1.1² = 10000 × 1.21 = 12,100. (Simple interest would give 12,000: compounding adds the extra 100.)",
@@ -194,7 +194,7 @@
       answer: 0.3,
       expl: "(3/5) × (2/4) = 6/20 = 3/10. The second factor uses 4 remaining marbles, 2 of them red.",
       tip: "Without replacement: update both numerator and denominator after each draw." },
-    { id: "qh_ne4", type: "num", topic: "arithmetic", diff: d,
+    { id: "qh_ne4", type: "num", topic: "arithmetic", diff: "medium", /* recalibrated: real-GRE medium */
       text: "What is the sum of all integers from 1 to 50, inclusive?",
       answer: 1275,
       expl: "Sum = n(n + 1)/2 = 50 × 51/2 = 1,275.",
