@@ -247,7 +247,129 @@
     sw.appendChild(el("span", { class: "chev" }, GRE.icon("chevD", 15)));
     row.appendChild(sw);
     awa.appendChild(row);
+
+    /* ---- AI scoring (opt-in, online-only, bring-your-own key) ---- */
+    awa.appendChild(aiSection(a, prompt));
     return awa;
+  }
+
+  function aiSection(a, prompt) {
+    const el = GRE.el;
+    const box = el("div", { class: "ai-box" });
+    paint();
+    return box;
+
+    function paint() {
+      box.innerHTML = "";
+      box.appendChild(el("h4", { class: "ai-h" }, "AI scoring"));
+
+      const ai = a.essay.ai;
+      if (ai) {
+        const head = el("div", { class: "ai-scorerow" });
+        head.appendChild(el("span", { class: "ai-num" }, ai.score.toFixed(1)));
+        head.appendChild(el("span", { class: "ai-cap" },
+          "of 6.0 · scored " + new Date(ai.date).toLocaleDateString()));
+        box.appendChild(head);
+        box.appendChild(el("p", { class: "ai-overall" }, ai.overall));
+
+        const lists = el("div", { class: "ai-lists" });
+        const listOf = (title, items, cls) => {
+          if (!items || !items.length) return;
+          const d = el("div", { class: "ai-list " + cls });
+          d.appendChild(el("h5", null, title));
+          const ul = el("ul");
+          items.forEach(s => ul.appendChild(el("li", null, s)));
+          d.appendChild(ul);
+          lists.appendChild(d);
+        };
+        listOf("Strengths", ai.strengths, "good");
+        listOf("What cost points", ai.weaknesses, "bad");
+        listOf("To raise the score", ai.advice, "next");
+        box.appendChild(lists);
+      } else {
+        box.appendChild(el("p", { class: "ai-note" },
+          "Get an ETS-rubric score with strengths, weaknesses, and targeted advice. " +
+          "Optional and online-only: uses your own API key (Claude, OpenAI, or Gemini — save one " +
+          "or several; scoring switches providers automatically if one fails). Keys are stored " +
+          "only on this device and each is sent only to its own provider."));
+      }
+
+      const err = el("p", { class: "ai-err hidden" });
+      const controls = el("div", { class: "ai-controls" });
+
+      if (GRE.ai.hasAnyKey()) {
+        const btn = el("button", {
+          class: "btn soft",
+          disabled: a.essay.text ? null : "disabled",
+          onclick: () => {
+            btn.disabled = true;
+            btn.textContent = "Scoring… (can take a minute)";
+            err.classList.add("hidden");
+            GRE.ai.scoreEssay(prompt ? prompt.prompt : "", prompt ? prompt.task : "", a.essay.text)
+              .then(result => {
+                a.essay.ai = result;
+                GRE.store.save();
+                paint();
+              })
+              .catch(e => {
+                err.textContent = e.message;
+                err.classList.remove("hidden");
+                btn.disabled = false;
+                btn.textContent = ai ? "Re-score with AI" : "Score with AI";
+              });
+          }
+        }, ai ? "Re-score with AI" : "Score with AI");
+        controls.appendChild(btn);
+        if (!a.essay.text) {
+          controls.appendChild(el("span", { class: "ai-note" }, "No essay text was entered."));
+        }
+      }
+      box.appendChild(controls);
+
+      /* Per-provider key management: save any or all; scoring tries them in
+         order and falls over automatically. */
+      const keys = el("details", { class: "ai-keys" });
+      if (!GRE.ai.hasAnyKey()) keys.setAttribute("open", "");
+      keys.appendChild(el("summary", null,
+        GRE.ai.hasAnyKey() ? "Manage API keys" : "Add an API key"));
+      GRE.ai.PROVIDERS.forEach(p => {
+        const row = el("div", { class: "ai-keyrow" });
+        row.appendChild(el("span", { class: "nm" }, p.label));
+        if (GRE.ai.hasKey(p.id)) {
+          row.appendChild(el("span", { class: "ai-saved" }, "key saved"));
+          row.appendChild(el("button", {
+            class: "linkish", onclick: () => { GRE.ai.clearKey(p.id); paint(); }
+          }, "remove"));
+        } else {
+          const inp = el("input", {
+            type: "password", class: "ai-keyinput",
+            placeholder: "API key from " + p.consoleUrl,
+            "aria-label": p.label + " API key", autocomplete: "off"
+          });
+          row.appendChild(inp);
+          row.appendChild(el("button", {
+            class: "btn soft sm", onclick: () => {
+              if (!inp.value.trim()) return;
+              GRE.ai.setKey(p.id, inp.value);
+              paint();
+            }
+          }, "Save"));
+        }
+        keys.appendChild(row);
+      });
+      keys.appendChild(el("p", { class: "ai-note" },
+        "API calls are billed to your own provider account (typically a few cents per essay). " +
+        "Keys never leave this device except to call their own provider, and are not synced."));
+      box.appendChild(keys);
+
+      box.appendChild(err);
+      if (ai) {
+        box.appendChild(el("p", { class: "ai-note" },
+          "Scored by " + ai.model + (ai.providerLabel ? " · " + ai.providerLabel : "") +
+          " against the official 0–6 rubric. AI scores are estimates — compare with your " +
+          "self-score above."));
+      }
+    }
   }
 
   function topicBars(a) {

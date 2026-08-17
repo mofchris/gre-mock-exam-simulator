@@ -1653,6 +1653,53 @@ details summary { cursor: pointer; color: var(--accent2); font-weight: 600; font
   --veil: rgba(0,0,0,.82);
 }
 
+/* ================= AI essay scoring =================
+   Theme-safe: every color is a token. Lives inside the AWA card on the
+   score report. */
+
+.ai-box {
+  margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line);
+}
+.ai-h {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  margin: 0 0 10px;
+}
+.ai-scorerow { display: flex; align-items: baseline; gap: 10px; }
+.ai-num {
+  font-family: var(--font-mono); font-size: 34px; font-weight: 700;
+  color: var(--figure-ink);
+}
+.ai-cap { font-size: 12.5px; color: var(--muted); }
+.ai-overall { font-size: 14px; line-height: 1.6; margin: 8px 0 4px; }
+.ai-lists { display: grid; gap: 10px; margin: 10px 0 4px; }
+.ai-list h5 {
+  margin: 0 0 4px; font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.ai-list.good h5 { color: var(--good); }
+.ai-list.bad h5 { color: var(--bad); }
+.ai-list.next h5 { color: var(--accent2); }
+.ai-list ul { margin: 0; padding-left: 18px; }
+.ai-list li { font-size: 13.5px; line-height: 1.55; margin: 3px 0; }
+.ai-note { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin: 8px 0 0; }
+.ai-err { font-size: 13px; color: var(--bad); margin: 8px 0 0; }
+.ai-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.ai-keys { margin-top: 10px; }
+.ai-keys summary { font-size: 13px; color: var(--accent2); cursor: pointer; }
+.ai-keyrow {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 8px;
+}
+.ai-keyrow .nm { font-size: 13px; min-width: 130px; }
+.ai-saved { font-size: 12.5px; color: var(--good); font-weight: 600; }
+.ai-keyinput {
+  flex: 1; min-width: 180px; font-size: 13px; padding: 8px 10px;
+  background: var(--field-bg); border: 1.5px solid var(--field-border);
+  border-radius: 8px; color: var(--ink);
+}
+.btn.sm { padding: 7px 14px; min-height: 34px; font-size: 13px; }
+
 /* ================= select-in-passage sentences =================
    Theme-safe: every color is a token, so light/dark/night all work. Selection
    uses the same pick tint as exam choices; review pairs color with an outline

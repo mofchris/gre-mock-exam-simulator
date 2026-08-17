@@ -39,6 +39,10 @@ Safari's, so signing in is what carries your progress across.
   Data Interpretation sets with charts.
 - **Score report**: scaled scores + percentile estimates, adaptive-path breakdown, accuracy
   by topic, pacing analysis, and question-by-question review with full explanations.
+- **AI essay scoring (optional)**: score your Issue essay against the official 0–6 rubric
+  with strengths, weaknesses, and targeted advice — using your own Claude, OpenAI, or
+  Gemini API key. Save one or several; scoring switches providers automatically if one
+  fails. Online-only; keys stay on the device and are never synced.
 - **Shuffled answer choices**: every time a question is drawn — in a mock, a course quiz,
   or tutor practice — its choices appear in a fresh random order (Quantitative Comparison's
   four fixed choices excepted), so answer positions can never be memorized. Review screens

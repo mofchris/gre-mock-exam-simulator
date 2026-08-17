@@ -75,7 +75,10 @@ const OWNED = /^${CACHE_PREFIX}-/;
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE)
-      .then((cache) => cache.addAll(PRECACHE))
+      // no-cache: revalidate with the server on install rather than trusting the
+      // browser HTTP cache — otherwise a fresh sw can precache STALE copies of
+      // just-updated assets and ship a mixed old/new app until the next update.
+      .then((cache) => cache.addAll(PRECACHE.map((u) => new Request(u, { cache: "no-cache" }))))
       // skipWaiting: a freshly installed version takes over without waiting for
       // every old tab to close — the simplest update model for a one-person app.
       .then(() => self.skipWaiting()),
