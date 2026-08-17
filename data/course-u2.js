@@ -87,7 +87,7 @@ The one you can't eliminate is the answer.</div>
         "The vocabulary words you don't know",
         "Reading as fast as possible without comprehension"],
       answer: 1,
-      expl: "The passage stays on screen, so details are lookups. What you need from the first read is the author's argument and the structural role of each paragraph." },
+      expl: "The passage never leaves the screen, so decide what is actually worth extracting on pass one.<br>Details are lookups: you can reread a line in five seconds.<br>What you cannot look up later is shape, the author's claim and the job each paragraph does.<br>So read for <strong>the author's main point and what each paragraph does</strong>.<br><em>The trap:</em> memorizing every detail feels responsible, but it burns the clock on information the screen is already holding for you.<br><em>Fast method:</em> The first read builds a map, not a memory: point plus paragraph function. Target: ~10 seconds." },
     { text: "A passage says: \"Some scholars maintain that the treaty was a failure.\" What should you assume?",
       choices: [
         "This is the author's own view",
@@ -95,7 +95,7 @@ The one you can't eliminate is the answer.</div>
         "The treaty definitely failed",
         "The passage is about scholars"],
       answer: 1,
-      expl: "'Some scholars maintain' introduces someone else's position, often precisely so the author can push back on it. Misattributing it to the author is the most common comprehension error." },
+      expl: "Attribution language is a structural signal, so ask who is talking.<br>'Some scholars maintain' hands the claim to other people, not to the author.<br>Passages introduce borrowed views precisely so the author can push back on them.<br>So assume this is <strong>likely a view the author will challenge or qualify</strong> until the passage says otherwise.<br><em>The trap:</em> hearing it as the author's own view, the single most common comprehension error.<br><em>Fast method:</em> 'Some argue / it has been claimed / traditionally' marks someone else's position, pending contradiction. Target: ~10 seconds." },
     { text: "An answer choice states that the passage 'proves that all early theories were wrong.' Why is this suspicious?",
       choices: [
         "It is too extreme: GRE passages rarely support absolutes like 'proves' and 'all'",
@@ -103,7 +103,7 @@ The one you can't eliminate is the answer.</div>
         "It uses vocabulary from the passage",
         "It mentions theories"],
       answer: 0,
-      expl: "Extreme language (always, never, all, proves) rarely survives contact with a hedged academic passage. Such answers are usually eliminable on sight." },
+      expl: "Test the choice's strength before you test its content.<br>'Proves' and 'all' are absolutes; academic passages hedge with suggests, many, tends to.<br>A hedged passage cannot support an unhedged claim, however reasonable the topic sounds.<br>So the choice is suspicious because <strong>it is too extreme</strong>.<br><em>The trap:</em> borrowing the passage's own vocabulary makes a choice feel verified; reused words are not evidence, and length is irrelevant.<br><em>Fast method:</em> Scan for always, never, all, none, must, proves, and demand matching force in the passage. Target: ~10 seconds." },
     { text: "For an inference question, the correct answer must be:",
       choices: [
         "Plausible given the passage",
@@ -111,11 +111,11 @@ The one you can't eliminate is the answer.</div>
         "Mentioned explicitly in the passage",
         "Consistent with outside knowledge"],
       answer: 1,
-      expl: "Inference answers must follow necessarily from what the passage states. Merely plausible or reasonable-sounding statements are the trap." },
+      expl: "Inference has a narrower meaning on the GRE than in ordinary speech.<br>You are asked what the passage <em>guarantees</em>, not what it makes reasonable.<br>Explicitly stated goes too far the other way: that describes a detail question.<br>So the correct answer must be <strong>necessarily true based on the passage</strong>.<br><em>The trap:</em> the merely plausible choice, which sounds sensible and may well be true in the world, but is not forced by these lines.<br><em>Fast method:</em> Ask whether the passage could be true while the choice is false; if yes, eliminate. Target: ~10 seconds." },
     { text: "An answer choice is entirely accurate according to the passage, but doesn't address what the question asked. This is which trap?",
       choices: ["Too extreme", "True but not asked", "Reversal", "Out of scope"],
       answer: 1,
-      expl: "'True but not asked' is a favorite trap: a statement lifted accurately from the passage that simply doesn't answer the question posed." },
+      expl: "Match the description against the taxonomy of wrong answers.<br>The choice is accurate, so it is not a reversal, and it comes from the passage, so it is not out of scope.<br>It contains no absolutes, so it is not too extreme.<br>The only defect is relevance to the stem: <strong>true but not asked</strong>.<br><em>The trap:</em> checking a choice against the passage and stopping there. A choice must also answer the question that was posed.<br><em>Fast method:</em> Every choice needs two checks, is it true and is it responsive. Target: ~10 seconds." },
     { text: "Which two are effective Reading Comprehension strategies? (Select TWO.)",
       choices: [
         "Note what each paragraph does, not just what it says",
@@ -124,11 +124,11 @@ The one you can't eliminate is the answer.</div>
         "Choose the answer with the most impressive vocabulary",
         "Read the questions before the passage every time"],
       answer: [0, 2],
-      expl: "Structural reading tells you where to look, and systematic elimination exploits the fact that every wrong answer has a specific, findable flaw. Answering from memory is how careless errors happen." },
+      expl: "Judge each strategy by whether it saves time without costing accuracy.<br>Noting <strong>what each paragraph does</strong> gives you a map, so later questions become quick lookups instead of rereads.<br><strong>Eliminating by finding each choice's specific flaw</strong> exploits the fact that every wrong answer contains a findable defect.<br><em>The trap:</em> answering detail questions from memory feels fast and is where careless errors come from, since the passage is still on screen.<br>Impressive vocabulary is bait, and reading questions first means reading the passage twice.<br><em>Fast method:</em> Map first, eliminate second, never answer from memory. Target: ~20 seconds." },
     { text: "In a select-all-that-apply question with three choices, how many can be correct?",
       choices: ["Exactly one", "Exactly two", "One, two, or all three", "At least two"],
       answer: 2,
-      expl: "Each choice must be evaluated independently against the passage. Any number from one to three may be correct, and all must be selected to earn credit." }
+      expl: "The format itself settles this.<br>Select-all-that-apply offers three statements and asks which the passage supports.<br>Each statement is judged independently against the passage; nothing links them to each other.<br>So the count can be <strong>one, two, or all three</strong>.<br><em>The trap:</em> importing the exactly-two rule from Sentence Equivalence, a different question type with a different constraint.<br>Credit is all or nothing, so a missed supported statement costs the whole question.<br><em>Fast method:</em> Treat each of the three as its own true/false question. Target: ~10 seconds." }
   ]
 },
 
@@ -206,7 +206,7 @@ attacks or reinforces that gap, not one that merely disagrees with the conclusio
         "Pick the one with vocabulary from the passage",
         "Guess randomly between them"],
       answer: 1,
-      expl: "Hard questions are decided by a single differing word, a quantifier or qualifier. Locating that divergence turns an impossible choice into a specific, checkable question." },
+      expl: "When two choices both survive, the passage has already killed one; you just have not found where.<br>Hard RC answers are built as near-twins that agree on everything but one word.<br>That word is a quantifier, a qualifier, or a shift in scope.<br>So <strong>compare them word by word and check the divergence against the passage</strong>.<br><em>The trap:</em> picking the longer choice, or the one echoing passage vocabulary. Both are engineered to feel authoritative.<br><em>Fast method:</em> Two survivors means find the one differing word; that word is the real question. Target: ~15 seconds." },
     { text: "The passage says a study 'suggests a link' between two variables. Which answer choice is MOST likely correct?",
       choices: [
         "The study proves the variables are causally related",
@@ -214,11 +214,11 @@ attacks or reinforces that gap, not one that merely disagrees with the conclusio
         "The variables are always found together",
         "The study demonstrates that one variable causes the other"],
       answer: 1,
-      expl: "The answer's certainty must match the passage's. 'Suggests' supports 'indicates a possible relationship,' not 'proves' or 'always.'" },
+      expl: "Read the passage's verb, then demand the same force from the answer.<br>'Suggests a link' is hedged and says nothing about causation.<br>So the credited choice is <strong>indicates a possible relationship</strong>, which matches both the hedge and the scope.<br><em>The trap:</em> the two causal choices, proving a causal relation and showing one variable causes the other, quietly upgrade a mere link into causation.<br>'Always found together' swaps the hedge for an absolute.<br><em>Fast method:</em> Answer certainty must equal passage certainty; suggests never licenses proves. Target: ~15 seconds." },
     { text: "Which author attitude is MOST likely to be correct on a GRE Reading Comprehension question?",
       choices: ["Unbridled enthusiasm", "Qualified approval", "Bitter contempt", "Total indifference"],
       answer: 1,
-      expl: "GRE passages are academic and hedged. Moderate, qualified attitudes fit; extreme emotional stances are almost always traps." },
+      expl: "Ask what kind of writer produces GRE passages.<br>They are scholars writing hedged academic prose, so the stance on the page is moderate and reasoned.<br>Emotional extremes do not survive that register.<br>So <strong>qualified approval</strong> is the plausible attitude.<br><em>The trap:</em> unbridled enthusiasm and bitter contempt feel decisive and therefore feel like real answers; total indifference fails too, since an indifferent author would not have written the passage.<br><em>Fast method:</em> On tone questions, keep the temperate choice and cut the loud ones. Target: ~10 seconds." },
     { text: "A passage states: \"...however rhetorically effective the dissent may be.\" What does this construction tell you?",
       choices: [
         "Rhetorical effectiveness is the author's main criterion",
@@ -226,7 +226,7 @@ attacks or reinforces that gap, not one that merely disagrees with the conclusio
         "The author admires effective rhetoric",
         "The passage is about public speaking"],
       answer: 1,
-      expl: "'However X may be' is a concede-and-dismiss: the author grants X and then declares it irrelevant. Any answer relying on X is thereby eliminated." },
+      expl: "Parse the construction, not the topic.<br>'However X may be' concedes X and then sets it aside.<br>The author grants that dissent can be persuasive, then keeps its value tied to something else entirely.<br>So the phrase tells you <strong>rhetorical effectiveness does NOT determine the dissent's value</strong>.<br><em>The trap:</em> treating the conceded item as the author's criterion, a reversal that works because the phrase mentions rhetoric so prominently.<br><em>Fast method:</em> 'However / regardless of / whatever its X' marks what does not matter; use it to eliminate. Target: ~15 seconds." },
     { text: "A question asks why the author mentions a specific historical detail. Where is the answer usually found?",
       choices: [
         "In the detail itself",
@@ -234,11 +234,11 @@ attacks or reinforces that gap, not one that merely disagrees with the conclusio
         "In the final paragraph",
         "In the passage title"],
       answer: 1,
-      expl: "Function questions ask what a detail DOES for the argument. That role is established by the surrounding logic, not by the detail's own content." },
+      expl: "A function question asks what a detail does, not what it is.<br>A date or a census figure carries no argumentative role on its own.<br>Its role comes from the claim it is attached to: supporting it, undercutting a rival, illustrating an exception.<br>That claim sits in <strong>the sentences immediately before and after the detail</strong>.<br><em>The trap:</em> rereading the detail itself, which yields content and no purpose; the final paragraph is the right-answer-wrong-location version of the same mistake.<br><em>Fast method:</em> Find the detail, then read one sentence up and one down for its job. Target: ~15 seconds." },
     { text: "Which two words in an answer choice should make you suspicious? (Select TWO.)",
       choices: ["Proves", "Suggests", "Always", "Often", "May"],
       answer: [0, 2],
-      expl: "Absolute language like 'proves' and 'always' rarely survives contact with a hedged academic passage. Softer words like suggests, often, and may are far more defensible." }
+      expl: "Sort the five words by how much they commit to.<br><strong>Proves</strong> claims conclusive demonstration; <strong>always</strong> claims universality with no exceptions.<br>A hedged academic passage supports neither, so both should draw suspicion.<br>Suggests, often, and may are weak claims that such a passage can actually back.<br><em>The trap:</em> assuming forceful language signals a strong answer. On the GRE, force is a liability the passage has to earn.<br><em>Fast method:</em> Flag absolutes and conclusive verbs; keep the hedges. Target: ~10 seconds." }
   ]
 },
 
@@ -331,7 +331,7 @@ they differ in composition?</strong></p></div>
         "Both the evidence and the conclusion",
         "Neither"],
       answer: 1,
-      expl: "Premises are granted as true. The argument's vulnerability lies in the leap from those premises to the conclusion. That gap is what you attack or defend." },
+      expl: "Critical Reasoning arguments come with an instruction built into the format.<br>The premises are handed to you as facts; the test is not asking you to fact-check them.<br>The conclusion is the author's claim, and that is exactly what is up for challenge.<br>So you must treat <strong>the evidence (premises)</strong> as true.<br><em>The trap:</em> granting the conclusion as well. If the conclusion were also given, there would be nothing left to strengthen or weaken.<br><em>Fast method:</em> Premises are true, the conclusion is on trial, attack the leap between them. Target: ~10 seconds." },
     { text: "\"People who nap have lower rates of heart disease, so napping protects the heart.\" Which answer MOST weakens this?",
       choices: [
         "Some nappers still develop heart disease",
@@ -339,7 +339,7 @@ they differ in composition?</strong></p></div>
         "The study lasted ten years",
         "Naps are typically 30 minutes long"],
       answer: 1,
-      expl: "This supplies a confounding variable (stress) that explains both the napping and the heart disease, undermining the claim that napping is doing the work." },
+      expl: "Weakening a causal claim means offering a rival explanation for the same data.<br>Evidence: nappers have less heart disease. Conclusion: napping protects the heart.<br>The gap is that something else could produce both patterns at once.<br><strong>High-stress jobs both reduce napping and independently raise heart disease</strong> fills exactly that gap, so stress explains the correlation and napping does no work.<br><em>The trap:</em> noting that some nappers still get heart disease. A causal claim never promised zero cases, so the argument survives it; study length and nap duration are merely topical.<br><em>Fast method:</em> To weaken cause-from-correlation, supply a confounder that drives both sides. Target: ~25 seconds." },
     { text: "A company found that employees who chose to attend an optional training wrote fewer bugs, and plans to make it mandatory. What is the flaw?",
       choices: [
         "The employees who volunteered were likely already the most motivated, so the training may not be what caused the improvement",
@@ -347,7 +347,7 @@ they differ in composition?</strong></p></div>
         "Bugs are hard to count",
         "Not all employees write code"],
       answer: 0,
-      expl: "This is selection bias. Voluntary participation means the group self-selected for motivation, so the results cannot be assumed to transfer when attendance is forced." },
+      expl: "The evidence compares people who chose the training with people who did not.<br>Choosing is not random, so the two groups already differed before any training happened.<br>The conclusion assumes the training caused the improvement; the gap is who volunteered.<br><strong>The volunteers were likely the most motivated already, so the training may not be what caused the improvement</strong>, and mandating it transfers the training without the motivation.<br><em>The trap:</em> cost, the difficulty of counting bugs, and who writes code all attack the plan or the data instead of the causal link.<br><em>Fast method:</em> Self-selected group means selection bias; the trait that drove the choosing is your alternative cause. Target: ~25 seconds." },
     { text: "Which is almost NEVER the correct way to weaken an argument?",
       choices: [
         "Providing an alternative explanation",
@@ -355,7 +355,7 @@ they differ in composition?</strong></p></div>
         "Showing the assumption fails",
         "Demonstrating that the groups compared are not comparable"],
       answer: 1,
-      expl: "The premises are granted. Answers that dispute the facts themselves miss the point: the flaw always lies in the reasoning from those facts to the conclusion." },
+      expl: "Weakeners work on the reasoning, and the format forbids exactly one target.<br>Premises are granted as true.<br>So <strong>attacking the truth of the evidence</strong> is almost never the answer.<br>Alternative explanations, failed assumptions, and non-comparable groups all attack the link from evidence to conclusion, which is fair game.<br><em>The trap:</em> real-world critique habits, such as the study was too small or the data is unreliable. Excellent research criticism, wrong answer here.<br><em>Fast method:</em> Never dispute the facts; break the bridge from facts to conclusion. Target: ~15 seconds." },
     { text: "What is the negation test used for?",
       choices: [
         "Weaken questions",
@@ -363,7 +363,7 @@ they differ in composition?</strong></p></div>
         "Inference questions",
         "Main idea questions"],
       answer: 1,
-      expl: "If negating a choice destroys the argument, that choice was a necessary assumption. If the argument survives the negation, it wasn't." },
+      expl: "The test is named for what it does: it checks necessity.<br>An assumption is something the argument requires in order to work at all.<br>Flip a candidate choice to its opposite, then reread the argument.<br>So the tool belongs to <strong>assumption questions: negate the choice and see whether the argument collapses</strong>.<br>Collapse means the choice was necessary; survival means it was not.<br><em>The trap:</em> applying it to weaken or inference questions, which ask about effect and entailment rather than necessity.<br><em>Fast method:</em> Negate the candidate; if the conclusion dies, that was the assumption. Target: ~10 seconds." },
     { text: "Hospitals performing the most heart surgeries have the highest mortality rates for that surgery. Which fact most undermines the conclusion that patients should avoid them?",
       choices: [
         "The highest-risk cases are systematically referred to those hospitals because of their expertise",
@@ -371,7 +371,7 @@ they differ in composition?</strong></p></div>
         "Heart surgery is dangerous everywhere",
         "Some low-volume hospitals are rural"],
       answer: 0,
-      expl: "If the sickest patients are funneled to high-volume hospitals, their higher mortality reflects case mix rather than worse care. The groups being compared are not comparable." },
+      expl: "Two groups, different outcomes: ask whether the groups are comparable before blaming the treatment.<br>Evidence: high-volume hospitals show higher mortality. Conclusion: avoid them.<br>The gap assumes the patients are alike across hospital types.<br><strong>The highest-risk cases are systematically referred there for the expertise</strong>, so the mortality gap reflects case mix rather than worse care, and those hospitals may be the better choice.<br><em>The trap:</em> cost and rural location are true but irrelevant, and 'heart surgery is dangerous everywhere' applies to both groups, so it shifts no comparison.<br><em>Fast method:</em> Different outcomes across groups? Check composition first. Target: ~25 seconds." },
     { text: "Which two are classic argument gaps the GRE tests? (Select TWO.)",
       choices: [
         "Treating a correlation as if it were causation",
@@ -380,7 +380,7 @@ they differ in composition?</strong></p></div>
         "Quoting an expert",
         "Using more than one premise"],
       answer: [0, 2],
-      expl: "Correlation-as-causation and unrepresentative samples are the two most frequently tested reasoning gaps, alongside arguments that assume nothing changed between the evidence and the conclusion." }
+      expl: "A gap is a flaw in the reasoning, not a feature of how an argument is written.<br><strong>Treating a correlation as causation</strong> is a gap, because an alternative cause is never ruled out.<br><strong>Drawing a conclusion from an unrepresentative or self-selected sample</strong> is a gap, because the sample may not represent the group in the conclusion.<br><em>The trap:</em> numbers, expert quotations, and multiple premises are ordinary features of arguments, not errors. An argument can do all three and still be airtight.<br><em>Fast method:</em> The three recurring gaps are correlation-as-cause, bad sample, and assuming nothing changed. Target: ~20 seconds." }
   ]
 }
     ],
@@ -392,7 +392,7 @@ they differ in composition?</strong></p></div>
         { text: "An RC answer choice says the passage 'proves' a claim, but the passage says the evidence 'suggests' it. What is wrong with the choice?",
           choices: ["Nothing, they mean the same", "It overstates the passage's certainty", "It is too short", "It uses the wrong tense"],
           answer: 1,
-          expl: "Answer certainty must match passage certainty. 'Suggests' cannot support 'proves.'" },
+          expl: "Compare the force of the passage's verb with the force of the choice.<br>The passage says the evidence 'suggests', which is hedged and non-conclusive.<br>The choice says 'proves', which is conclusive and admits no exceptions.<br>Nothing hedged can license a conclusive claim, so the choice <strong>overstates the passage's certainty</strong>.<br><em>The trap:</em> reading suggests and proves as loose synonyms. They are in casual speech and never on the GRE.<br><em>Fast method:</em> Mark the passage's certainty word and require the answer to match it. Target: ~10 seconds." },
         { text: "In Critical Reasoning, what is 'the gap'?",
           choices: [
             "The unstated assumption connecting the evidence to the conclusion",
@@ -400,7 +400,7 @@ they differ in composition?</strong></p></div>
             "The space between paragraphs",
             "A factual error in the evidence"],
           answer: 0,
-          expl: "The gap is what must be true for the evidence to support the conclusion. Strengthen, weaken, assumption, and flaw questions all target it." },
+          expl: "An argument shows you two parts and hides a third.<br>The evidence is given; the conclusion is claimed.<br>For that evidence to actually support that conclusion, something unstated has to hold.<br>That is the gap: <strong>the unstated assumption connecting the evidence to the conclusion</strong>.<br><em>The trap:</em> calling it a premise the author forgot to write. The gap is a logical requirement, not an oversight; and a factual error in the evidence is off-limits, since premises are granted.<br><em>Fast method:</em> Strengthen, weaken, assumption, and flaw all aim at the same gap. Target: ~10 seconds." },
         { text: "\"Some historians contend that the reforms were superficial.\" What should you assume about this sentence?",
           choices: [
             "It is the author's view",
@@ -408,23 +408,23 @@ they differ in composition?</strong></p></div>
             "The reforms were definitely superficial",
             "The passage is about historians"],
           answer: 1,
-          expl: "Attributing views introduced as someone else's to the author is the most common RC error. Such statements are usually set up to be challenged." },
+          expl: "Check the attribution before the content.<br>'Some historians contend' assigns the claim to other people.<br>Passages introduce borrowed views in order to set up the author's response to them.<br>So assume it is <strong>likely a view the author will complicate or challenge</strong>.<br><em>The trap:</em> hearing it as the author's own position, or accepting the claim as established fact. The passage reported the view, it did not endorse it.<br><em>Fast method:</em> Attribution language marks someone else's view until the passage says otherwise. Target: ~10 seconds." },
         { text: "How many of three choices can be correct on a select-all-that-apply RC question?",
           choices: ["Exactly one", "Exactly two", "One, two, or all three", "None"],
           answer: 2,
-          expl: "Each choice is judged independently, so any number can be correct, and all correct ones must be selected for credit." },
+          expl: "The scoring format decides this one.<br>Three statements are offered, and each is checked against the passage on its own.<br>No rule caps how many the passage happens to support.<br>So the answer is <strong>one, two, or all three</strong>.<br><em>The trap:</em> carrying over the exactly-two rule from Sentence Equivalence, which is a different question type with a different constraint.<br>Credit is all or nothing, so every supported statement has to be selected.<br><em>Fast method:</em> Three independent true/false checks, no quota. Target: ~10 seconds." },
         { text: "Which two words mean 'to belittle or criticize'? (Select TWO.)",
           choices: ["Disparage", "Venerate", "Denigrate", "Laud", "Ameliorate"],
           answer: [0, 2],
-          expl: "Disparage and denigrate both mean to belittle. Venerate and laud mean to praise, and ameliorate means to improve." },
+          expl: "Sort all five words into meaning groups, then take the group the stem asked for.<br><strong>Disparage</strong> and <strong>denigrate</strong> both mean to belittle or run down.<br>Venerate and laud both mean to praise, a real pair pointing the opposite way.<br>Ameliorate means to make better, and pairs with neither.<br><em>The trap:</em> the praise pair, which is internally consistent and tempting if you hunt for two words that match each other instead of two that match the definition given.<br><em>Fast method:</em> Group by direction first, then pick the group the clue demands. Target: ~10 seconds." },
         { text: "On Sentence Equivalence, you must select:",
           choices: ["One answer", "Exactly two answers that produce sentences alike in meaning", "Any two answers that fit", "Three answers"],
           answer: 1,
-          expl: "Two answers that both fit the sentence AND produce equivalent sentences. No partial credit." },
+          expl: "Sentence Equivalence has two requirements, and most people remember only the first.<br>Each pick must fit the sentence logically and grammatically.<br>The two picks must also yield sentences that mean roughly the same thing.<br>So you select <strong>exactly two answers that produce sentences alike in meaning</strong>.<br><em>The trap:</em> any two answers that fit. Three or four choices often fit the blank; only one pair converges in meaning.<br>There is no partial credit for getting one of the two.<br><em>Fast method:</em> Find the synonym pair that also fits the sentence. Target: ~10 seconds." },
         { text: "\"Although the evidence was ______, the jury convicted on inference rather than direct proof.\" Which word fits?",
           choices: ["Overwhelming", "Circumstantial", "Fabricated", "Direct"],
           answer: 1,
-          expl: "Conviction by inference rather than direct proof describes circumstantial evidence, evidence that supports inference rather than establishing a fact directly." },
+          expl: "Mine the second clause, because it defines the blank.<br>The jury convicted 'on inference rather than direct proof'.<br>So the evidence supported an inference without establishing the fact directly.<br>That is <strong>circumstantial</strong> evidence.<br><em>The trap:</em> 'direct' is an exact reversal of what the sentence says, and 'overwhelming' ignores the contrast that 'although' sets up; 'fabricated' would mean faked, which the sentence never suggests.<br><em>Fast method:</em> Let the non-blank clause define the blank, then obey the contrast word. Target: ~15 seconds." },
         { text: "Which is the BEST way to attack a causal argument?",
           choices: [
             "Show the evidence is false",
@@ -432,15 +432,15 @@ they differ in composition?</strong></p></div>
             "Point out the argument is short",
             "Note that the author is not an expert"],
           answer: 1,
-          expl: "Causal claims are vulnerable to alternative explanations. Attacking the truth of the premises is off-limits: they're granted." },
+          expl: "A causal conclusion says X produced Y, so the soft spot is whether something else did.<br>Premises are granted, so the facts stay where they are.<br><strong>Providing an alternative explanation for the same outcome</strong> leaves the data untouched and strips the conclusion of its support.<br><em>The trap:</em> showing the evidence is false is off-limits, since you must accept the premises; the argument's brevity and the author's credentials attack the messenger rather than the reasoning.<br><em>Fast method:</em> Against a causal claim, name a rival cause that fits the same evidence. Target: ~15 seconds." },
         { text: "A GRE author's attitude is MOST likely to be described as:",
           choices: ["Vehement outrage", "Measured skepticism", "Complete indifference", "Unqualified enthusiasm"],
           answer: 1,
-          expl: "Academic passages hedge. Moderate, qualified attitudes are the norm; extreme emotional stances are traps." },
+          expl: "Predict the register before you read the choices.<br>GRE passages are hedged scholarly prose, so the author's stance is measured.<br>Only one choice lives in that range: <strong>measured skepticism</strong>.<br><em>The trap:</em> vehement outrage and unqualified enthusiasm are both extreme, and complete indifference contradicts the act of writing an argued passage at all.<br><em>Fast method:</em> Cut every choice carrying an intensity word; the moderate survivor is the answer. Target: ~10 seconds." },
         { text: "\"For all his reputation as a radical, the politician governed quite ______.\" The blank means:",
           choices: ["Radically", "Conservatively", "Loudly", "Briefly"],
           answer: 1,
-          expl: "'For all his reputation as X' signals the reality is the opposite of X. His reputation was radical, so his governance was conservative." },
+          expl: "'For all his reputation as X' is a contrast signal: the reality departed from the reputation.<br>The reputation here was radical.<br>So the governing ran the other way, meaning he governed <strong>conservatively</strong>.<br><em>The trap:</em> 'radically' repeats the reputation word and ignores the contrast, which is exactly why it is offered; loudly and briefly answer questions the sentence never asked.<br><em>Fast method:</em> 'For all / despite / notwithstanding his reputation as X' means the blank opposes X. Target: ~10 seconds." },
         { text: "Which two are traps in RC answer choices? (Select TWO.)",
           choices: [
             "Statements that are true but do not answer the question asked",
@@ -449,15 +449,15 @@ they differ in composition?</strong></p></div>
             "Statements that paraphrase the passage",
             "Statements that use moderate language"],
           answer: [0, 2],
-          expl: "'True but not asked' and 'half right' are two of the most common wrong-answer constructions. Hedged, moderate paraphrases are usually the correct answers." },
+          expl: "Trap answers share a signature: they are built to feel already verified.<br><strong>True but not asked</strong> is accurate about the passage yet irrelevant to the stem.<br><strong>Half right</strong> opens correctly, then adds a clause the passage never stated, which is why you read a choice to its final word.<br><em>The trap:</em> hedges like 'may' and 'suggests', and moderate paraphrase, look too weak to be right; in fact those are usually features of correct answers.<br><em>Fast method:</em> Check every choice twice, accurate and responsive, all the way to the period. Target: ~15 seconds." },
         { text: "'Intransigent' most nearly means:",
           choices: ["Flexible", "Refusing to compromise", "Temporary", "Talkative"],
           answer: 1,
-          expl: "Intransigent describes an unyielding refusal to compromise, like obdurate and obstinate." },
+          expl: "Break the word open: in- (not) plus a root meaning to come to terms.<br>So it names a refusal to come to terms with anyone.<br>The meaning is <strong>refusing to compromise</strong>, and obdurate and obstinate are its neighbors.<br><em>The trap:</em> 'flexible' is the precise opposite, and 'temporary' rides on the trans- look-alike, borrowing the shape of transient rather than any shared meaning.<br><em>Fast method:</em> Read in-/im-/un- as a negation, then negate whatever root you recognize. Target: ~10 seconds." },
         { text: "Which question type asks what MUST be true given the premises, rather than looking for a gap?",
           choices: ["Weaken", "Strengthen", "Inference / must be true", "Flaw"],
           answer: 2,
-          expl: "Inference questions ask what the premises guarantee. Unlike strengthen/weaken/assumption questions, you're not hunting for a logical gap. You're finding what necessarily follows." },
+          expl: "Split the Critical Reasoning types by whether they hunt for a gap.<br>Weaken, strengthen, and flaw all attack or defend the leap from premises to conclusion.<br>One type instead asks what the premises by themselves guarantee.<br>That is <strong>inference / must be true</strong>.<br><em>The trap:</em> flaw questions also seem to ask what is true about the argument, but they name the reasoning error rather than deriving a new fact from the premises.<br><em>Fast method:</em> Gap-hunting for strengthen, weaken, assumption, flaw; entailment only for inference. Target: ~10 seconds." },
         { text: "A passage says results 'may indicate' a trend. Which answer is safest?",
           choices: [
             "The results definitively establish the trend",
@@ -465,11 +465,11 @@ they differ in composition?</strong></p></div>
             "The trend always occurs",
             "The trend never occurs"],
           answer: 1,
-          expl: "Match the hedge. 'May indicate' supports 'consistent with a possible trend,' not definitive or absolute claims." },
+          expl: "Copy the passage's hedge straight into your answer.<br>'May indicate' is doubly hedged: possibility on top of indication, nowhere near establishment.<br>So the safe choice is <strong>consistent with a possible trend</strong>.<br><em>The trap:</em> 'definitively establish' upgrades a hedge into proof, while always and never are absolutes, and the negative one is a reversal on top of that.<br><em>Fast method:</em> When the passage hedges, the weakest and most qualified choice usually wins. Target: ~10 seconds." },
         { text: "Which two words mean 'short-lived'? (Select TWO.)",
           choices: ["Ephemeral", "Ubiquitous", "Transient", "Prosaic", "Candid"],
           answer: [0, 2],
-          expl: "Ephemeral and transient both describe things that last only briefly, forming a valid equivalence pair." },
+          expl: "Sort the five words, then find the two pointing the same way.<br><strong>Ephemeral</strong> and <strong>transient</strong> both describe what lasts only briefly.<br>Ubiquitous means present everywhere, prosaic means dull and ordinary, candid means frank.<br>None of those three pairs with anything, which confirms the match.<br><em>The trap:</em> ubiquitous is about extent in space, not duration in time, an easy swap when you are skimming for impressive-looking words.<br><em>Fast method:</em> Look for the two words that could trade places without changing the sentence's meaning. Target: ~10 seconds." },
         { text: "Why should you predict an answer before reading the choices?",
           choices: [
             "It saves time on easy questions only",
@@ -477,11 +477,11 @@ they differ in composition?</strong></p></div>
             "The GRE requires it",
             "It helps you memorize vocabulary"],
           answer: 1,
-          expl: "Trap answers are designed to seduce. Arriving with your own answer converts the task from being convinced into simple matching." },
+          expl: "Think about how wrong answers are written: to attract, not to look false.<br>Meet them with no answer of your own and you end up judging which one sounds best, the exact vulnerability they were built to exploit.<br>Arriving with a prediction turns the task into matching.<br>So the reason is that <strong>a prediction means you match rather than get persuaded</strong>.<br><em>The trap:</em> thinking it only saves time on easy questions. Prediction pays most on hard ones, where the traps are strongest.<br><em>Fast method:</em> Answer in your own words before you look, then match. Target: ~15 seconds." },
         { text: "\"The committee's report was notable for its ______; rather than assigning blame, it catalogued every party's failures, including its own.\" The blank means:",
           choices: ["Partiality", "Impartiality", "Brevity", "Vindictiveness"],
           answer: 1,
-          expl: "Cataloguing every party's failures, including one's own, without assigning blame is the definition of impartiality." }
+          expl: "The semicolon promises that the second clause explains the first.<br>The report catalogued every party's failures, its own included, rather than assigning blame.<br>Treating all parties alike, self included, is even-handedness.<br>So the blank means <strong>impartiality</strong>.<br><em>The trap:</em> 'partiality' is the same word minus the negating prefix, a one-syllable reversal that reads correctly if you skim; vindictiveness contradicts 'rather than assigning blame', and brevity appears nowhere in the sentence.<br><em>Fast method:</em> After a semicolon, the clause defines the blank; then check prefixes for reversals. Target: ~15 seconds." }
       ]
     }
   });

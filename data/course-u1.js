@@ -88,7 +88,7 @@ answer already formed, you're matching, not being persuaded.</div>
         "The test never adapts; all sections are identical",
         "Adaptivity applies only to the essay"],
       answer: 1,
-      expl: "The GRE is section-adaptive. Section 1 performance routes you to an easier, medium, or harder Section 2, and that routing is factored into your scaled score, which is why Section 1 effectively sets your ceiling." },
+      expl: "Two words settle this: <em>section</em>-adaptive, not question-adaptive.<br>Section 1 of a measure is the same difficulty for everyone.<br>Your accuracy there routes Section 2 to easier, medium, or harder.<br>That routing is baked into the scaled score, so an easier Section 2 caps you.<br><strong>Section 1 sets your ceiling.</strong><br><em>The trap:</em> \"each question adapts based on the previous question\" describes question-level adaptivity, which today's GRE does not use.<br><em>Fast method:</em> The GRE adapts between sections, so treat Section 1 as the real test. Target: ~10 seconds." },
     { text: "You have 40 seconds left in a Verbal section and three unanswered questions. What should you do?",
       choices: [
         "Leave them blank to avoid losing points",
@@ -96,7 +96,7 @@ answer already formed, you're matching, not being persuaded.</div>
         "Answer only the one you understand best and leave the rest blank",
         "Ask for extra time"],
       answer: 1,
-      expl: "There is no penalty for wrong answers, so a blank scores exactly the same as a wrong guess, zero. Guessing costs nothing and can only help." },
+      expl: "Price the two outcomes against each other.<br>Blank = 0 points, guaranteed.<br>Wrong guess = 0 points, with nothing deducted: the GRE has no guessing penalty.<br>Right guess = full credit.<br>A guess is never worse and sometimes better, so <strong>fill in a guess for all three</strong>.<br><em>The trap:</em> \"leave them blank to avoid losing points\" assumes penalty scoring the GRE does not use.<br><em>Fast method:</em> In the last 90 seconds, stop solving and click something for every empty question. Target: ~10 seconds." },
     { text: "Which statement about navigation within a GRE section is TRUE?",
       choices: [
         "Once you answer a question you cannot change it",
@@ -104,7 +104,7 @@ answer already formed, you're matching, not being persuaded.</div>
         "You must answer questions in order with no skipping",
         "You can return to a previous section at any time"],
       answer: 1,
-      expl: "Within a section you have full freedom to navigate and revise. Once you exit a section, however, it is closed permanently." },
+      expl: "Split the question into two halves: inside a section versus between sections.<br>Inside: move forward and back, skip, mark for review, change answers.<br>Between: once you exit a section it locks, permanently.<br>So the true statement is <strong>full freedom to move, skip, mark, and revise until you exit</strong>.<br><em>The trap:</em> \"you can return to a previous section at any time\" is the freedom you actually lose.<br><em>Fast method:</em> Free movement inside a section, one-way door on the way out. Target: ~10 seconds." },
     { text: "Why is it a mistake to spend four minutes on a single difficult Verbal question?",
       choices: [
         "Hard questions are worth fewer points",
@@ -112,7 +112,7 @@ answer already formed, you're matching, not being persuaded.</div>
         "The test penalizes slow answers",
         "The question will automatically be marked wrong"],
       answer: 1,
-      expl: "All questions carry equal weight. Four minutes on one hard question is four minutes stolen from three easier ones you would have gotten right." },
+      expl: "Think in exchange rates, not difficulty.<br>Every question is worth the same single point.<br>Verbal pacing runs about 90 seconds per question, so four minutes on one costs you roughly three other questions.<br>Spend it on three you can actually answer and you gain up to three points instead of a coin flip on one.<br><strong>Equal weight means time, not difficulty, is what you are managing.</strong><br><em>The trap:</em> \"hard questions are worth fewer points\" reverses it: difficulty changes your cost, never the payout.<br><em>Fast method:</em> Past two minutes, mark it, guess, move on. Target: ~15 seconds." },
     { text: "What is the single most useful habit when approaching a Verbal question?",
       choices: [
         "Read the answer choices first",
@@ -120,7 +120,7 @@ answer already formed, you're matching, not being persuaded.</div>
         "Always pick the longest answer",
         "Eliminate the first and last choices automatically"],
       answer: 1,
-      expl: "Wrong answers are engineered to be seductive. Forming your own answer first means you are matching against a prediction rather than being persuaded by a well-crafted trap." },
+      expl: "Ask what the wrong choices are engineered to do: sound plausible the instant you read them.<br>Read them first and you are weighing their arguments.<br>Arrive with your own word already formed and you are only matching.<br>So the habit is to <strong>predict your own answer before looking at the choices</strong>.<br><em>The trap:</em> \"read the answer choices first\" feels efficient but hands the test writer the opening move.<br><em>Fast method:</em> Cover the choices, say your own plain-English answer, then look. Target: ~10 seconds." },
     { text: "Which two are true about the current GRE format? (Select TWO.)",
       choices: [
         "It lasts roughly 1 hour 58 minutes",
@@ -129,7 +129,7 @@ answer already formed, you're matching, not being persuaded.</div>
         "There is a scheduled 10-minute break in the middle",
         "The Quantitative section tests calculus"],
       answer: [0, 2],
-      expl: "The shorter GRE runs about 1 hour 58 minutes, with one Issue essay and 130–170 scoring per measure. There are no scheduled breaks, and the math stops around high-school level." }
+      expl: "Check each claim against the current shorter GRE.<br>About 1 hour 58 minutes total: <strong>true</strong>.<br>Verbal and Quant each scored 130 to 170: <strong>true</strong>.<br>Two scored essays: false, there is one \"Analyze an Issue\" essay.<br>A scheduled 10-minute break: false, there are no scheduled breaks.<br>Quant tests calculus: false, the content stops near high-school level.<br><em>The trap:</em> the two-essay and mid-test-break options describe the retired longer format.<br><em>Fast method:</em> Anything you remember about a long GRE with breaks and two essays is out of date. Target: ~15 seconds." }
   ]
 },
 
@@ -228,7 +228,7 @@ insincere, not abundant in a good way. <em>Ingenuous</em> means naive (not cleve
         "Something neutral",
         "It cannot be determined"],
       answer: 1,
-      expl: "'Although' signals contrast. Since the execution was flawless, the plan itself must have been flawed: a negative word." },
+      expl: "Find the signal word before you think about vocabulary.<br>\"Although\" means contrast, so the halves point opposite ways.<br>Known half: the execution was <em>flawless</em>, clearly positive.<br>Flip it: the plan itself must be <strong>negative, contrasting with 'flawless'</strong> – flawed, ill-conceived.<br>Read it back: bad plan, perfect execution. That makes sense.<br><em>The trap:</em> \"something positive, matching 'flawless'\" ignores the contrast word and just harmonizes the two halves.<br><em>Fast method:</em> Circle the signal word, label the visible half + or −, then flip on contrast. Target: ~15 seconds." },
     { text: "What does a colon or semicolon most often signal in a Text Completion sentence?",
       choices: [
         "That the second half contrasts with the first",
@@ -236,7 +236,7 @@ insincere, not abundant in a good way. <em>Ingenuous</em> means naive (not cleve
         "That a list is beginning",
         "That the sentence is a question"],
       answer: 1,
-      expl: "Colons and semicolons signal continuation: what follows elaborates on or restates what came before. This makes the other half of the sentence a direct clue to the blank." },
+      expl: "Punctuation is a signal word in disguise.<br>A colon or semicolon says \"here comes the same idea again, spelled out.\"<br>So the second half <strong>explains or restates the first</strong>.<br>The payoff: the clue for the blank is sitting on the other side of the mark.<br><em>The trap:</em> \"the second half contrasts with the first\" needs an actual contrast word – although, yet, but – and punctuation never supplies one.<br><em>Fast method:</em> Colon or semicolon → carry the meaning straight across, don't flip it. Target: ~10 seconds." },
     { text: "The word 'enervate' means:",
       choices: [
         "To energize or invigorate",
@@ -244,7 +244,7 @@ insincere, not abundant in a good way. <em>Ingenuous</em> means naive (not cleve
         "To make nervous",
         "To criticize harshly"],
       answer: 1,
-      expl: "Enervate means to weaken or drain of vitality, the opposite of what it sounds like. It is one of the GRE's favorite false friends." },
+      expl: "Separate the word from the sound-alike it hides behind.<br>\"Enervate\" looks like <em>energize</em>, and that resemblance is the entire trick.<br>Its root sense is to remove nerve or sinew: <strong>to drain of energy, to weaken</strong>.<br>Test it in context: the heat enervated the hikers. They got weaker, not stronger.<br><em>The trap:</em> \"to energize or invigorate\" is the exact opposite, which is why this word keeps reappearing.<br><em>Fast method:</em> Enervate means the nerve is taken out. File it with the other false friends. Target: ~10 seconds." },
     { text: "A sentence requires a negative word in the blank, but you don't know the definitions of any choices. What technique is MOST useful?",
       choices: [
         "Pick the longest word",
@@ -252,7 +252,7 @@ insincere, not abundant in a good way. <em>Ingenuous</em> means naive (not cleve
         "Pick the first choice alphabetically",
         "Skip the question entirely"],
       answer: 1,
-      expl: "Sensing a word's positive or negative charge often eliminates several choices even without precise definitions, dramatically improving your odds." },
+      expl: "You don't need definitions here, you need direction.<br>Step one: decide what the blank must be. Here, negative.<br>Step two: sort the choices by felt charge, praise-flavored versus attack-flavored.<br>Step three: <strong>determine each word's charge and eliminate the positives</strong>, often three of five gone.<br>Now you are guessing between two, not five.<br><em>The trap:</em> \"pick the longest word\" – word difficulty has no relationship to correctness.<br><em>Fast method:</em> Mark the blank + or −, then cut everything on the wrong side of the line. Target: ~15 seconds." },
     { text: "Which group are all synonyms meaning 'using few words / silent'?",
       choices: [
         "Garrulous, loquacious, voluble",
@@ -260,15 +260,15 @@ insincere, not abundant in a good way. <em>Ingenuous</em> means naive (not cleve
         "Venerate, revere, laud",
         "Ephemeral, transient, evanescent"],
       answer: 1,
-      expl: "Laconic, taciturn, and reticent all describe someone sparing with words. Garrulous, loquacious, and voluble are their opposites." },
+      expl: "Translate each group, one at a time.<br>Garrulous, loquacious, voluble → talkative.<br>Venerate, revere, laud → to praise highly.<br>Ephemeral, transient, evanescent → short-lived.<br><strong>Laconic, taciturn, reticent → sparing with words, silent by nature.</strong> That's the match.<br><em>The trap:</em> the talkative trio is the direct opposite, waiting for anyone who half-remembers <em>loquacious</em> as quiet.<br><em>Fast method:</em> Learn GRE words in synonym clusters so questions like this become a lookup, not a puzzle. Target: ~10 seconds." },
     { text: "Which two words mean 'refusing to compromise'? (Select TWO.)",
       choices: ["Intransigent", "Ephemeral", "Obdurate", "Prosaic", "Candid"],
       answer: [0, 2],
-      expl: "Intransigent and obdurate both describe stubborn refusal to yield. Ephemeral means short-lived, prosaic means dull, and candid means frank." },
+      expl: "Translate every choice, then keep only the stubborn ones.<br><strong>Intransigent</strong>: will not budge in negotiation. Fits.<br>Ephemeral: short-lived. No.<br><strong>Obdurate</strong>: hardened, unyielding, same root as <em>durable</em>. Fits.<br>Prosaic: dull, unoriginal. No.<br>Candid: frank. No.<br><em>The trap:</em> \"candid\" sounds like a blunt-personality word, but frankness is about honesty, not inflexibility.<br><em>Fast method:</em> Define all six before selecting any; on a pair question both picks must carry the same meaning. Target: ~15 seconds." },
     { text: "'Ingenuous' means:",
       choices: ["Clever and inventive", "Naive and innocent", "Dishonest", "Extremely talented"],
       answer: 1,
-      expl: "Ingenuous means artless or naive. The word meaning clever and inventive is 'ingenious': a single letter apart, and a favorite GRE trap." }
+      expl: "Two words one letter apart – separate them first.<br>Ingen<strong>i</strong>ous = clever, inventive.<br>Ingenuous = artless, <strong>naive and innocent</strong>, which is the meaning asked for.<br>Memory hook: <em>disingenuous</em> means insincere, so ingenuous means sincere to the point of naivety.<br><em>The trap:</em> \"clever and inventive\" defines <em>ingenious</em>, the sound-alike this question is built on.<br><em>Fast method:</em> Look for the extra i – ingen-i-ous is the smart one. Target: ~10 seconds." }
   ]
 },
 
@@ -342,7 +342,7 @@ it: skill, grace, aptness. <strong>Felicity</strong> (apt, pleasing expression) 
         "The entire question is wrong unless all three blanks are correct",
         "The question is thrown out"],
       answer: 2,
-      expl: "Text Completion awards no partial credit. Every blank must be correct, which is why verifying by reading the completed sentence back is essential." },
+      expl: "Ask how the GRE scores a multi-blank item: all or nothing.<br>Two blanks right out of three earns exactly what zero right earns.<br>So <strong>the entire question is wrong unless all three blanks are correct</strong>.<br>The consequence: a three-blank question isn't three times harder, it's three times more fragile.<br><em>The trap:</em> \"two-thirds credit\" imports partial-credit scoring that Text Completion has never offered.<br><em>Fast method:</em> No partial credit, so read the completed sentence back before you submit. Target: ~10 seconds." },
     { text: "Which blank should you attempt FIRST on a multi-blank question?",
       choices: [
         "Always blank (i), reading left to right",
@@ -350,11 +350,11 @@ it: skill, grace, aptness. <strong>Felicity</strong> (apt, pleasing expression) 
         "Always the last blank",
         "It doesn't matter"],
       answer: 1,
-      expl: "Blanks are not equally constrained. Solving the most heavily clued blank first gives you leverage to constrain the others." },
+      expl: "Blanks are not equally difficult, so don't default to left-to-right.<br>Scan for the blank with the loudest clue: a definition, a restatement, a signal word right beside it.<br>Solve <strong>whichever blank has the strongest contextual clue</strong> first.<br>Then use that locked-in meaning to constrain the remaining blanks.<br><em>The trap:</em> \"always blank (i)\" – blank (i) often depends on information that only becomes clear once a later blank is settled.<br><em>Fast method:</em> Easiest blank first, then let it do the work on the others. Target: ~10 seconds." },
     { text: "\"Far from being the ______ figure his memoirs suggest, the general was cautious to the point of timidity.\" What must the blank mean?",
       choices: ["Timid", "Bold", "Honest", "Elderly"],
       answer: 1,
-      expl: "'Far from being' negates the blank. Since the reality is timidity, the blank must be its opposite: bold, intrepid, audacious." },
+      expl: "\"Far from being\" is a negation, doing the same job as \"although.\"<br>What the sentence asserts as real: he was <em>cautious to the point of timidity</em>.<br>The memoirs therefore claim the opposite of reality.<br>So the blank is the opposite of timid → <strong>bold</strong> (intrepid, audacious).<br><em>The trap:</em> \"timid\" is the reversal – it's the word the sentence hands you, dropped into the blank where its opposite belongs.<br><em>Fast method:</em> \"Far from,\" \"rather than,\" \"anything but\" → the blank flips. Target: ~15 seconds." },
     { text: "In \"The essayist is celebrated less for the novelty of her ideas than for the ______ with which she expresses them,\" the blank refers to:",
       choices: [
         "The originality of her thinking",
@@ -362,7 +362,7 @@ it: skill, grace, aptness. <strong>Felicity</strong> (apt, pleasing expression) 
         "The length of her essays",
         "The obscurity of her subjects"],
       answer: 1,
-      expl: "'Less for X than for Y' means her ideas are not what earns praise. Her expression is. The blank names a quality of expression, such as felicity or grace." },
+      expl: "Decode the comparison frame first.<br>\"Celebrated less for A than for B\" means B, not A, earns the praise.<br>A is the novelty of her ideas, so novelty is explicitly not the reason.<br>B is \"the ______ with which she expresses them,\" so the blank names <strong>the skill and aptness of her expression</strong>.<br>Confirmed by \"turning familiar observations into memorable prose.\"<br><em>The trap:</em> \"the originality of her thinking\" is exactly what the sentence rules out.<br><em>Fast method:</em> In \"less for X than for Y,\" the blank always lives on the Y side. Target: ~20 seconds." },
     { text: "You notice that two answer choices for a blank are direct opposites of each other. What does this suggest?",
       choices: [
         "Both are wrong",
@@ -370,7 +370,7 @@ it: skill, grace, aptness. <strong>Felicity</strong> (apt, pleasing expression) 
         "The question is defective",
         "You should pick neither"],
       answer: 1,
-      expl: "Test writers include the opposite of the answer as a trap for anyone who misreads the sentence's direction. The signal word tells you which of the pair is correct." },
+      expl: "Ask why a test writer would place a word and its opposite in the same list.<br>Because misreading direction is the commonest error, and the opposite catches everyone who does.<br>That means the pair brackets the intended meaning: <strong>one of them is very likely correct, and the signal words determine which</strong>.<br>So reread the signal word – although, because, a semicolon – and pick that side.<br><em>The trap:</em> \"pick neither\" throws away the strongest structural hint on the question.<br><em>Fast method:</em> Opposites among the choices → the answer is one of them. Target: ~15 seconds." },
     { text: "Which two are sound Text Completion strategies? (Select TWO.)",
       choices: [
         "Read the answer choices before reading the sentence",
@@ -379,7 +379,7 @@ it: skill, grace, aptness. <strong>Felicity</strong> (apt, pleasing expression) 
         "Always pick the most difficult-sounding word",
         "Choose a word that relates to the sentence's topic"],
       answer: [1, 2],
-      expl: "Predicting protects you from seductive wrong answers, and reading back catches misreadings. Topic-related words that don't fit the logic are a classic trap." }
+      expl: "Test each option against one rule: does it use the sentence's own logic?<br><strong>Predict your own word before looking</strong> – yes, it blocks seductive wrong answers.<br><strong>Read the completed sentence back</strong> – yes, it catches misread signal words.<br>Reading the choices before the sentence reverses the method. Picking the most difficult-sounding word treats vocabulary size as evidence.<br><em>The trap:</em> \"choose a word that relates to the sentence's topic\" – topical is not the same as logically required.<br><em>Fast method:</em> Predict, then verify by reading back. Target: ~15 seconds." }
   ]
 },
 
@@ -456,7 +456,7 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
     { text: "How many answers must you select on a Sentence Equivalence question?",
       choices: ["One", "Exactly two", "Two or three", "As many as fit"],
       answer: 1,
-      expl: "Sentence Equivalence requires exactly two choices that both fit the sentence and produce sentences alike in meaning. There is no partial credit." },
+      expl: "The format is fixed, not a judgment call.<br>Six choices are offered and you select <strong>exactly two</strong>.<br>Both must fit the sentence, and both completed sentences must be alike in meaning.<br>One right plus one wrong scores zero – there is no partial credit.<br><em>The trap:</em> \"as many as fit\" – several words may fit grammatically, but the format accepts exactly two.<br><em>Fast method:</em> Sentence Equivalence is six choices, two answers, one meaning. Target: ~10 seconds." },
     { text: "You find one choice that fits the sentence perfectly, but no other choice means anything similar. What does this indicate?",
       choices: [
         "That choice is definitely correct",
@@ -464,7 +464,7 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
         "The question has only one answer",
         "You should pick that word plus your best guess"],
       answer: 1,
-      expl: "The answer is always a pair. A single perfect-seeming word with no partner is a deliberate trap, and its presence means you should re-examine the sentence's logic." },
+      expl: "Use the format as a check on your own reading.<br>The answer must be a pair whose meanings match.<br>A word with no partner therefore cannot be correct, however well it fits.<br>So the real finding is not \"one answer\" but that <strong>you have likely misread the sentence</strong>.<br>Go back to the signal word and re-derive the direction.<br><em>The trap:</em> \"that choice is definitely correct\" – the lone perfect word is planted precisely to feel that way.<br><em>Fast method:</em> No partner, no answer. Reread rather than forcing a second pick. Target: ~15 seconds." },
     { text: "In \"For all his reputation as an innovator, the composer was quite ______, rarely straying from established forms,\" why are 'daring' and 'experimental' wrong despite being a clean synonym pair?",
       choices: [
         "They are too difficult",
@@ -472,7 +472,7 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
         "They are not real synonyms",
         "They are positive words"],
       answer: 1,
-      expl: "'For all his reputation as X' signals that the reality is the opposite of X. Daring and experimental match the reputation. They are the classic decoy synonym pair." },
+      expl: "\"For all his reputation as X\" is a contrast frame: the reality opposes X.<br>X here is <em>innovator</em>, so the reality is not innovative.<br>The sentence confirms it: he rarely strayed from established forms.<br>Daring and experimental are clean synonyms of innovator, so they <strong>describe his reputation, not the reality the sentence contrasts it with</strong>.<br>The correct pair is conservative and traditional.<br><em>The trap:</em> a genuine synonym pair pointed the wrong way – being a pair is necessary, not sufficient.<br><em>Fast method:</em> Fix the direction first, then find the pair on that side. Target: ~20 seconds." },
     { text: "Must the two correct answers be exact dictionary synonyms?",
       choices: [
         "Yes, always",
@@ -480,11 +480,11 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
         "Yes, and they must be the same part of speech",
         "No, they can have opposite meanings"],
       answer: 1,
-      expl: "The requirement is equivalence of the completed sentences. Two words can create equivalent sentences here while differing in other contexts." },
+      expl: "Read what the instructions actually require.<br>You need two choices that produce sentences <em>alike in meaning</em>.<br>So the unit of equivalence is the <strong>sentence, not the dictionary entry</strong>.<br>Two words can therefore be equivalent in this context and diverge in others.<br><em>The trap:</em> \"yes, always\" – demanding perfect synonymy makes you reject valid pairs whose overlap is context-specific.<br><em>Fast method:</em> Plug both words in and compare the two finished sentences, not the two words. Target: ~10 seconds." },
     { text: "\"The critic found the novel utterly ______, unable to put it down until the final page.\" Which two choices are correct?",
       choices: ["Tedious", "Gripping", "Predictable", "Engrossing", "Confusing", "Brief"],
       answer: [1, 3],
-      expl: "'Unable to put it down' means the book held his attention, so gripping and engrossing form the correct pair. Tedious and predictable are opposites." },
+      expl: "The clue is the evidence clause, so no signal word is needed.<br>\"Unable to put it down until the final page\" means the book held him completely.<br>Prediction: absorbing, compelling.<br>Now find a pair that matches: <strong>gripping</strong> and <strong>engrossing</strong>, both meaning it held full attention.<br>Confusing and brief say nothing about absorption.<br><em>The trap:</em> tedious and predictable form a tidy pair of their own, but they point the opposite direction – a pair aimed the wrong way is still wrong.<br><em>Fast method:</em> Predict from the evidence clause, then take the pair that matches. Target: ~20 seconds." },
     { text: "Which two techniques help when you don't know several of the six words? (Select TWO.)",
       choices: [
         "Determine whether the blank needs a positive or negative word and eliminate accordingly",
@@ -493,7 +493,7 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
         "Pick the two words that relate to the sentence's topic",
         "Choose the first two choices"],
       answer: [0, 2],
-      expl: "Charge analysis eliminates half the field even without definitions, and since the answer must be a pair, identifying candidate pairs narrows the decision to which pair the logic requires." }
+      expl: "When definitions fail, work the structure instead.<br><strong>Charge:</strong> decide whether the blank needs a positive or negative word and cut the wrong side, often three of six gone.<br><strong>Pairs:</strong> the answer must be a pair, so group the six into natural pairs and ask which pair the logic demands.<br>Word length, topic resemblance, and blind position-picking track nothing.<br><em>The trap:</em> \"the two words that relate to the sentence's topic\" – topic-matching is how the decoy pair gets chosen.<br><em>Fast method:</em> Charge to eliminate, pairs to decide. Target: ~15 seconds." }
   ]
 }
     ],
@@ -505,31 +505,31 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
         { text: "Which section of each measure has the greatest influence on your score ceiling?",
           choices: ["Section 1, because it determines the difficulty of Section 2", "Section 2, because it has more questions", "The essay", "They are equally weighted"],
           answer: 0,
-          expl: "The GRE is section-adaptive. Section 1 performance routes you to an easier, medium, or harder Section 2, and an easier Section 2 caps your possible score." },
+          expl: "The GRE adapts between sections, not between questions.<br>Section 1 arrives at the same difficulty for everyone, so your accuracy there is the routing decision.<br>Do well → harder Section 2 → access to the top of the scale.<br>Do poorly → easier Section 2 → <strong>score capped even at perfect accuracy there</strong>.<br>So <strong>Section 1 determines the difficulty of Section 2</strong>, and with it your ceiling.<br><em>The trap:</em> \"Section 2, because it has more questions\" – more questions, but its difficulty band was already decided.<br><em>Fast method:</em> Section 1 is the real test. Arrive warm. Target: ~10 seconds." },
         { text: "What is the penalty for a wrong answer on the GRE?",
           choices: ["One quarter of a point", "Half a point", "There is no penalty", "The question is doubled in weight"],
           answer: 2,
-          expl: "There is no wrong-answer penalty, which means a blank is strictly worse than a guess. Never leave a question unanswered." },
+          expl: "One fact, one consequence.<br>The fact: nothing is deducted for a wrong answer, so <strong>there is no penalty</strong>.<br>The consequence: wrong scores 0 and blank scores 0, so a blank can never beat a guess and can lose to one.<br><em>The trap:</em> \"one quarter of a point\" is formula scoring from other exams; the GRE has never used it.<br><em>Fast method:</em> Never leave a blank – with time running out, put something in every question. Target: ~10 seconds." },
         { text: "\"Although the film received ______ reviews, audiences flocked to it and it became a hit.\" The blank must be:",
           choices: ["Glowing", "Poor", "Lengthy", "Early"],
           answer: 1,
-          expl: "'Although' signals contrast with the audience's enthusiasm, so the critics must have disliked it." },
+          expl: "Signal word first: \"although\" means contrast.<br>Known half: audiences flocked to it and it became a hit, clearly positive.<br>Flip for the blank: the reviews must have been <strong>poor</strong>.<br>Read it back – bad reviews, big audience – which is exactly the surprise \"although\" promises.<br><em>The trap:</em> \"glowing\" makes both halves agree, which is precisely what the contrast word forbids.<br><em>Fast method:</em> Contrast word → give the blank the opposite charge from the half you can already see. Target: ~15 seconds." },
         { text: "A semicolon in a Text Completion sentence usually signals:",
           choices: ["Contrast", "Continuation or restatement", "A question", "A list"],
           answer: 1,
-          expl: "Semicolons and colons signal that what follows explains or restates what came before, making the other half a direct clue." },
+          expl: "Punctuation carries logic on the GRE.<br>A semicolon, like a colon, joins two halves that say the same thing twice.<br>So it signals <strong>continuation or restatement</strong>, not a turn.<br>The payoff: whatever sits on one side defines the blank on the other.<br><em>The trap:</em> \"contrast\" – a flip requires an actual contrast word, and punctuation never provides one.<br><em>Fast method:</em> Semicolon or colon → carry the meaning straight across. Target: ~10 seconds." },
         { text: "'Ephemeral' most nearly means:",
           choices: ["Permanent", "Short-lived", "Beautiful", "Confusing"],
           answer: 1,
-          expl: "Ephemeral means fleeting or short-lived, like transient and evanescent." },
+          expl: "Break the word, then place it in its cluster.<br>Ephemeral describes a mayfly's single day: lasting only a moment.<br>Meaning: <strong>short-lived</strong>, fleeting.<br>Same cluster: transient, evanescent. Opposite: permanent, enduring.<br><em>The trap:</em> \"permanent\" is the exact opposite, the standard decoy on a definition question.<br><em>Fast method:</em> Store every word with one synonym and one opposite, and the decoy becomes obvious. Target: ~10 seconds." },
         { text: "How many answer choices does a two-blank Text Completion offer for EACH blank?",
           choices: ["Three", "Five", "Six", "Four"],
           answer: 0,
-          expl: "Two- and three-blank Text Completions give three choices per blank. Single-blank questions give five." },
+          expl: "Count by format, not by feel.<br>One blank → five choices, pick one.<br>Two or three blanks → <strong>three</strong> choices per blank, pick one each.<br>So a two-blank question shows six words total, arranged in two columns of three.<br><em>The trap:</em> \"five\" is the single-blank count and \"six\" is the Sentence Equivalence count – both borrowed from a different question type.<br><em>Fast method:</em> Five choices means one blank; three per column means multi-blank. Target: ~10 seconds." },
         { text: "Which two words mean 'to make worse' and 'to make better', respectively? (Select TWO.)",
           choices: ["Exacerbate means to make worse", "Ameliorate means to make worse", "Ameliorate means to make better", "Exacerbate means to make better", "Both mean the same thing"],
           answer: [0, 2],
-          expl: "Exacerbate worsens a situation; ameliorate improves it. They are frequently tested as an opposing pair." },
+          expl: "Judge each statement on its own.<br><strong>Exacerbate means to make worse</strong>: true, think of an irritation intensified.<br>Ameliorate means to make worse: false, reversed.<br><strong>Ameliorate means to make better</strong>: true, from the root <em>melior</em>, better.<br>Exacerbate means to make better: false.<br>\"Both mean the same thing\": false, they are opposites.<br><em>The trap:</em> the two reversed statements read fluently and are wrong only in direction.<br><em>Fast method:</em> Ameliorate → melior → better; exacerbate is its opposite. Target: ~15 seconds." },
         { text: "On Sentence Equivalence, you select two words that are perfect synonyms of each other but don't quite fit the sentence's logic. What have you done?",
           choices: [
             "Answered correctly, since the words are synonyms",
@@ -537,11 +537,11 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
             "Earned partial credit",
             "Selected too many answers"],
           answer: 1,
-          expl: "The decoy pair is a deliberate trap for test-takers hunting for synonyms rather than reading the sentence. Both words must fit the sentence's logic." },
+          expl: "Two conditions must hold: the words match each other <em>and</em> both fit the sentence.<br>Here only the first holds.<br>So the selection scores zero – you have <strong>fallen for the decoy synonym pair</strong>.<br>That pair exists to reward synonym-hunting over sentence-reading.<br><em>The trap:</em> \"answered correctly, since the words are synonyms\" – synonymy alone was never the standard.<br><em>Fast method:</em> Fit the sentence first, find the pair second. Target: ~15 seconds." },
         { text: "'Equivocal' means:",
           choices: ["Ambiguous, open to multiple interpretations", "Clear and definite", "Equal in value", "Loudly spoken"],
           answer: 0,
-          expl: "Equivocal means deliberately ambiguous. Its opposite, unequivocal, means completely clear and unambiguous." },
+          expl: "Work backwards from the negative form you already know.<br>\"Unequivocal\" means completely clear, leaving no room for doubt.<br>Strip the un- and you get the opposite: <strong>ambiguous, open to multiple interpretations</strong>.<br>Root check: <em>equi-</em> plus <em>voc-</em>, equal voices, two readings with equal claim.<br><em>The trap:</em> \"equal in value\" guesses from <em>equi-</em> alone and ignores the \"voice\" half of the word.<br><em>Fast method:</em> If you know a word's un- form, negate it. Target: ~10 seconds." },
         { text: "You have 90 seconds left and three questions unanswered. What is the correct action?",
           choices: [
             "Leave them blank",
@@ -549,11 +549,11 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
             "Carefully solve one and leave two blank",
             "Report the issue"],
           answer: 1,
-          expl: "With no guessing penalty, a guess strictly dominates a blank. Fill in every remaining answer." },
+          expl: "Price the options.<br>Blank = 0. Wrong guess = 0, with nothing deducted.<br>A random five-choice guess lands about one time in five; a blank lands never.<br>Three guesses cost about ten seconds, so <strong>guess on all three</strong>.<br><em>The trap:</em> \"carefully solve one and leave two blank\" trades two free chances for accuracy you may not even gain.<br><em>Fast method:</em> Inside the last 90 seconds, stop solving and start filling. Target: ~10 seconds." },
         { text: "'Laconic' most nearly means:",
           choices: ["Talkative", "Using very few words", "Lazy", "Angry"],
           answer: 1,
-          expl: "Laconic describes terse, sparing speech, like taciturn and reticent. Its opposites include garrulous and loquacious." },
+          expl: "Place the word in its family.<br>Laconic means <strong>using very few words</strong>, terse by habit.<br>Same cluster: taciturn, reticent.<br>Opposite cluster: garrulous, loquacious, voluble.<br>History hook: Laconia was Sparta, famous for one-word replies.<br><em>The trap:</em> \"talkative\" is the opposite pole, the standard decoy whenever a word has a well-known antonym set.<br><em>Fast method:</em> Learn the quiet trio and the talkative trio together, and this becomes recognition. Target: ~10 seconds." },
         { text: "Which two are true about Text Completion scoring? (Select TWO.)",
           choices: [
             "All blanks must be correct to earn credit",
@@ -562,15 +562,15 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
             "Three-blank questions are worth more points",
             "You may leave one blank empty"],
           answer: [0, 2],
-          expl: "Text Completion requires every blank to be correct, but wrong answers carry no penalty, so always fill every blank, even by guessing." },
+          expl: "Two separate rules are being tested at once.<br>Within the question: <strong>all blanks must be correct</strong> to earn credit, no partial credit.<br>Across the test: <strong>there is no penalty for a wrong answer</strong>.<br>Partial credit per blank is false. Leaving a blank empty is allowed but strictly self-harming.<br><em>The trap:</em> \"three-blank questions are worth more points\" – three times the work, identical value.<br><em>Fast method:</em> All-or-nothing per question plus no penalty overall means always fill every blank. Target: ~15 seconds." },
         { text: "\"Rather than acting on impulse, the committee chose a more ______ approach, weighing each option carefully.\" The blank means:",
           choices: ["Hasty", "Deliberate", "Reckless", "Secretive"],
           answer: 1,
-          expl: "'Rather than acting on impulse' plus 'weighing each option carefully' defines a slow, careful approach, deliberate." },
+          expl: "Two clues point the same direction.<br>\"Rather than acting on impulse\" negates impulsiveness.<br>\"Weighing each option carefully\" then spells out the replacement.<br>So the blank means slow and considered → <strong>deliberate</strong>.<br><em>The trap:</em> \"hasty\" and \"reckless\" are both restatements of <em>impulse</em>, the very thing the sentence rules out.<br><em>Fast method:</em> \"Rather than X\" → the blank is not-X, and the nearby clause usually defines what not-X is. Target: ~15 seconds." },
         { text: "'Fulsome' actually means:",
           choices: ["Abundant and generous", "Excessive to the point of insincerity", "Complete", "Full of energy"],
           answer: 1,
-          expl: "Fulsome praise is offensively excessive and insincere, not simply plentiful. It is a classic GRE false friend." },
+          expl: "Ignore what the word looks like and use how it is actually used.<br>\"Fulsome praise\" is not a compliment; it is flattery laid on far too thick.<br>Meaning: <strong>excessive to the point of insincerity</strong>.<br>The <em>full-</em> inside it suggests plentiful, and that resemblance is the whole trap.<br><em>The trap:</em> \"abundant and generous\" is the sound-alike reading, and it is how the word gets misused in ordinary writing.<br><em>Fast method:</em> Fulsome is negative. File it with enervate, ingenuous, and noisome. Target: ~10 seconds." },
         { text: "Which approach should you take BEFORE looking at the answer choices?",
           choices: [
             "Predict your own word for the blank",
@@ -578,11 +578,11 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
             "Look for the longest word",
             "Read the passage twice"],
           answer: 0,
-          expl: "Predicting first means you match your own answer against the choices instead of being persuaded by carefully engineered traps." },
+          expl: "Order of operations decides who is steering the question.<br>Read the sentence, find the signal word, then <strong>predict your own word for the blank</strong>.<br>Now the choices become a matching exercise.<br>Skip that step and every engineered wrong answer gets to argue its case first.<br><em>The trap:</em> \"count the number of choices\" is real information – five versus three tells you the question type – but it does nothing to protect you from the traps.<br><em>Fast method:</em> Prediction before choices, every single time. Target: ~10 seconds." },
         { text: "Which two words form a valid Sentence Equivalence pair meaning 'everywhere at once'? (Select TWO.)",
           choices: ["Ubiquitous", "Ephemeral", "Omnipresent", "Reticent", "Prosaic"],
           answer: [0, 2],
-          expl: "Ubiquitous and omnipresent both mean present everywhere, forming a valid equivalence pair." },
+          expl: "Name the target meaning, then collect exactly two matches.<br>Target: present everywhere at once.<br><strong>Ubiquitous</strong>: everywhere at once. Fits.<br>Ephemeral: short-lived. No.<br><strong>Omnipresent</strong>: <em>omni-</em> (all) plus present. Fits.<br>Reticent: reserved in speech. No. Prosaic: dull. No.<br>That is the pair.<br><em>The trap:</em> \"ephemeral\" is about time, not place – a hard-sounding word answering a different question.<br><em>Fast method:</em> State the meaning in plain words first, then take the two words that carry it. Target: ~15 seconds." },
         { text: "Within a GRE section, which of the following is TRUE?",
           choices: [
             "You may skip, mark, and revisit questions until you exit the section",
@@ -590,7 +590,7 @@ they're Trap 1. They match his <em>reputation</em>, not his practice.</p></div>
             "You may return to previous sections",
             "Marked questions are automatically scored as wrong"],
           answer: 0,
-          expl: "You have full navigational freedom inside a section, which is exactly why you should skip hard questions and return to them rather than getting stuck." }
+          expl: "Sort the claims into inside-a-section and between-sections.<br>Inside: <strong>skip, mark, and revisit questions until you exit</strong>. True.<br>\"Must answer each question before advancing\": false, skipping is allowed and encouraged.<br>\"May return to previous sections\": false, exiting is permanent.<br>\"Marked questions are automatically scored as wrong\": false, marking is a private bookmark.<br><em>The trap:</em> believing that marking costs you something, which is what pushes people into getting stuck.<br><em>Fast method:</em> Free movement inside a section, one-way door out. Target: ~10 seconds." }
       ]
     }
   });
