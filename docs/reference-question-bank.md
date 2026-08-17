@@ -131,7 +131,11 @@ difficulty; longer lists get sliced from the front.
     tables: [{ caption: "…", cols: ["A","B"], rows: [["1","2"], …] }],
     bar:  { title: "…", unit: "units", cats: ["Q1","Q2"], series: [{ name: "S1", values: [1,2] }], ymax: 100 },
     line: { /* same shape as bar */ },
-    pie:  { title: "…", unit: "$", slices: [{ label: "Rent", value: 800 }], totalNote: "Total: $2,000" }
+    pie:  { title: "…", unit: "$", slices: [{ label: "Rent", value: 800 }], totalNote: "Total: $2,000" },
+    box:  { title: "…", unit: "minutes", xmax: 80,
+            items: [{ label: "Office A", min: 10, q1: 20, med: 30, q3: 45, max: 70 }] },
+    scatter: { title: "…", xlabel: "Hours studied", ylabel: "(score)",
+               xmax: 10, ymax: 100, points: [[1, 52], [2, 58]] }
   },
   questions: [ /* exactly 3, same shape as passage questions; type mcq | mcma | num; topic: "data" */ ] }
 ```

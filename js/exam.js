@@ -269,6 +269,82 @@
     return svg;
   }
 
+  /* Horizontal boxplots above a shared value axis (ETS style).
+     spec: { title, unit, xmax?, items: [{ label, min, q1, med, q3, max }] } */
+  function boxChart(spec) {
+    const W = 560, L = 110, R = 24, T = 16, rowH = 56, B = 40;
+    const H = T + spec.items.length * rowH + B;
+    const svg = svgEl(W, H);
+    const allVals = spec.items.flatMap(it => [it.min, it.max]);
+    const xmax = spec.xmax || niceMax(Math.max(...allVals));
+    const pw = W - L - R;
+    const xAt = v => L + pw * v / xmax;
+    const ticks = 5;
+    for (let i = 0; i <= ticks; i++) {
+      const v = xmax * i / ticks, x = xAt(v);
+      svg.appendChild(sv("line", { x1: x, y1: T, x2: x, y2: H - B, "stroke-width": 1,
+        style: `stroke:${i === 0 ? "var(--chart-axis)" : "var(--chart-grid)"}` }));
+      svg.appendChild(sv("text", { x, y: H - B + 16, "text-anchor": "middle", "font-size": 11,
+        style: "fill:var(--chart-label)" }, String(+(v.toFixed(2)))));
+    }
+    spec.items.forEach((it, i) => {
+      const cy = T + rowH * i + rowH / 2, half = 13;
+      const box = (x1, x2) => svg.appendChild(sv("rect", {
+        x: xAt(x1), y: cy - half, width: Math.max(0.5, xAt(x2) - xAt(x1)), height: 2 * half,
+        "stroke-width": 1.2, style: "fill:var(--chart-fill-3);stroke:var(--chart-stroke)"
+      }));
+      const vline = (v, h, w) => svg.appendChild(sv("line", {
+        x1: xAt(v), y1: cy - h, x2: xAt(v), y2: cy + h,
+        "stroke-width": w || 1.2, style: "stroke:var(--chart-stroke)"
+      }));
+      const hline = (a, b) => svg.appendChild(sv("line", {
+        x1: xAt(a), y1: cy, x2: xAt(b), y2: cy,
+        "stroke-width": 1.2, style: "stroke:var(--chart-stroke)"
+      }));
+      hline(it.min, it.q1); hline(it.q3, it.max);   // whiskers
+      vline(it.min, 8); vline(it.max, 8);           // whisker caps
+      box(it.q1, it.q3);
+      vline(it.med, half, 2.4);                     // median
+      svg.appendChild(sv("text", { x: L - 10, y: cy + 4, "text-anchor": "end", "font-size": 12,
+        style: "fill:var(--chart-label-strong)" }, it.label));
+    });
+    if (spec.unit) svg.appendChild(sv("text", { x: W - R, y: H - 6, "text-anchor": "end",
+      "font-size": 10.5, style: "fill:var(--chart-label-muted)" }, "(" + spec.unit + ")"));
+    return svg;
+  }
+
+  /* Scatterplot. spec: { title, xlabel, ylabel, xmax?, ymax?, points: [[x,y],…] } */
+  function scatterChart(spec) {
+    const W = 560, H = 320, L = 56, R = 20, T = 16, B = 52;
+    const svg = svgEl(W, H);
+    const xmax = spec.xmax || niceMax(Math.max(...spec.points.map(p => p[0])));
+    const ymax = spec.ymax || niceMax(Math.max(...spec.points.map(p => p[1])));
+    const pw = W - L - R, ph = H - T - B, ticks = 5;
+    for (let i = 0; i <= ticks; i++) {
+      const y = T + ph - ph * i / ticks;
+      svg.appendChild(sv("line", { x1: L, y1: y, x2: W - R, y2: y, "stroke-width": 1,
+        style: `stroke:${i === 0 ? "var(--chart-axis)" : "var(--chart-grid)"}` }));
+      svg.appendChild(sv("text", { x: L - 7, y: y + 4, "text-anchor": "end", "font-size": 11,
+        style: "fill:var(--chart-label)" }, String(+((ymax * i / ticks).toFixed(2)))));
+      const x = L + pw * i / ticks;
+      svg.appendChild(sv("line", { x1: x, y1: T, x2: x, y2: T + ph, "stroke-width": 1,
+        style: `stroke:${i === 0 ? "var(--chart-axis)" : "var(--chart-grid)"}` }));
+      svg.appendChild(sv("text", { x, y: T + ph + 16, "text-anchor": "middle", "font-size": 11,
+        style: "fill:var(--chart-label)" }, String(+((xmax * i / ticks).toFixed(2)))));
+    }
+    spec.points.forEach(p => {
+      svg.appendChild(sv("circle", {
+        cx: L + pw * p[0] / xmax, cy: T + ph - ph * p[1] / ymax, r: 4,
+        "stroke-width": 1.2, style: "fill:var(--chart-fill-2);stroke:var(--chart-stroke)"
+      }));
+    });
+    if (spec.xlabel) svg.appendChild(sv("text", { x: L + pw / 2, y: H - 8, "text-anchor": "middle",
+      "font-size": 11.5, style: "fill:var(--chart-label-muted)" }, spec.xlabel));
+    if (spec.ylabel) svg.appendChild(sv("text", { x: 4, y: 10, "font-size": 10.5,
+      style: "fill:var(--chart-label-muted)" }, spec.ylabel));
+    return svg;
+  }
+
   GRE.renderDisplay = function (display) {
     const wrap = document.createElement("div");
     if (display.note) {
@@ -311,6 +387,8 @@
     addChart(display.bar, barChart, true);
     addChart(display.line, lineChart, true);
     addChart(display.pie, pieChart, false);
+    addChart(display.box, boxChart, false);
+    addChart(display.scatter, scatterChart, false);
     return wrap;
   };
 
